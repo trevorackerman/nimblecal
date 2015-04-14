@@ -1,0 +1,22 @@
+<div ng-cloak>
+    <div class="well goat-bg">
+
+    <div class="row voffset-250">
+        <div class="col-md-5 col-md-offset-6 dark-neutral-bg">
+            <h1 translate="main.title">Nimble Calendar</h1>
+            <p class="lead" translate="main.subtitle">Full Calendar Visualization of Project Activities</p>
+
+            <div ng-switch="isAuthenticated()">
+                <div class="alert alert-success" ng-switch-when="true"
+                     translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
+                    You are logged in as user "Admin".
+                </div>
+
+                <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.register">
+                    Don't have an account? <a href=\"#/register\">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

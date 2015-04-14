@@ -1,0 +1,10 @@
+{
+    "main": {
+        "title": "Nimble Calendar",
+        "subtitle": "Full Calendar Visualization of Project Activities",
+        "logged": {
+            "message": "You are logged in as user \"{{username}}\"."
+        },
+        "github": "Github"
+    }
+}
