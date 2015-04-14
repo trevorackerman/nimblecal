@@ -1,0 +1,19 @@
+{
+  "generator-jhipster": {
+    "baseName": "nimblecal",
+    "packageName": "com.nimblehammer",
+    "packageFolder": "com/nimblehammer",
+    "authenticationType": "session",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "useCompass": false,
+    "buildTool": "gradle",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8",
+    "rememberMeKey": "6472aabd0f47e730865fa184c8b015b210205321"
+  }
+}
