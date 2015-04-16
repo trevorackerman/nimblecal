@@ -10,6 +10,7 @@ task bower(type: Exec) {
     }
 }
 
+bower.onlyIf { !project.hasProperty('skipBower') }
 
 processResources.dependsOn 'bower'
 
