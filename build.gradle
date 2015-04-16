@@ -6,9 +6,9 @@ buildscript {
     dependencies {
         classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE')
         classpath('com.moowork.gradle:gradle-node-plugin:0.8')
-        
+
         classpath('com.moowork.gradle:gradle-grunt-plugin:0.6')
-        
+
     }
 }
 
@@ -82,7 +82,7 @@ dependencies {
     compile (group: 'com.ryantenney.metrics', name: 'metrics-spring', version: metrics_spring_version) {
         exclude(module: 'metrics-core')
         exclude(module: 'metrics-healthchecks')
-    } 
+    }
     compile(group: 'com.zaxxer', name: 'HikariCP') {
         exclude(module: 'tools')
     }
@@ -124,7 +124,7 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-config', version: spring_security_version
     compile group: 'org.springframework.security', name: 'spring-security-data', version: spring_security_version
     compile group: 'org.springframework.security', name: 'spring-security-web', version: spring_security_version
-    compile group: 'org.springframework.security', name: 'spring-security-messaging', version: spring_security_version 
+    compile group: 'org.springframework.security', name: 'spring-security-messaging', version: spring_security_version
     compile(group: 'com.mangofactory', name: 'swagger-springmvc', version: swagger_springmvc_version) {
         exclude(module: 'jackson-module-scala_2.10')
         exclude(module: 'scalap')
@@ -142,11 +142,15 @@ dependencies {
     testCompile group: 'com.mattbertolini', name: 'liquibase-slf4j', version: liquibase_slf4j_version
     testCompile group: 'org.hamcrest', name: 'hamcrest-library'
     testCompile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version: gatling_version
-    
+
     testCompile group: 'com.h2database', name: 'h2'
 
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
+}
+
+task stage(dependsOn: 'bootRepackage') {
+
 }
