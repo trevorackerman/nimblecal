@@ -1,0 +1,33 @@
+{
+    "trackerApiToken": {
+        "title": "Tracker API Token for [<b>{{username}}</b>]",
+        "form": {
+            "username": "Tracker Username",
+            "username.placeholder": "Username on Tracker",
+            "token": "API Token",
+            "token.placeholder": "token",
+            "rememberme": "Remember Token",
+            "button": "Validate Token"
+        },
+        "messages": {
+            "error": {
+                "token": "Failed to validate API Token.<br/>Check your <a href=\"https://www.pivotaltracker.com/profile\">Tracker API token</a>."
+            },
+            "success": {
+                "token": "Valid Token."
+            },
+            "validate": {
+                "username": {
+                    "required": "Your Tracker username is required.",
+                    "minlength": "Your Tracker username is required to be at least 1 character",
+                    "maxlength": "Your Tracker username cannot be longer than 50 characters"
+                },
+                "apiToken": {
+                    "required": "Your API Token is required.",
+                    "minlength": "Your API Token is required to be at least 1 character",
+                    "maxlength": "Your API Token cannot be longer than 50 characters"
+                }
+            }
+        }
+    }
+}
