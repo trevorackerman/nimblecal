@@ -2,7 +2,7 @@ describe('Tracker API Token Page', function() {
     beforeEach(function() {
         browser.driver.manage().window().maximize();
 
-        browser.get('http://localhost:8080/#/login');
+        browser.get('#/login');
 
         element(by.model('username')).sendKeys('admin');
         element(by.model('password')).sendKeys('admin');
