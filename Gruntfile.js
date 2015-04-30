@@ -392,6 +392,19 @@ module.exports = function (grunt) {
                     VERSION: parseVersionFromBuildGradle()
                 }
             }
+        },
+        secrets: grunt.file.readJSON('secrets.json'),
+        protractor: {
+            endToEnd: {
+                options: {
+                    configFile: "src/test/endToEnd/conf.js",
+                    args: {
+                        params: {
+                            trackerApiToken: '<%= secrets.trackerApiToken %>'
+                        }
+                    }
+                }
+            }
         }
     });
 
