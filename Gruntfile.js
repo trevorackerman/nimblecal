@@ -19,6 +19,15 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
 
+    grunt.config('env', grunt.option('env') || process.env.GRUNT_ENV || 'development');
+
+    if (grunt.config('env') === 'continuous') {
+        grunt.config('baseUrl', "http://localhost:9000/");
+    }
+    else {
+        grunt.config('baseUrl', "http://localhost:8080/");
+    }
+
     grunt.initConfig({
         yeoman: {
             // configurable paths
@@ -401,7 +410,8 @@ module.exports = function (grunt) {
                     args: {
                         params: {
                             trackerApiToken: '<%= secrets.trackerApiToken %>'
-                        }
+                        },
+						baseUrl: grunt.config('baseUrl')
                     }
                 }
             }
