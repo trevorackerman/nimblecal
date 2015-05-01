@@ -8,6 +8,8 @@ angular.module('nimblecalApp')
         });
 
         $scope.trackerApiToken = function () {
+            $scope.trackerApiSuccess = false;
+            $scope.trackerApiError = false;
 
             var config = {
                 headers:  {

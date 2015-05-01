@@ -7,7 +7,7 @@ exports.config = {
         version: '',
         platform: 'ANY'
     },
-
+    seleniumPort: 4444,
     onPrepare: function() {
         jasmine.getEnv().addReporter(new HtmlReporter({
             baseDirectory: 'build/test-results/endToEnd'
