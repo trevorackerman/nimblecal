@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
-@Profile("!" + Constants.SPRING_PROFILE_FAST)
+@Profile("notnow")
 public class MetricsConfiguration extends MetricsConfigurerAdapter implements EnvironmentAware {
 
     private static final String ENV_METRICS = "metrics.";
