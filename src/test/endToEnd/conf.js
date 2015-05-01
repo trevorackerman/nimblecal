@@ -4,6 +4,7 @@ exports.config = {
     specs: ['trackerApiTokenSpec.js'],
     capabilities: {
         browserName: 'phantomjs',
+        'phantomjs.binary.path': 'node_modules/phantomjs/bin/phantomjs',
         version: '',
         platform: 'ANY'
     },
