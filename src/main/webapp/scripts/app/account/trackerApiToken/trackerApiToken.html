@@ -9,13 +9,16 @@
             <div class="alert alert-success" ng-show="trackerApiSuccess" translate="trackerApiToken.messages.success.token">
                 Valid Token.
             </div>
+            <div id="changeTrackerApiToken" ng-show="trackerApiToken">
+                <h3>Change Current Tracker API Token</h3>
+            </div>
             <form class="form" role="form">
                 <div class="form-group">
                     <label for="token" translate="trackerApiToken.form.token">API Token</label>
                     <input type="password" class="form-control" id="token" placeholder="{{'trackerApiToken.form.token.placeholder' | translate}}"
                            ng-model="token">
                 </div>
-                <button type="submit" class="btn btn-primary" ng-click="trackerApiToken()" translate="trackerApiToken.form.button">Validate Token</button>
+                <button type="submit" class="btn btn-primary" ng-click="validateToken()" translate="trackerApiToken.form.button">Validate Token</button>
             </form>
         </div>
     </div>
