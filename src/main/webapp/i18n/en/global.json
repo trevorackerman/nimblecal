@@ -6,6 +6,7 @@
             "home": "Home",
             "entities": {
                 "main": "Entities",
+                "calendar": "Calendar",
                 "additionalEntity": "JHipster will add addtional entities"
             },
             "account": {

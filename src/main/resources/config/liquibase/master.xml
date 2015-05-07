@@ -6,5 +6,6 @@
 
     <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150507184219_rename_prefix_t_to_jhi.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20150507202530_added_entity_Calendar.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
