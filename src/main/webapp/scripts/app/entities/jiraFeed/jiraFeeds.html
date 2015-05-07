@@ -1,0 +1,140 @@
+<div>
+
+    <h2 translate="nimblecalApp.jiraFeed.home.title">JiraFeed</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#saveJiraFeedModal" ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="nimblecalApp.jiraFeed.home.createLabel">Create a new JiraFeed</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="saveJiraFeedModal" tabindex="-1" role="dialog" aria-labelledby="myJiraFeedLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myJiraFeedLabel" translate="nimblecalApp.jiraFeed.home.createOrEditLabel">Create or edit a JiraFeed</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="jiraFeed.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="nimblecalApp.jiraFeed.site">Site</label>
+                            <input type="text" class="form-control" name="site"
+                                   ng-model="jiraFeed.site" required>
+
+                            <div ng-show="editForm.site.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.site.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="nimblecalApp.jiraFeed.projectId">ProjectId</label>
+                            <input type="text" class="form-control" name="projectId"
+                                   ng-model="jiraFeed.projectId" required>
+
+                            <div ng-show="editForm.projectId.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.projectId.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="nimblecalApp.jiraFeed.calendar">calendar</label>
+                            <select class="form-control" name="calendar" ng-model="jiraFeed.calendar.id" ng-options="calendar.id as calendar.projectId for calendar in calendars">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteJiraFeedConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(jiraFeed.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="nimblecalApp.jiraFeed.delete.question" translate-values="{id: '{{jiraFeed.id}}'}">Are you sure you want to delete this JiraFeed?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th translate="nimblecalApp.jiraFeed.site">Site</th>
+                    <th translate="nimblecalApp.jiraFeed.projectId">ProjectId</th>
+                    <th translate="nimblecalApp.jiraFeed.calendar">calendar</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="jiraFeed in jiraFeeds">
+                    <td><a ui-sref="jiraFeedDetail({id:jiraFeed.id})">{{jiraFeed.id}}</a></td>
+                    <td>{{jiraFeed.site}}</td>
+                    <td>{{jiraFeed.projectId}}</td>
+                    <td>{{jiraFeed.calendar.projectId}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="jiraFeedDetail({id:jiraFeed.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="showUpdate(jiraFeed.id)"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(jiraFeed.id)"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

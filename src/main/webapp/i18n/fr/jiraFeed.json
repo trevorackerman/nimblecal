@@ -1,0 +1,21 @@
+{
+    "nimblecalApp": {
+        "jiraFeed" : {
+            "home": {
+                "title": "JiraFeeds",
+                "createLabel": "Créer un nouveau JiraFeed",
+                "createOrEditLabel": "Créer ou éditer un JiraFeed"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le JiraFeed {{ id }} ?"
+            },
+            "detail": {
+                "title": "JiraFeed"
+            },
+            "site": "Site",
+            "projectId": "ProjectId",
+            "calendar": "calendar"
+        }
+    }
+}
+

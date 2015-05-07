@@ -7,6 +7,8 @@
             "entities": {
                 "main": "Entities",
                 "calendar": "Calendar",
+                "jiraFeed": "Jira Feed",
+                "trackerFeed": "Tracker Feed",
                 "additionalEntity": "JHipster will add addtional entities"
             },
             "account": {
