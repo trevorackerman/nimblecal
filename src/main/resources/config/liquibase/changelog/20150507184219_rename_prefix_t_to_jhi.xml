@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+	<changeSet author="tackerman" id="20150507184219">
+	    <renameTable oldTableName="t_user" newTableName="jhi_user"/>
+	    <renameTable oldTableName="t_authority" newTableName="jhi_authority"/>
+	    <renameTable oldTableName="t_persistent_audit_event" newTableName="jhi_persistent_audit_event"/>
+	    <renameTable oldTableName="t_persistent_audit_event_data" newTableName="jhi_persistent_audit_event_data"/>
+	    <renameTable oldTableName="t_persistent_token" newTableName="jhi_persistent_token"/>
+	    <renameTable oldTableName="t_user_authority" newTableName="jhi_user_authority"/>
+	</changeSet>
+</databaseChangeLog>
