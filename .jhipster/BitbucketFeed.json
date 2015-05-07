@@ -1,0 +1,62 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "calendar",
+            "relationshipNameCapitalized": "Calendar",
+            "relationshipFieldName": "calendar",
+            "otherEntityName": "calendar",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Calendar",
+            "otherEntityField": "repositoryName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "site",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Site",
+            "fieldNameUnderscored": "site",
+            "fieldInJavaBeanMethod": "Site",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "repositoryOwner",
+            "fieldType": "String",
+            "fieldNameCapitalized": "RepositoryOwner",
+            "fieldNameUnderscored": "repository_owner",
+            "fieldInJavaBeanMethod": "RepositoryOwner",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "repositoryName",
+            "fieldType": "String",
+            "fieldNameCapitalized": "RepositoryName",
+            "fieldNameUnderscored": "repository_name",
+            "fieldInJavaBeanMethod": "RepositoryName",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150507211106",
+    "pagination": "no",
+    "validation": true
+}
