@@ -9,6 +9,10 @@ sourceSets {
     }
 }
 
+clean {
+    delete 'target/test-classes'
+}
+
 task gatlingRun(dependsOn:'compileTestScala', type: JavaExec) {
 
     group = "gatling"
