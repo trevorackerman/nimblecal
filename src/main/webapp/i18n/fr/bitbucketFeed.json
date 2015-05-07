@@ -1,0 +1,22 @@
+{
+    "nimblecalApp": {
+        "bitbucketFeed" : {
+            "home": {
+                "title": "BitbucketFeeds",
+                "createLabel": "Créer un nouveau BitbucketFeed",
+                "createOrEditLabel": "Créer ou éditer un BitbucketFeed"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le BitbucketFeed {{ id }} ?"
+            },
+            "detail": {
+                "title": "BitbucketFeed"
+            },
+            "site": "Site",
+            "repositoryOwner": "RepositoryOwner",
+            "repositoryName": "RepositoryName",
+            "calendar": "calendar"
+        }
+    }
+}
+

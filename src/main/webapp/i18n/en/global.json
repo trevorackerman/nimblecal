@@ -10,6 +10,7 @@
                 "jiraFeed": "Jira Feed",
                 "trackerFeed": "Tracker Feed",
                 "githubFeed": "Github Feed",
+                "bitbucketFeed": "BitbucketFeed",
                 "additionalEntity": "JHipster will add addtional entities"
             },
             "account": {
