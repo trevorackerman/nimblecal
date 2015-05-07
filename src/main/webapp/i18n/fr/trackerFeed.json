@@ -1,0 +1,20 @@
+{
+    "nimblecalApp": {
+        "trackerFeed" : {
+            "home": {
+                "title": "TrackerFeeds",
+                "createLabel": "Créer un nouveau TrackerFeed",
+                "createOrEditLabel": "Créer ou éditer un TrackerFeed"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le TrackerFeed {{ id }} ?"
+            },
+            "detail": {
+                "title": "TrackerFeed"
+            },
+            "projectId": "ProjectId",
+            "calendar": "calendar"
+        }
+    }
+}
+

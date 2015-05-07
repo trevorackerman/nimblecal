@@ -1,0 +1,20 @@
+{
+    "nimblecalApp": {
+        "jiraFeed" : {
+            "home": {
+                "title": "Jira Feeds",
+                "createLabel": "Create a new Jira Feed",
+                "createOrEditLabel": "Create or edit a Jira Feed"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete Jira Feed {{ id }}?"
+            },
+            "detail": {
+                "title": "Jira Feed"
+            },
+            "site": "Site",
+            "projectId": "JIRA Project Id",
+            "calendar": "Calendar"
+        }
+    }
+}

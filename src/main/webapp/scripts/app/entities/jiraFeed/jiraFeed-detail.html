@@ -1,0 +1,46 @@
+
+<div>
+    <h2><span translate="nimblecalApp.jiraFeed.detail.title">JiraFeed</span> {{jiraFeed.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="nimblecalApp.jiraFeed.site">Site</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{jiraFeed.site}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="nimblecalApp.jiraFeed.projectId">ProjectId</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{jiraFeed.projectId}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="nimblecalApp.jiraFeed.calendar">calendar</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{jiraFeed.calendar.projectId}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="jiraFeed"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

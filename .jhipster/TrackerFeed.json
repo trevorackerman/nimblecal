@@ -1,0 +1,38 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "calendar",
+            "relationshipNameCapitalized": "Calendar",
+            "relationshipFieldName": "calendar",
+            "otherEntityName": "calendar",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Calendar",
+            "otherEntityField": "projectId"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "projectId",
+            "fieldType": "String",
+            "fieldNameCapitalized": "ProjectId",
+            "fieldNameUnderscored": "project_id",
+            "fieldInJavaBeanMethod": "ProjectId",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150507203151",
+    "pagination": "no",
+    "validation": true
+}
