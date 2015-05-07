@@ -1,0 +1,19 @@
+{
+    "nimblecalApp": {
+        "githubFeed" : {
+            "home": {
+                "title": "Github Feeds",
+                "createLabel": "Create a new Github Feed",
+                "createOrEditLabel": "Create or edit a Github Feed"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete Github Feed {{ id }}?"
+            },
+            "detail": {
+                "title": "Github Feed"
+            },
+            "repositoryURL": "Repository URL",
+            "calendar": "Calendar"
+        }
+    }
+}

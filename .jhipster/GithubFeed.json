@@ -1,0 +1,38 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "calendar",
+            "relationshipNameCapitalized": "Calendar",
+            "relationshipFieldName": "calendar",
+            "otherEntityName": "calendar",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Calendar",
+            "otherEntityField": "repositoryURL"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "repositoryURL",
+            "fieldType": "String",
+            "fieldNameCapitalized": "RepositoryURL",
+            "fieldNameUnderscored": "repository_url",
+            "fieldInJavaBeanMethod": "RepositoryURL",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150507205723",
+    "pagination": "no",
+    "validation": true
+}

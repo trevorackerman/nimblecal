@@ -9,6 +9,7 @@
                 "calendar": "Calendar",
                 "jiraFeed": "Jira Feed",
                 "trackerFeed": "Tracker Feed",
+                "githubFeed": "Github Feed",
                 "additionalEntity": "JHipster will add addtional entities"
             },
             "account": {
