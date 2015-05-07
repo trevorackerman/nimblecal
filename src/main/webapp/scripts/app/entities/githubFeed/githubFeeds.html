@@ -1,0 +1,126 @@
+<div>
+
+    <h2 translate="nimblecalApp.githubFeed.home.title">GithubFeed</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#saveGithubFeedModal" ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="nimblecalApp.githubFeed.home.createLabel">Create a new GithubFeed</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="saveGithubFeedModal" tabindex="-1" role="dialog" aria-labelledby="myGithubFeedLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myGithubFeedLabel" translate="nimblecalApp.githubFeed.home.createOrEditLabel">Create or edit a GithubFeed</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="githubFeed.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="nimblecalApp.githubFeed.repositoryURL">RepositoryURL</label>
+                            <input type="text" class="form-control" name="repositoryURL"
+                                   ng-model="githubFeed.repositoryURL" required>
+
+                            <div ng-show="editForm.repositoryURL.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.repositoryURL.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="nimblecalApp.githubFeed.calendar">calendar</label>
+                            <select class="form-control" name="calendar" ng-model="githubFeed.calendar.id" ng-options="calendar.id as calendar.repositoryURL for calendar in calendars">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteGithubFeedConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(githubFeed.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="nimblecalApp.githubFeed.delete.question" translate-values="{id: '{{githubFeed.id}}'}">Are you sure you want to delete this GithubFeed?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th translate="nimblecalApp.githubFeed.repositoryURL">RepositoryURL</th>
+                    <th translate="nimblecalApp.githubFeed.calendar">calendar</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="githubFeed in githubFeeds">
+                    <td><a ui-sref="githubFeedDetail({id:githubFeed.id})">{{githubFeed.id}}</a></td>
+                    <td>{{githubFeed.repositoryURL}}</td>
+                    <td>{{githubFeed.calendar.repositoryURL}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="githubFeedDetail({id:githubFeed.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="showUpdate(githubFeed.id)"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(githubFeed.id)"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
