@@ -1,9 +1,16 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('CalendarController', function ($scope, Calendar, User) {
+    .controller('CalendarController', function ($scope, Calendar, Principal, User) {
         $scope.calendars = [];
-        $scope.users = User.query();
+
+        Principal.identity().then(function (account) {
+            User.get({login:account.login})
+                .$promise.then(function(user) {
+                    $scope.currentUser = user;
+                });
+        });
+
         $scope.loadAll = function() {
             Calendar.query(function(result) {
                $scope.calendars = result;
@@ -20,7 +27,7 @@ angular.module('nimblecalApp')
 
         $scope.save = function () {
             if ($scope.calendar.id != null) {
-                Calendar.update($scope.calendar,
+                Calsendar.update($scope.calendar,
                     function () {
                         $scope.refresh();
                     });
