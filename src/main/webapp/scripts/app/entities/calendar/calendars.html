@@ -94,6 +94,7 @@
                     <th>ID</th>
                     <th translate="nimblecalApp.calendar.title">Title</th>
                     <th translate="nimblecalApp.calendar.user">user</th>
+                    <th translate="nimblecalApp.calendar.trackerFeed.projectId">Tracker Project</th>
                     <th></th>
                 </tr>
             </thead>
@@ -102,6 +103,11 @@
                     <td><a ui-sref="calendarDetail({id:calendar.id})">{{calendar.id}}</a></td>
                     <td>{{calendar.title}}</td>
                     <td>{{calendar.user.id}}</td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="trackerFeed in calendar.trackerFeeds">{{trackerFeed.projectId}}</li>
+                        </ul>
+                    </td>
                     <td>
                         <button type="submit"
                                 ui-sref="calendarDetail({id:calendar.id})"

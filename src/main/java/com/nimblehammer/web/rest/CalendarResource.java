@@ -2,7 +2,9 @@ package com.nimblehammer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.nimblehammer.domain.Calendar;
+import com.nimblehammer.domain.TrackerFeed;
 import com.nimblehammer.repository.CalendarRepository;
+import com.nimblehammer.repository.TrackerFeedRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,9 @@ public class CalendarResource {
 
     @Inject
     private CalendarRepository calendarRepository;
+
+    @Inject
+    private TrackerFeedRepository trackerFeedRepository;
 
     /**
      * POST  /calendars -> Create a new calendar.
@@ -99,5 +104,14 @@ public class CalendarResource {
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete Calendar : {}", id);
         calendarRepository.delete(id);
+    }
+
+
+    @RequestMapping(value = "/calendars/{id}/trackerFeeds",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<TrackerFeed> getTrackerFeeds(@PathVariable Long id) {
+        return trackerFeedRepository.findByCalendar(calendarRepository.findOne(id));
     }
 }
