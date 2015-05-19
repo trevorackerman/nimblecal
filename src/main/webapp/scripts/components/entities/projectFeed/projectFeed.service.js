@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .factory('CalendarTrackerFeed', function ($resource) {
-        return $resource('api/calendars/:id/trackerFeeds', {}, {
+    .factory('ProjectFeed', function ($resource) {
+        return $resource('api/projectfeeds/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
@@ -11,5 +11,6 @@ angular.module('nimblecalApp')
                     return data;
                 }
             },
+            'update': { method:'PUT' }
         });
     });

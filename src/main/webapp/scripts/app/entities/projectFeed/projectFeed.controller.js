@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('CalendarController', function ($scope, Calendar, Principal, User, CalendarTrackerFeed) {
-        $scope.calendars = [];
+    .controller('ProjectFeedController', function ($scope, ProjectFeed, Principal, User, ProjectFeedTrackerFeed) {
+        $scope.projectFeeds = [];
 
         Principal.identity().then(function (account) {
             User.get({login:account.login})
@@ -12,11 +12,11 @@ angular.module('nimblecalApp')
         });
 
         $scope.loadAll = function() {
-            Calendar.query(function(result) {
-               $scope.calendars = result;
-                angular.forEach($scope.calendars, function(calendar, index) {
-                    CalendarTrackerFeed.query({id: calendar.id}, function(result) {
-                        calendar.trackerFeeds = result;
+            ProjectFeed.query(function(result) {
+               $scope.projectFeeds = result;
+                angular.forEach($scope.projectFeeds, function(projectFeed, index) {
+                    ProjectFeedTrackerFeed.query({id: projectFeed.id}, function(result) {
+                        projectFeed.trackerFeeds = result;
                     });
                 })
 
@@ -25,20 +25,20 @@ angular.module('nimblecalApp')
         $scope.loadAll();
 
         $scope.showUpdate = function (id) {
-            Calendar.get({id: id}, function(result) {
-                $scope.calendar = result;
-                $('#saveCalendarModal').modal('show');
+            ProjectFeed.get({id: id}, function(result) {
+                $scope.projectFeed = result;
+                $('#saveProjectFeedModal').modal('show');
             });
         };
 
         $scope.save = function () {
-            if ($scope.calendar.id != null) {
-                Calendar.update($scope.calendar,
+            if ($scope.projectFeed.id != null) {
+                ProjectFeed.update($scope.projectFeed,
                     function () {
                         $scope.refresh();
                     });
             } else {
-                Calendar.save($scope.calendar,
+                ProjectFeed.save($scope.projectFeed,
                     function () {
                         $scope.refresh();
                     });
@@ -46,29 +46,29 @@ angular.module('nimblecalApp')
         };
 
         $scope.delete = function (id) {
-            Calendar.get({id: id}, function(result) {
-                $scope.calendar = result;
-                $('#deleteCalendarConfirmation').modal('show');
+            ProjectFeed.get({id: id}, function(result) {
+                $scope.projectFeed = result;
+                $('#deleteProjectFeedConfirmation').modal('show');
             });
         };
 
         $scope.confirmDelete = function (id) {
-            Calendar.delete({id: id},
+            ProjectFeed.delete({id: id},
                 function () {
                     $scope.loadAll();
-                    $('#deleteCalendarConfirmation').modal('hide');
+                    $('#deleteProjectFeedConfirmation').modal('hide');
                     $scope.clear();
                 });
         };
 
         $scope.refresh = function () {
             $scope.loadAll();
-            $('#saveCalendarModal').modal('hide');
+            $('#saveProjectFeedModal').modal('hide');
             $scope.clear();
         };
 
         $scope.clear = function () {
-            $scope.calendar = {title: null, id: null};
+            $scope.projectFeed = {title: null, id: null};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
         };

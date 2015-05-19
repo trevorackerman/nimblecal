@@ -14,7 +14,7 @@
             },
             "site": "Site",
             "projectId": "JIRA Project Id",
-            "calendar": "Calendar"
+            "projectFeed": "ProjectFeed"
         }
     }
 }

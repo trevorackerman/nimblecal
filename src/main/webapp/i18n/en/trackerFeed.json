@@ -13,7 +13,7 @@
                 "title": "Tracker Feed"
             },
             "projectId": "Project Id",
-            "calendar": "calendar"
+            "projectFeed": "Project Feed"
         }
     }
 }

@@ -1,14 +1,11 @@
 package com.nimblehammer.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -36,7 +33,7 @@ public class BitbucketFeed implements Serializable {
     private String repositoryName;
 
     @ManyToOne
-    private Calendar calendar;
+    private ProjectFeed projectFeed;
 
     public Long getId() {
         return id;
@@ -70,12 +67,12 @@ public class BitbucketFeed implements Serializable {
         this.repositoryName = repositoryName;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public ProjectFeed getProjectFeed() {
+        return projectFeed;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setProjectFeed(ProjectFeed projectFeed) {
+        this.projectFeed = projectFeed;
     }
 
     @Override

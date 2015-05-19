@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('BitbucketFeedController', function ($scope, BitbucketFeed, Calendar) {
+    .controller('BitbucketFeedController', function ($scope, BitbucketFeed, ProjectFeed) {
         $scope.bitbucketFeeds = [];
-        $scope.calendars = Calendar.query();
+        $scope.projectFeeds = ProjectFeed.query();
         $scope.loadAll = function() {
             BitbucketFeed.query(function(result) {
                $scope.bitbucketFeeds = result;

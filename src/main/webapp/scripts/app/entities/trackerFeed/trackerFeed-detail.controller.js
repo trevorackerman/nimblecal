@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('TrackerFeedDetailController', function ($scope, $stateParams, TrackerFeed, Calendar) {
+    .controller('TrackerFeedDetailController', function ($scope, $stateParams, TrackerFeed) {
         $scope.trackerFeed = {};
         $scope.load = function (id) {
             TrackerFeed.get({id: id}, function(result) {

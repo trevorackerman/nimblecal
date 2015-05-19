@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('TrackerFeedController', function ($scope, TrackerFeed, Calendar) {
+    .controller('TrackerFeedController', function ($scope, TrackerFeed, ProjectFeed) {
         $scope.trackerFeeds = [];
-        $scope.calendars = Calendar.query();
+        $scope.projectFeeds = ProjectFeed.query();
         $scope.loadAll = function() {
             TrackerFeed.query(function(result) {
                $scope.trackerFeeds = result;

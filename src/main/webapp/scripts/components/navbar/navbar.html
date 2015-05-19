@@ -11,11 +11,15 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
             <ul class="nav navbar-nav nav-pills navbar-right">
-                <li ui-sref-active="active">
-                    <a ui-sref="home">
+                <li ui-sref-active="active" class="dropdown pointer">
+                    <a ui-sref="home" data-toggle="dropdown" href="">
                         <span class="glyphicon glyphicon-home"></span>
                         <span translate="global.menu.home">Home</span>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li ui-sref-active="active" ><a ui-sref="calendar"><span class="glyphicon glyphicon-asterisk"></span>
+                            &#xA0;<span translate="global.menu.calendar">calendar</span></a></li>
+                    </ul>
                 </li>
                 <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="">
@@ -28,8 +32,8 @@
                                 </span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li ui-sref-active="active" ><a ui-sref="calendar"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span translate="global.menu.entities.calendar">calendar</span></a></li>
+                        <li ui-sref-active="active" ><a ui-sref="projectFeed"><span class="glyphicon glyphicon-asterisk"></span>
+                        &#xA0;<span translate="global.menu.entities.projectFeed">projectFeed</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="trackerFeed"><span class="glyphicon glyphicon-asterisk"></span>
                         &#xA0;<span translate="global.menu.entities.trackerFeed">trackerFeed</span></a></li>
                         <li ui-sref-active="active" ><a ui-sref="jiraFeed"><span class="glyphicon glyphicon-asterisk"></span>

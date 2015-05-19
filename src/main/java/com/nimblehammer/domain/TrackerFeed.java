@@ -25,7 +25,7 @@ public class TrackerFeed implements Serializable {
     private String projectId;
 
     @ManyToOne
-    private Calendar calendar;
+    private ProjectFeed projectFeed;
 
     public Long getId() {
         return id;
@@ -43,12 +43,12 @@ public class TrackerFeed implements Serializable {
         this.projectId = projectId;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public ProjectFeed getProjectFeed() {
+        return projectFeed;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setProjectFeed(ProjectFeed projectFeed) {
+        this.projectFeed = projectFeed;
     }
 
     @Override

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+	<changeSet author="tackerman" id="20150507184219">
+	    <renameTable oldTableName="calendar" newTableName="projectfeed"/>
+	    <renameColumn tableName="trackerfeed" oldColumnName="calendar_id" newColumnName="projectfeed_id"/>
+	    <renameColumn tableName="jirafeed" oldColumnName="calendar_id" newColumnName="projectfeed_id"/>
+	    <renameColumn tableName="githubfeed" oldColumnName="calendar_id" newColumnName="projectfeed_id"/>
+	    <renameColumn tableName="bitbucketfeed" oldColumnName="calendar_id" newColumnName="projectfeed_id"/>
+	</changeSet>
+</databaseChangeLog>

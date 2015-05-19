@@ -56,8 +56,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.jiraFeed.calendar">calendar</label>
-                            <select class="form-control" name="calendar" ng-model="jiraFeed.calendar.id" ng-options="calendar.id as calendar.projectId for calendar in calendars">
+                            <label translate="nimblecalApp.jiraFeed.projectFeed">projectFeed</label>
+                            <select class="form-control" name="projectFeed" ng-model="jiraFeed.projectFeed.id" ng-options="projectFeed.id as projectFeed.projectId for projectFeed in projectFeeds">
                             </select>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                     <th>ID</th>
                     <th translate="nimblecalApp.jiraFeed.site">Site</th>
                     <th translate="nimblecalApp.jiraFeed.projectId">ProjectId</th>
-                    <th translate="nimblecalApp.jiraFeed.calendar">calendar</th>
+                    <th translate="nimblecalApp.jiraFeed.projectFeed">projectFeed</th>
                     <th></th>
                 </tr>
             </thead>
@@ -115,7 +115,7 @@
                     <td><a ui-sref="jiraFeedDetail({id:jiraFeed.id})">{{jiraFeed.id}}</a></td>
                     <td>{{jiraFeed.site}}</td>
                     <td>{{jiraFeed.projectId}}</td>
-                    <td>{{jiraFeed.calendar.projectId}}</td>
+                    <td>{{jiraFeed.projectFeed.projectId}}</td>
                     <td>
                         <button type="submit"
                                 ui-sref="jiraFeedDetail({id:jiraFeed.id})"

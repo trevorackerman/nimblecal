@@ -1,6 +1,6 @@
 
 <div>
-    <h2><span translate="nimblecalApp.calendar.detail.title">Calendar</span> {{calendar.id}}</h2>
+    <h2><span translate="nimblecalApp.projectFeed.detail.title">Project Feed</span> {{projectFeed.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -12,18 +12,18 @@
             <tbody>
                 <tr>
                     <td>
-                        <span translate="nimblecalApp.calendar.title">Title</span>
+                        <span translate="nimblecalApp.projectFeed.title">Title</span>
                     </td>
                     <td>
-                        <input type="text" class="input-sm form-control" value="{{calendar.title}}" readonly>
+                        <input type="text" class="input-sm form-control" value="{{projectFeed.title}}" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span translate="nimblecalApp.calendar.user">user</span>
+                        <span translate="nimblecalApp.projectFeed.user">user</span>
                     </td>
                     <td>
-                        <input type="text" class="input-sm form-control" value="{{calendar.user.id}}" readonly>
+                        <input type="text" class="input-sm form-control" value="{{projectFeed.user.id}}" readonly>
                     </td>
                 </tr>
             </tbody>
@@ -31,7 +31,7 @@
     </div>
 
     <button type="submit"
-            ui-sref="calendar"
+            ui-sref="projectFeed"
             class="btn btn-info">
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
     </button>

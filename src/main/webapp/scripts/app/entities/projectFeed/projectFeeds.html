@@ -1,18 +1,18 @@
 <div>
 
-    <h2 translate="nimblecalApp.calendar.home.title">Calendar</h2>
+    <h2 translate="nimblecalApp.projectFeed.home.title">Project Feed</h2>
 
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#saveCalendarModal" ng-click="clear()">
-                    <span class="glyphicon glyphicon-flash"></span> <span translate="nimblecalApp.calendar.home.createLabel">Create a new Calendar</span>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#saveProjectFeedModal" ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="nimblecalApp.projectFeed.home.createLabel">Create a new Project Feed</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="saveCalendarModal" tabindex="-1" role="dialog" aria-labelledby="myCalendarLabel"
+    <div class="modal fade" id="saveProjectFeedModal" tabindex="-1" role="dialog" aria-labelledby="myProjectFeedLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -21,19 +21,19 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myCalendarLabel" translate="nimblecalApp.calendar.home.createOrEditLabel">Create or edit a Calendar</h4>
+                        <h4 class="modal-title" id="myProjectFeedLabel" translate="nimblecalApp.projectFeed.home.createOrEditLabel">Create or edit a Project Feed</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>ID</label>
                             <input type="text" class="form-control" name="id"
-                                   ng-model="calendar.id" readonly>
+                                   ng-model="projectFeed.id" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.calendar.title">Title</label>
+                            <label translate="nimblecalApp.projectFeed.title">Title</label>
                             <input type="text" class="form-control" name="title"
-                                   ng-model="calendar.title" required>
+                                   ng-model="projectFeed.title" required>
 
                             <div ng-show="editForm.title.$invalid">
                                 <p class="help-block"
@@ -44,8 +44,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.calendar.user">user</label>
-                            <select class="form-control" name="user" ng-model="calendar.user.id" ng-options="user.id as user.id for user in users">
+                            <label translate="nimblecalApp.projectFeed.user">user</label>
+                            <select class="form-control" name="user" ng-model="projectFeed.user.id" ng-options="user.id as user.id for user in users">
                             </select>
                         </div>
                     </div>
@@ -62,17 +62,17 @@
         </div>
     </div>
 
-    <div class="modal fade" id="deleteCalendarConfirmation">
+    <div class="modal fade" id="deleteProjectFeedConfirmation">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form name="deleteForm" ng-submit="confirmDelete(calendar.id)">
+                <form name="deleteForm" ng-submit="confirmDelete(projectFeed.id)">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
                         <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
                     </div>
                     <div class="modal-body">
-                        <p translate="nimblecalApp.calendar.delete.question" translate-values="{id: '{{calendar.id}}'}">Are you sure you want to delete this Calendar?</p>
+                        <p translate="nimblecalApp.projectFeed.delete.question" translate-values="{id: '{{projectFeed.id}}'}">Are you sure you want to delete this Project Feed?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
@@ -92,35 +92,35 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th translate="nimblecalApp.calendar.title">Title</th>
-                    <th translate="nimblecalApp.calendar.user">user</th>
-                    <th translate="nimblecalApp.calendar.trackerFeed.projectId">Tracker Project</th>
+                    <th translate="nimblecalApp.projectFeed.title">Title</th>
+                    <th translate="nimblecalApp.projectFeed.user">user</th>
+                    <th translate="nimblecalApp.projectFeed.trackerFeed.projectId">Tracker Project</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="calendar in calendars">
-                    <td><a ui-sref="calendarDetail({id:calendar.id})">{{calendar.id}}</a></td>
-                    <td>{{calendar.title}}</td>
-                    <td>{{calendar.user.id}}</td>
+                <tr ng-repeat="projectFeed in projectFeeds">
+                    <td><a ui-sref="projectFeedDetail({id:projectFeed.id})">{{projectFeed.id}}</a></td>
+                    <td>{{projectFeed.title}}</td>
+                    <td>{{projectFeed.user.id}}</td>
                     <td>
                         <ul>
-                            <li ng-repeat="trackerFeed in calendar.trackerFeeds">{{trackerFeed.projectId}}</li>
+                            <li ng-repeat="trackerFeed in projectFeed.trackerFeeds">{{trackerFeed.projectId}}</li>
                         </ul>
                     </td>
                     <td>
                         <button type="submit"
-                                ui-sref="calendarDetail({id:calendar.id})"
+                                ui-sref="projectFeedDetail({id:projectFeed.id})"
                                 class="btn btn-info btn-sm">
                             <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
                         </button>
                         <button type="submit"
-                                ng-click="showUpdate(calendar.id)"
+                                ng-click="showUpdate(projectFeed.id)"
                                 class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
                         </button>
                         <button type="submit"
-                                ng-click="delete(calendar.id)"
+                                ng-click="delete(projectFeed.id)"
                                 class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
                         </button>
