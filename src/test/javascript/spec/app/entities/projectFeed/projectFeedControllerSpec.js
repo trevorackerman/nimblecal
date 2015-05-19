@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Calendar Controller ', function () {
+describe('ProjectFeed Controller ', function () {
     var controller, $scope, principalSpy, deferred, spyPromise, httpMock;
 
     beforeEach(module('nimblecalApp'));
@@ -18,10 +18,10 @@ describe('Calendar Controller ', function () {
             return spyPromise;
         };
 
-        inject(function ($rootScope, $controller, Calendar, Principal, User) {
+        inject(function ($rootScope, $controller, ProjectFeed, Principal, User) {
            principalSpy = spyOn(Principal, 'identity');
             principalSpy.and.returnValue(spyPromise);
-           $controller('CalendarController', {$scope: $scope, Calendar: Calendar, Principal:Principal, User:User});
+           $controller('ProjectFeedController', {$scope: $scope, ProjectFeed: ProjectFeed, Principal:Principal, User:User});
        });
 
     }));
@@ -61,7 +61,7 @@ describe('Calendar Controller ', function () {
         };
 
         deferred.resolve(fakePrincipal);
-        httpMock.expectGET(/api\/calendars\?cacheBuster=.*/).respond(200, '');
+        httpMock.expectGET(/api\/projectFeeds\?cacheBuster=.*/).respond(200, '');
         httpMock.expectGET(/api\/users\/sometester\?cacheBuster=.*/).respond(200, fakeUser);
         otherStuff();
         $scope.$apply();

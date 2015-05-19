@@ -14,7 +14,7 @@
             },
             "site": "Site",
             "projectId": "ProjectId",
-            "calendar": "calendar"
+            "projectFeed": "Project Feed"
         }
     }
 }

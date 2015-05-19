@@ -11,5 +11,6 @@
     <include file="classpath:config/liquibase/changelog/20150507203652_added_entity_JiraFeed.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150507205723_added_entity_GithubFeed.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150507211106_added_entity_BitbucketFeed.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20150515153709_rename_calendar_entities_to_projectfeed.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

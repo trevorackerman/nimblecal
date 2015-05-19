@@ -3,42 +3,42 @@
 angular.module('nimblecalApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('calendar', {
+            .state('projectFeed', {
                 parent: 'entity',
-                url: '/calendar',
+                url: '/projectFeed',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'nimblecalApp.calendar.home.title'
+                    pageTitle: 'nimblecalApp.projectFeed.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/calendar/calendars.html',
-                        controller: 'CalendarController'
+                        templateUrl: 'scripts/app/entities/projectFeed/projectFeeds.html',
+                        controller: 'ProjectFeedController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('calendar');
+                        $translatePartialLoader.addPart('projectFeed');
                         return $translate.refresh();
                     }]
                 }
             })
-            .state('calendarDetail', {
+            .state('projectFeedDetail', {
                 parent: 'entity',
-                url: '/calendar/:id',
+                url: '/projectFeed/:id',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'nimblecalApp.calendar.detail.title'
+                    pageTitle: 'nimblecalApp.projectFeed.detail.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/calendar/calendar-detail.html',
-                        controller: 'CalendarDetailController'
+                        templateUrl: 'scripts/app/entities/projectFeed/projectFeed-detail.html',
+                        controller: 'ProjectFeedDetailController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('calendar');
+                        $translatePartialLoader.addPart('projectFeed');
                         return $translate.refresh();
                     }]
                 }

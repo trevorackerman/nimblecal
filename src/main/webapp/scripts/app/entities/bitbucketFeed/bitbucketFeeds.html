@@ -68,8 +68,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.bitbucketFeed.calendar">calendar</label>
-                            <select class="form-control" name="calendar" ng-model="bitbucketFeed.calendar.id" ng-options="calendar.id as calendar.repositoryName for calendar in calendars">
+                            <label translate="nimblecalApp.bitbucketFeed.projectFeed">projectFeed</label>
+                            <select class="form-control" name="projectFeed" ng-model="bitbucketFeed.projectFeed.id" ng-options="projectFeed.id as projectFeed.repositoryName for projectFeed in projectFeeds">
                             </select>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                     <th translate="nimblecalApp.bitbucketFeed.site">Site</th>
                     <th translate="nimblecalApp.bitbucketFeed.repositoryOwner">RepositoryOwner</th>
                     <th translate="nimblecalApp.bitbucketFeed.repositoryName">RepositoryName</th>
-                    <th translate="nimblecalApp.bitbucketFeed.calendar">calendar</th>
+                    <th translate="nimblecalApp.bitbucketFeed.projectFeed">projectFeed</th>
                     <th></th>
                 </tr>
             </thead>
@@ -129,7 +129,7 @@
                     <td>{{bitbucketFeed.site}}</td>
                     <td>{{bitbucketFeed.repositoryOwner}}</td>
                     <td>{{bitbucketFeed.repositoryName}}</td>
-                    <td>{{bitbucketFeed.calendar.repositoryName}}</td>
+                    <td>{{bitbucketFeed.projectFeed.repositoryName}}</td>
                     <td>
                         <button type="submit"
                                 ui-sref="bitbucketFeedDetail({id:bitbucketFeed.id})"

@@ -1,8 +1,3 @@
-"bitbucketFeed": "BitbucketFeed",
-"githubFeed": "GithubFeed",
-"jiraFeed": "JiraFeed",
-"trackerFeed": "TrackerFeed",
-"calendar": "Calendar",
 {
     "global": {
         "title": "nimblecal",
@@ -11,6 +6,11 @@
             "home": "Accueil",
             "entities": {
                 "main": "Entités",
+                "bitbucketFeed": "BitbucketFeed",
+                "githubFeed": "GithubFeed",
+                "jiraFeed": "JiraFeed",
+                "trackerFeed": "TrackerFeed",
+                "projectFeed": "Project Feed",
                 "additionalEntity": "JHipster will add addtional entities"
             },
             "account": {

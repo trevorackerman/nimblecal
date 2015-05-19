@@ -44,8 +44,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.githubFeed.calendar">calendar</label>
-                            <select class="form-control" name="calendar" ng-model="githubFeed.calendar.id" ng-options="calendar.id as calendar.repositoryURL for calendar in calendars">
+                            <label translate="nimblecalApp.githubFeed.projectFeed">projectFeed</label>
+                            <select class="form-control" name="projectFeed" ng-model="githubFeed.projectFeed.id" ng-options="projectFeed.id as projectFeed.repositoryURL for projectFeed in projectFeeds">
                             </select>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                 <tr>
                     <th>ID</th>
                     <th translate="nimblecalApp.githubFeed.repositoryURL">RepositoryURL</th>
-                    <th translate="nimblecalApp.githubFeed.calendar">calendar</th>
+                    <th translate="nimblecalApp.githubFeed.projectFeed">projectFeed</th>
                     <th></th>
                 </tr>
             </thead>
@@ -101,7 +101,7 @@
                 <tr ng-repeat="githubFeed in githubFeeds">
                     <td><a ui-sref="githubFeedDetail({id:githubFeed.id})">{{githubFeed.id}}</a></td>
                     <td>{{githubFeed.repositoryURL}}</td>
-                    <td>{{githubFeed.calendar.repositoryURL}}</td>
+                    <td>{{githubFeed.projectFeed.repositoryURL}}</td>
                     <td>
                         <button type="submit"
                                 ui-sref="githubFeedDetail({id:githubFeed.id})"

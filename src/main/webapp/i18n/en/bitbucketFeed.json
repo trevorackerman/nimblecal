@@ -15,7 +15,7 @@
             "site": "Site",
             "repositoryOwner": "Repository Owner",
             "repositoryName": "Repository Name",
-            "calendar": "calendar"
+            "projectFeed": "Project Feed"
         }
     }
 }

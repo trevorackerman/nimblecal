@@ -13,7 +13,7 @@
                 "title": "GithubFeed"
             },
             "repositoryURL": "RepositoryURL",
-            "calendar": "calendar"
+            "projectFeed": "Project Feed"
         }
     }
 }

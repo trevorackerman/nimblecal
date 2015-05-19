@@ -2,12 +2,12 @@
     "relationships": [
         {
             "relationshipId": 1,
-            "relationshipName": "calendar",
-            "relationshipNameCapitalized": "Calendar",
-            "relationshipFieldName": "calendar",
-            "otherEntityName": "calendar",
+            "relationshipName": "projectFeed",
+            "relationshipNameCapitalized": "ProjectFeed",
+            "relationshipFieldName": "projectFeed",
+            "otherEntityName": "projectFeed",
             "relationshipType": "many-to-one",
-            "otherEntityNameCapitalized": "Calendar",
+            "otherEntityNameCapitalized": "ProjectFeed",
             "otherEntityField": "repositoryURL"
         }
     ],

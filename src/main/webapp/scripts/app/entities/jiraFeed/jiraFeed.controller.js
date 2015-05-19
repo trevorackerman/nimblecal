@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('JiraFeedController', function ($scope, JiraFeed, Calendar) {
+    .controller('JiraFeedController', function ($scope, JiraFeed, ProjectFeed) {
         $scope.jiraFeeds = [];
-        $scope.calendars = Calendar.query();
+        $scope.projectFeeds = ProjectFeed.query();
         $scope.loadAll = function() {
             JiraFeed.query(function(result) {
                $scope.jiraFeeds = result;

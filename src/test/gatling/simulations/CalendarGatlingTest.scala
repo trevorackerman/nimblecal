@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Calendar entity.
+ * Performance test for the ProjectFeed entity.
  */
-class CalendarGatlingTest extends Simulation {
+class ProjectFeedGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class CalendarGatlingTest extends Simulation {
         "X-CSRF-TOKEN" -> "${csrf_token}"
     )
 
-    val scn = scenario("Test the Calendar entity")
+    val scn = scenario("Test the ProjectFeed entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -59,26 +59,26 @@ class CalendarGatlingTest extends Simulation {
         .check(headerRegex("Set-Cookie", "CSRF-TOKEN=(.*); [P,p]ath=/").saveAs("csrf_token")))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all calendars")
-            .get("/api/calendars")
+            exec(http("Get all project feeds")
+            .get("/api/projectfeeds")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new calendar")
-            .put("/api/calendars")
+            .exec(http("Create new project feed")
+            .put("/api/projectfeeds")
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "title":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_calendar_url")))
+            .check(headerRegex("Location", "(.*)").saveAs("new_projectFeed_url")))
             .pause(10)
             .repeat(5) {
-                exec(http("Get created calendar")
-                .get("${new_calendar_url}")
+                exec(http("Get created project feed")
+                .get("${new_projectFeed_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created calendar")
-            .delete("${new_calendar_url}")
+            .exec(http("Delete created project feed")
+            .delete("${new_projectFeed_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

@@ -9,12 +9,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A Calendar.
+ * A ProjectFeed.
  */
 @Entity
-@Table(name = "CALENDAR")
+@Table(name = "PROJECTFEED")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Calendar implements Serializable {
+public class ProjectFeed implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,9 +60,9 @@ public class Calendar implements Serializable {
             return false;
         }
 
-        Calendar calendar = (Calendar) o;
+        ProjectFeed projectFeed = (ProjectFeed) o;
 
-        if ( ! Objects.equals(id, calendar.id)) return false;
+        if ( ! Objects.equals(id, projectFeed.id)) return false;
 
         return true;
     }
@@ -74,7 +74,7 @@ public class Calendar implements Serializable {
 
     @Override
     public String toString() {
-        return "Calendar{" +
+        return "ProjectFeed{" +
                 "id=" + id +
                 ", title='" + title + "'" +
                 '}';

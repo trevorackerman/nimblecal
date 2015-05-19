@@ -6,7 +6,7 @@
             "home": "Home",
             "entities": {
                 "main": "Entities",
-                "calendar": "Calendar",
+                "projectFeed": "Project Feed",
                 "jiraFeed": "Jira Feed",
                 "trackerFeed": "Tracker Feed",
                 "githubFeed": "Github Feed",

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('GithubFeedController', function ($scope, GithubFeed, Calendar) {
+    .controller('GithubFeedController', function ($scope, GithubFeed, ProjectFeed) {
         $scope.githubFeeds = [];
-        $scope.calendars = Calendar.query();
+        $scope.projectFeeds = ProjectFeed.query();
         $scope.loadAll = function() {
             GithubFeed.query(function(result) {
                $scope.githubFeeds = result;

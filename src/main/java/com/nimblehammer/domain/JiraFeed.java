@@ -1,14 +1,11 @@
 package com.nimblehammer.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -32,7 +29,7 @@ public class JiraFeed implements Serializable {
     private String projectId;
 
     @ManyToOne
-    private Calendar calendar;
+    private ProjectFeed projectFeed;
 
     public Long getId() {
         return id;
@@ -58,12 +55,12 @@ public class JiraFeed implements Serializable {
         this.projectId = projectId;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public ProjectFeed getProjectFeed() {
+        return projectFeed;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setProjectFeed(ProjectFeed projectFeed) {
+        this.projectFeed = projectFeed;
     }
 
     @Override
