@@ -5,8 +5,8 @@ describe('Tracker API Token Page', function() {
 
         browser.get('#/login');
 
-        element(by.model('username')).sendKeys('admin');
-        element(by.model('password')).sendKeys('admin');
+        element(by.model('username')).sendKeys('user');
+        element(by.model('password')).sendKeys('user');
 
         $('button.btn-primary').click();
         element(by.linkText('Account')).click();

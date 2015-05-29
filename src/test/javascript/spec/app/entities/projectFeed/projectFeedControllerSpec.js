@@ -67,7 +67,5 @@ describe('ProjectFeed Controller ', function () {
         $scope.$apply();
         httpMock.flush();
 
-        expect($scope.currentUser.login).toEqual('sometester');
-        expect($scope.currentUser.id).toEqual(256);
     });
 });
