@@ -1,0 +1,93 @@
+<div>
+    <h2 translate="nimblecalApp.projectFeeds.home.title">Project Feed</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#saveProjectFeedsModal"
+                        ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span
+                    translate="nimblecalApp.projectFeeds.home.createLabel">Create a new Project Feed</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="saveProjectFeedsModal" tabindex="-1" role="dialog" aria-labelledby="myProjectFeedLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myProjectFeedLabel" translate="nimblecalApp.projectFeeds.home.createOrEditLabel">Create or edit a Project Feed</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label translate="nimblecalApp.projectFeeds.title">Title</label>
+                            <input type="text" class="form-control" name="title" ng-model="projectFeed.title" required>
+
+                            <div ng-show="editForm.title.$invalid">
+                                <p class="help-block" ng-show="editForm.title.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="nimblecalApp.projectFeeds.trackerProjectId">Tracker Project ID</label>
+                            <input type="text" class="form-control" name="newTrackerProjectId" ng-model="trackerFeed.projectId">
+                            <div ng-show="editForm.title.$invalid">
+                                <p class="help-block" ng-show="editForm.title.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="nimblecalApp.projectFeeds.gitHubRepositoryURL">GitHub Repository URL</label>
+                            <input type="text" class="form-control" name="repositoryURL" ng-model="githubFeed.repositoryURL" required>
+
+                            <div ng-show="editForm.repositoryURL.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.repositoryURL.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-striped">
+            <thead>
+            <td>Project Title</td>
+            <td>Tracker Project ID</td>
+            <td>GitHub Repository URL</td>
+            </thead>
+            <tbody>
+            <tr ng-repeat="projectFeed in projectFeeds">
+                <td>{{projectFeed.title}}</td>
+                <td>
+                    <ul>
+                        <li ng-repeat="trackerFeed in projectFeed.trackerFeeds">{{trackerFeed.projectId}}</li>
+                    </ul>
+                </td>
+                <td>{{projectFeed.githubRepositoryURL}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

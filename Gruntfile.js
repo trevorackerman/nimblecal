@@ -35,6 +35,9 @@ module.exports = function (grunt) {
             dist: 'src/main/webapp/dist'
         },
         watch: {
+            options: {
+                livereload: true
+            },
             bower: {
                 files: ['bower.json'],
                 tasks: ['wiredep']
@@ -45,6 +48,10 @@ module.exports = function (grunt) {
             },
             styles: {
                 files: ['src/main/webapp/assets/styles/**/*.css']
+            },
+            protractor: {
+                files: ['src/main/webapp/scripts/**/*.js', 'src/main/webapp/scripts/**/*.html', 'src/test/endToEnd/*.js'],
+                tasks: ['protractor:continuous']
             }
         },
         autoprefixer: {
@@ -414,6 +421,18 @@ module.exports = function (grunt) {
 						baseUrl: grunt.config('baseUrl')
                     }
                 }
+            },
+            continuous: {
+                options: {
+                    configFile: "src/test/endToEnd/conf.js",
+                    args: {
+                        params: {
+                            trackerApiToken: '<%= secrets.trackerApiToken %>'
+                        },
+                        baseUrl: grunt.config('baseUrl')
+                    },
+                    keepAlive: true
+                }
             }
         }
     });
@@ -439,6 +458,12 @@ module.exports = function (grunt) {
         'concurrent:test',
         'karma'
     ]);
+
+    grunt.registerTask('endToEndContinuousTest', [
+        'protractor:continuous',
+        'watch:protractor'
+    ]);
+
 
     grunt.registerTask('build', [
         'clean:dist',

@@ -1,0 +1,19 @@
+{
+    "nimblecalApp": {
+        "projectFeeds" : {
+            "home": {
+                "title": "Project Feeds",
+                "createLabel": "Create a new Project Feed",
+                "createOrEditLabel": "Create or edit a Project Feed"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete Project Feed {{ id }}?"
+            },
+            "detail": {
+                "title": "Project Feeds"
+            },
+            "title": "Title",
+            "user": "user"
+        }
+    }
+}

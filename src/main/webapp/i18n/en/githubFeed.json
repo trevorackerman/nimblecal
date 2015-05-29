@@ -13,6 +13,7 @@
                 "title": "Github Feed"
             },
             "repositoryURL": "Repository URL",
+            "gitHubRepositoryURL": "GitHub Repository URL",
             "projectFeed": "ProjectFeed"
         }
     }
