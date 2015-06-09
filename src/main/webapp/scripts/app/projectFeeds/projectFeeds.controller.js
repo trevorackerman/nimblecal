@@ -51,6 +51,7 @@ angular.module('nimblecalApp')
                         $scope.refresh();
                     });
             } else {
+                $scope.projectFeed.owner = $scope.currentUser;
                 ProjectFeed.save($scope.projectFeed,
                     function (object, responseHeaders) {
                         $http.get(responseHeaders("Location")).success(

@@ -85,7 +85,11 @@
                         <li ng-repeat="trackerFeed in projectFeed.trackerFeeds">{{trackerFeed.projectId}}</li>
                     </ul>
                 </td>
-                <td>{{projectFeed.githubRepositoryURL}}</td>
+                <td>
+                    <ul>
+                        <li ng-repeat="githubFeed in projectFeed.githubFeeds">{{githubFeed.repositoryURL}}</li>
+                    </ul>
+                </td>
             </tr>
             </tbody>
         </table>

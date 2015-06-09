@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ProjectFeedRepository extends JpaRepository<ProjectFeed,Long> {
 
-    @Query("select projectfeed from ProjectFeed projectfeed where projectfeed.user.login = ?#{principal.username}")
+    @Query("select projectfeed from ProjectFeed projectfeed where projectfeed.owner.login = ?#{principal.username}")
     List<ProjectFeed> findAllForCurrentUser();
 
 }
