@@ -44,8 +44,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.projectFeed.user">user</label>
-                            <select class="form-control" name="user" ng-model="projectFeed.user.id" ng-options="user.id as user.id for user in users">
+                            <label translate="nimblecalApp.projectFeed.owner">owner</label>
+                            <select class="form-control" name="owner" ng-model="projectFeed.owner.id" ng-options="owner.id as owner.id for owner in users">
                             </select>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                 <tr>
                     <th>ID</th>
                     <th translate="nimblecalApp.projectFeed.title">Title</th>
-                    <th translate="nimblecalApp.projectFeed.user">user</th>
+                    <th translate="nimblecalApp.projectFeed.owner">owner</th>
                     <th translate="nimblecalApp.projectFeed.trackerFeed.projectId">Tracker Project</th>
                     <th></th>
                 </tr>
@@ -102,7 +102,7 @@
                 <tr ng-repeat="projectFeed in projectFeeds">
                     <td><a ui-sref="projectFeedDetail({id:projectFeed.id})">{{projectFeed.id}}</a></td>
                     <td>{{projectFeed.title}}</td>
-                    <td>{{projectFeed.user.id}}</td>
+                    <td>{{projectFeed.owner.id}}</td>
                     <td>
                         <ul>
                             <li ng-repeat="trackerFeed in projectFeed.trackerFeeds">{{trackerFeed.projectId}}</li>

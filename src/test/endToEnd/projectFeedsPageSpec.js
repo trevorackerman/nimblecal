@@ -35,12 +35,8 @@ describe('Project Feeds Page', function() {
             browser.sleep(250);
             element(by.model('projectFeed.title')).sendKeys('My Wonderful Project');
             element(by.model('trackerFeed.projectId')).sendKeys('993188');
+            browser.sleep(10);
             element(by.model('githubFeed.repositoryURL')).sendKeys("https://github.com/cloudfoundry/loggregator");
-            browser.takeScreenshot().then(function(data) {
-                var stream = fs.createWriteStream("beforesave.png");
-                stream.write(new Buffer(data, 'base64'));
-                stream.end();
-            });
 
             $('form button.btn-primary').click();
             browser.sleep(250);

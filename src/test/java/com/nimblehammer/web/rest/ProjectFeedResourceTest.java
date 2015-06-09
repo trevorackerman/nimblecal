@@ -2,27 +2,32 @@ package com.nimblehammer.web.rest;
 
 import com.nimblehammer.Application;
 import com.nimblehammer.domain.ProjectFeed;
+import com.nimblehammer.domain.TrackerFeed;
+import com.nimblehammer.domain.User;
 import com.nimblehammer.repository.ProjectFeedRepository;
+import com.nimblehammer.repository.TrackerFeedRepository;
+import com.nimblehammer.service.ProjectFeedService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -36,94 +41,124 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @IntegrationTest
 public class ProjectFeedResourceTest {
-
-    private static final String DEFAULT_TITLE = "SAMPLE_TEXT";
-    private static final String UPDATED_TITLE = "UPDATED_TEXT";
-
-    @Inject
+    @Mock
     private ProjectFeedRepository projectFeedRepository;
+
+    @Mock
+    private TrackerFeedRepository trackerFeedRepository;
+
+    @Mock
+    private ProjectFeedService projectFeedService;
+
+    @InjectMocks
+    private ProjectFeedResource projectFeedResource;
 
     private MockMvc restProjectFeedMockMvc;
 
-    private ProjectFeed projectFeed;
-
     @PostConstruct
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        ProjectFeedResource projectFeedResource = new ProjectFeedResource();
-        ReflectionTestUtils.setField(projectFeedResource, "projectFeedRepository", projectFeedRepository);
+        initMocks(this);
         this.restProjectFeedMockMvc = MockMvcBuilders.standaloneSetup(projectFeedResource).build();
     }
 
     @Before
-    public void initTest() {
-        projectFeed = new ProjectFeed();
-        projectFeed.setTitle(DEFAULT_TITLE);
+    public void before() {
+        initMocks(this);
     }
 
     @Test
     @Transactional
     public void createProjectFeed() throws Exception {
-        int databaseSizeBeforeCreate = projectFeedRepository.findAll().size();
+        ProjectFeed projectFeed = new ProjectFeed();
+        projectFeed.setTitle("Project without tracker feeds");
 
-        // Create the Project Feed
+        User user = new User();
+        user.setId(1L);
+        user.setLogin("testguy");
+
+        projectFeed.setOwner(user);
+
         restProjectFeedMockMvc.perform(post("/api/projectfeeds")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(projectFeed)))
                 .andExpect(status().isCreated());
 
-        // Validate the Project Feed in the database
-        List<ProjectFeed> projectFeeds = projectFeedRepository.findAll();
-        assertThat(projectFeeds).hasSize(databaseSizeBeforeCreate + 1);
-        ProjectFeed testProjectFeed = projectFeeds.get(projectFeeds.size() - 1);
-        assertThat(testProjectFeed.getTitle()).isEqualTo(DEFAULT_TITLE);
+        verify(projectFeedService).save(projectFeed);
+    }
+
+    @Test
+    @Transactional
+    public void itReturns400WhenNoOwner() throws Exception {
+        ProjectFeed projectFeed = new ProjectFeed();
+        projectFeed.setTitle("Project without tracker feeds");
+
+        restProjectFeedMockMvc.perform(post("/api/projectfeeds")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(projectFeed)))
+            .andExpect(status().isBadRequest())
+        .andExpect(header().string("Failure", "A new projectfeed must have an owner"));
     }
 
     @Test
     @Transactional
     public void checkTitleIsRequired() throws Exception {
-        // Validate the database is empty
-        assertThat(projectFeedRepository.findAll()).hasSize(0);
-        // set the field null
+        ProjectFeed projectFeed = new ProjectFeed();
         projectFeed.setTitle(null);
 
-        // Create the Project Feed, which fails.
         restProjectFeedMockMvc.perform(post("/api/projectfeeds")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(projectFeed)))
                 .andExpect(status().isBadRequest());
 
-        // Validate the database is still empty
-        List<ProjectFeed> projectFeeds = projectFeedRepository.findAll();
-        assertThat(projectFeeds).hasSize(0);
+        verify(projectFeedRepository, never()).save(projectFeed);
     }
 
     @Test
     @Transactional
     public void getAllProjectFeeds() throws Exception {
-        // Initialize the database
-        projectFeedRepository.saveAndFlush(projectFeed);
+        ProjectFeed projectFeed = new ProjectFeed();
+        projectFeed.setId(2345L);
+        projectFeed.setTitle("blah");
+
+        TrackerFeed trackerFeed = new TrackerFeed();
+        trackerFeed.setId(1L);
+        trackerFeed.setProjectId("993188");
+
+        List<TrackerFeed> trackerFeeds = new ArrayList<>();
+        trackerFeeds.add(trackerFeed);
+
+        projectFeed.setTrackerFeeds(trackerFeeds);
+
+        List<ProjectFeed> projectFeeds = new ArrayList<>();
+        projectFeeds.add(projectFeed);
+
+        when(projectFeedService.getAllForCurrentUser()).thenReturn(projectFeeds);
 
         // Get all the projectFeeds
-        restProjectFeedMockMvc.perform(get("/api/projectfeeds"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(projectFeed.getId().intValue())))
-                .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())));
+       restProjectFeedMockMvc.perform(get("/api/projectfeeds"))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.[*].id").value(2345))
+        .andExpect(jsonPath("$.[*].title").value(hasItem("blah")))
+        .andExpect(jsonPath("$.[*].trackerFeeds[*].id").value(1))
+        .andExpect(jsonPath("$.[*].trackerFeeds[*].projectId").value("993188"));
     }
 
     @Test
     @Transactional
     public void getProjectFeed() throws Exception {
-        // Initialize the database
-        projectFeedRepository.saveAndFlush(projectFeed);
+        ProjectFeed projectFeed = new ProjectFeed();
+        projectFeed.setTitle("this project feed");
+        projectFeed.setId(1234L);
+
+        when(projectFeedService.get(1234L)).thenReturn(projectFeed);
 
         // Get the projectFeed
-        restProjectFeedMockMvc.perform(get("/api/projectfeeds/{id}", projectFeed.getId()))
+        restProjectFeedMockMvc.perform(get("/api/projectfeeds/{id}", 1234L))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(projectFeed.getId().intValue()))
-            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()));
+            .andExpect(jsonPath("$.id").value(1234))
+            .andExpect(jsonPath("$.title").value("this project feed"));
     }
 
     @Test
@@ -137,40 +172,26 @@ public class ProjectFeedResourceTest {
     @Test
     @Transactional
     public void updateProjectFeed() throws Exception {
-        // Initialize the database
-        projectFeedRepository.saveAndFlush(projectFeed);
+        ProjectFeed projectFeed = new ProjectFeed();
+        projectFeed.setId(1L);
+        projectFeed.setTitle("the title was changed");
+        projectFeed.getTrackerFeeds().clear();
 
-		int databaseSizeBeforeUpdate = projectFeedRepository.findAll().size();
-
-        // Update the projectFeed
-        projectFeed.setTitle(UPDATED_TITLE);
         restProjectFeedMockMvc.perform(put("/api/projectfeeds")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(projectFeed)))
                 .andExpect(status().isOk());
 
-        // Validate the Project Feed in the database
-        List<ProjectFeed> projectFeeds = projectFeedRepository.findAll();
-        assertThat(projectFeeds).hasSize(databaseSizeBeforeUpdate);
-        ProjectFeed testProjectFeed = projectFeeds.get(projectFeeds.size() - 1);
-        assertThat(testProjectFeed.getTitle()).isEqualTo(UPDATED_TITLE);
+        verify(projectFeedService).update(projectFeed);
     }
 
     @Test
     @Transactional
     public void deleteProjectFeed() throws Exception {
-        // Initialize the database
-        projectFeedRepository.saveAndFlush(projectFeed);
-
-		int databaseSizeBeforeDelete = projectFeedRepository.findAll().size();
-
-        // Get the projectFeed
-        restProjectFeedMockMvc.perform(delete("/api/projectfeeds/{id}", projectFeed.getId())
+        restProjectFeedMockMvc.perform(delete("/api/projectfeeds/{id}", 3456L)
             .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
-        // Validate the database is empty
-        List<ProjectFeed> projectFeeds = projectFeedRepository.findAll();
-        assertThat(projectFeeds).hasSize(databaseSizeBeforeDelete - 1);
+        verify(projectFeedService).delete(3456L);
     }
 }
