@@ -17,7 +17,6 @@ describe('Project Feeds Page', function() {
 
         $$('table tbody tr').count().then(function(originalCount) {
             originalProjectCount = originalCount;
-            console.log("#### " + originalProjectCount);
         });
     });
 
@@ -42,7 +41,6 @@ describe('Project Feeds Page', function() {
             browser.sleep(250);
 
             $$('table tbody tr').count().then(function(currentCount) {
-                console.log("#### " + currentCount);
                 expect(currentCount).toEqual(originalProjectCount + 1);
                 var projectRow = $$('table tbody tr').get(originalProjectCount);
 
