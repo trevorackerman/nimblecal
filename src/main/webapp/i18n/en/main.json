@@ -4,7 +4,11 @@
         "subtitle": "Full Calendar Visualization of Project Activities",
         "logged": {
             "message": "You are logged in as user \"{{username}}\".",
-            "noprojectfeeds": "You don't have any project feeds yet. <a href=\"#/projectfeeds\">Create a new one.</a>"
+            "noprojectfeeds": "You don't have any project feeds yet. <a href=\"#/projectfeeds\">Create a new one.</a>",
+            "noTrackerApiToken": "You need to enter your Tracker API token.",
+            "trackerApiToken": "Tracker API Token",
+            "updateTrackerApiToken": "Update Tracker API Token",
+            "enterToken": "Enter Token"
         },
         "github": "Github"
     }
