@@ -82,8 +82,7 @@ public class TrackerFeedResourceTest {
     @Test
     @Transactional
     public void checkProjectIdIsRequired() throws Exception {
-        // Validate the database is empty
-        assertThat(trackerFeedRepository.findAll()).hasSize(0);
+        int sizeBefore = trackerFeedRepository.findAll().size();
         // set the field null
         trackerFeed.setProjectId(null);
 
@@ -95,7 +94,7 @@ public class TrackerFeedResourceTest {
 
         // Validate the database is still empty
         List<TrackerFeed> trackerFeeds = trackerFeedRepository.findAll();
-        assertThat(trackerFeeds).hasSize(0);
+        assertThat(trackerFeeds.size()).isEqualTo(sizeBefore);
     }
 
     @Test

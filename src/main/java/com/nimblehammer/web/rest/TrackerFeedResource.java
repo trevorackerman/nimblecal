@@ -70,7 +70,15 @@ public class TrackerFeedResource {
     @Timed
     public List<TrackerFeed> getAll() {
         log.debug("REST request to get all TrackerFeeds");
-        return trackerFeedRepository.findAll();
+        final List<TrackerFeed> trackerFeeds = trackerFeedRepository.findAll();
+
+        for (TrackerFeed trackerFeed : trackerFeeds) {
+            if (trackerFeed.getProjectFeed() != null) {
+                trackerFeed.getProjectFeed().setTrackerFeeds(null);
+            }
+        }
+
+        return trackerFeeds;
     }
 
     /**

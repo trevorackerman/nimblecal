@@ -1,7 +1,7 @@
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 
 exports.config = {
-    specs: ['homePageSpec.js'],
+    specs: ['*Spec.js'],
     capabilities: {
         //browserName: 'firefox',
         browserName: 'phantomjs',

@@ -5,7 +5,7 @@ angular.module('nimblecalApp')
         $stateProvider
             .state('projectFeeds', {
                 parent: 'site',
-                url: '/projectFeeds',
+                url: '/projectfeeds',
                 data: {
                     roles: ['ROLE_USER'],
                     pageTitle: 'projectFeeds.title'

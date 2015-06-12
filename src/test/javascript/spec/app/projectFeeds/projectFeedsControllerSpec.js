@@ -46,7 +46,7 @@ describe('ProjectFeeds Controller ', function () {
         };
 
         deferred.resolve(fakePrincipal);
-        httpMock.expectGET(/api\/projectFeeds\?cacheBuster=.*/).respond(200, '');
+        httpMock.expectGET(/api\/projectfeeds\?cacheBuster=.*/).respond(200, '');
         httpMock.expectGET(/api\/users\/sometester\?cacheBuster=.*/).respond(200, fakeUser);
         otherStuff();
         $scope.$apply();
@@ -66,12 +66,23 @@ describe('ProjectFeeds Controller ', function () {
     }
 
     it('save persists a project feed with an associated tracker feed', function() {
-        httpMock.expectPOST(/api\/projectFeeds\?cacheBuster=.*/, {title: 'something wonderful', id: null})
-            .respond(201,{}, {Location: 'api/projectFeeds/1'});
-        httpMock.expectGET(/api\/projectFeeds\/1\?cacheBuster=.*/).respond(200, {title: 'something wonderful', id: 1});
+        httpMock.expectPOST(/api\/projectfeeds\?cacheBuster=.*/,
+            {"title":"something wonderful",
+                "id":null,
+                "owner":{
+                    "id":256,
+                    "email":"someone@example.com",
+                    "firstName":"someone",
+                    "lastName":"tester",
+                    "login":"sometester",
+                    "password":null
+                }
+            })
+            .respond(201,{}, {Location: 'api/projectfeeds/1'});
+        httpMock.expectGET(/api\/projectfeeds\/1\?cacheBuster=.*/).respond(200, {title: 'something wonderful', id: 1});
         httpMock.expectPOST(/api\/trackerFeeds\?cacheBuster=.*/,
-            {projectId: '993188', id: null, projectFeed: { id: 1, title: 'something wonderful'}}).respond(201, {}, {Location: 'api/trackerFeeds/2'});
-        httpMock.expectGET(/api\/projectFeeds\?cacheBuster=.*/).respond(200);
+            {projectId: '993188', id: null, projectFeed: { id: 1, title: 'something wonderful'}}).respond(201, {}, {Location: 'api/trackerfeeds/2'});
+        httpMock.expectGET(/api\/projectfeeds\?cacheBuster=.*/).respond(200);
 
         $scope.editForm = {};
         $scope.editForm.$setPristine = function() {};

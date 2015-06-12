@@ -61,7 +61,7 @@ describe('ProjectFeed Controller ', function () {
         };
 
         deferred.resolve(fakePrincipal);
-        httpMock.expectGET(/api\/projectFeeds\?cacheBuster=.*/).respond(200, '');
+        httpMock.expectGET(/api\/projectfeeds\?cacheBuster=.*/).respond(200, '');
         httpMock.expectGET(/api\/users\/sometester\?cacheBuster=.*/).respond(200, fakeUser);
         otherStuff();
         $scope.$apply();

@@ -28,7 +28,7 @@ public class ProjectFeed implements Serializable {
     @ManyToOne
     private User owner;
 
-    @OneToMany(mappedBy = "projectFeed")
+    @OneToMany(mappedBy = "projectFeed", cascade = CascadeType.ALL)
     private List<TrackerFeed> trackerFeeds = new ArrayList<>();
 
     public Long getId() {
