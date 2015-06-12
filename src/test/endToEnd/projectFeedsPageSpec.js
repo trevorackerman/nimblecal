@@ -31,7 +31,7 @@ describe('Project Feeds Page', function() {
         it('should allow the user to create a project feed', function() {
 
             $('div.row button.btn-primary').click();
-            browser.sleep(250);
+            browser.sleep(1000);
             element(by.model('projectFeed.title')).sendKeys('My Wonderful Project');
             element(by.model('trackerFeed.projectId')).sendKeys('993188');
             browser.sleep(10);

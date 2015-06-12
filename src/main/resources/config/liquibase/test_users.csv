@@ -1,0 +1,4 @@
+id;login;password;first_name;last_name;email;activated;lang_key;created_by;created_date
+5;noprojects;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;No;Projects;noprojects@example.com;true;en;system;2015-05-08 09:19:29.001907
+6;oneproject;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;One;Project;oneproject@example.com;true;en;system;2015-05-08 09:19:29.001907
+7;multipleprojects;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;Multi;Projects;multiprojects@example.com;true;en;system;2015-05-08 09:19:29.001907

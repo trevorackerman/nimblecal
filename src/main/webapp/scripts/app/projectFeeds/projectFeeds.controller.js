@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('ProjectFeedsController', function ($scope, $http, ProjectFeed, TrackerFeed, ProjectFeedTrackerFeed, Principal, User) {
+    .controller('ProjectFeedsController', function ($scope, $http, ProjectFeed, TrackerFeed, Principal, User) {
         $scope.projectFeeds = [];
 
         Principal.identity().then(function (account) {
@@ -27,11 +27,6 @@ angular.module('nimblecalApp')
         $scope.loadAll = function() {
             ProjectFeed.query(function(result) {
                 $scope.projectFeeds = result;
-                angular.forEach($scope.projectFeeds, function(projectFeed, index) {
-                    ProjectFeedTrackerFeed.query({id: projectFeed.id}, function(result) {
-                        projectFeed.trackerFeeds = result;
-                    });
-                })
             });
         };
         $scope.loadAll();

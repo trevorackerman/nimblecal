@@ -17,7 +17,19 @@
             <div class="alert alert-success" translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
                 You are logged in as user "Admin".
             </div>
-            <div ui-calendar ng-model="eventSources"></div>
+            <div ng-hide="projectFeeds.length" class="alert alert-warning" translate="main.logged.noprojectfeeds">You don't have any project feeds yet.</div>
+            <div ng-show="projectFeeds.length">
+                <label for="projectFeedButton">Selected Project Feed</label>
+                <div id="projectFeedButton" class="btn-group">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        {{selectedProjectFeed.title}} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="projectFeed in projectFeeds"><a href="#">{{projectFeed.title}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div  ui-calendar ng-model="eventSources"></div>
         </div>
     </div>
 </div>

@@ -3,7 +3,8 @@
         "title": "Nimble Calendar",
         "subtitle": "Full Calendar Visualization of Project Activities",
         "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
+            "message": "You are logged in as user \"{{username}}\".",
+            "noprojectfeeds": "You don't have any project feeds yet. <a href=\"#/projectfeeds\">Create a new one.</a>"
         },
         "github": "Github"
     }

@@ -22,8 +22,34 @@ describe('Home Page', function() {
         $('button.btn-primary').click();
         browser.sleep(10);
 
-
         expect($('div.alert-success').getText()).toContain('You are logged in as user "user"');
         expect(element.all(by.xpath('//div[@ui-calendar]')).count()).toBe(1);
+    });
+
+    it('alerts user when they have no project feeds', function() {
+        browser.get('#/login');
+
+        element(by.model('username')).sendKeys('noprojects');
+        element(by.model('password')).sendKeys('user');
+
+        $('button.btn-primary').click();
+        browser.sleep(10);
+
+        expect($('div.alert-warning').getText()).toContain("You don't have any project feeds yet");
+        expect($('div.btn-group ul.dropdown-menu').isDisplayed()).toBeFalsy();
+    });
+
+    it('shows user dropdown to choose project feed on calendar', function() {
+        browser.get('#/login');
+
+        element(by.model('username')).sendKeys('oneproject');
+        element(by.model('password')).sendKeys('user');
+
+        $('button.btn-primary').click();
+        browser.sleep(250);
+
+        expect($('div.alert-warning').isDisplayed()).toBeFalsy();
+        var ddlist = element.all(by.css('div.btn-group ul.dropdown-menu li'));
+        expect(ddlist.count()).toBe(1);
     });
 });

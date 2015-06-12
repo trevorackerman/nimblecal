@@ -25,7 +25,6 @@ public class TrackerFeed implements Serializable {
     private String projectId;
 
     @ManyToOne
-//    @JoinColumn(name="projectfeed_id")
     private ProjectFeed projectFeed;
 
     public Long getId() {
