@@ -8,10 +8,15 @@ describe('Home Page', function() {
         browser.sleep(10);
     });
 
-    it('Does not show the guest a calendar', function () {
-        expect($('div.alert-warning').getText()).toContain("You don't have an account yet?");
-        expect(element.all(by.xpath('//div[@ui-calendar]')).count()).toBe(0);
+    it('Shows the guest the welcome panel and a sample calendar', function () {
+        expect($('div.goat-bg').isDisplayed).toBeTruthy();
+        expect($('#example').isDisplayed()).toBeFalsy();
+        $('#exampleToggle').click();
+        expect($('div.goat-bg').isDisplayed()).toBeFalsy();
+        expect($('#example').isDisplayed()).toBeTruthy();
+        expect(element.all(by.css('div.fc-content-skeleton table thead tr td.fc-day-number ')).count()).toBeGreaterThan(27);
     });
+
 
     it('Shows an authenticated user a calendar', function() {
         browser.get('#/login');

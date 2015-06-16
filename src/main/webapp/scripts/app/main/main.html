@@ -1,17 +1,26 @@
 <div ng-cloak>
+
     <div ng-switch="isAuthenticated()">
-        <div class="well goat-bg" ng-switch-when="false">
-            <div class="row voffset-250">
-                <div class="col-md-5 col-md-offset-6 dark-neutral-bg">
+
+        <div class="row" ng-switch-when="false">
+            <div class="col-log-12">
+                <!--<button id="exampleToggle" ng-click="example=!example;" class="btn btn-primary">Show Example</button>-->
+                <button id="exampleToggle" ng-click="toggleExample();" class="btn btn-primary">Show Example</button>
+            </div>
+            <div ng-hide="showExample" class="col-lg-12 goat-bg voffset3">
+                <div class="col-md-5 col-md-offset-6 dark-neutral-bg voffset-250">
                     <h1 translate="main.title">Nimble Calendar</h1>
                     <p class="lead" translate="main.subtitle">Full Calendar Visualization of Project Activities</p>
                     <div class="alert alert-warning" translate="global.messages.info.register">
                         Don't have an account? <a href=\"#/register\">Register</a>
                     </div>
                 </div>
-            </div>
-        </div>
 
+            </div>
+
+            <div ng-show="showExample" class="col-lg-12 voffset3" id="example" ui-calendar ng-model="eventSources" calendar="guestCalendar" class="tab-pane"></div>
+
+        </div>
 
         <div class="row" ng-switch-when="true">
             <div class="col-lg-12">
