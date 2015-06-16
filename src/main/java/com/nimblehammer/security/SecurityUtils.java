@@ -65,7 +65,10 @@ public final class SecurityUtils {
             if (authentication.getPrincipal() instanceof UserDetails) {
                 UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
                 return springSecurityUser.getAuthorities().contains(new SimpleGrantedAuthority(role));
+            } else if (authentication.getPrincipal() instanceof String) {
+                return authentication.getAuthorities().contains(new SimpleGrantedAuthority(role));
             }
+
         }
         return false;
     }
