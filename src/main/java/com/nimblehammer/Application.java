@@ -1,16 +1,21 @@
 package com.nimblehammer;
 
+import com.google.common.base.Joiner;
+import com.nimblehammer.client.RestClient;
 import com.nimblehammer.config.Constants;
+import com.nimblehammer.domain.util.CalendarEventFactory;
+import com.nimblehammer.service.DateTimeService;
+import com.nimblehammer.service.TrackerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
-import com.google.common.base.Joiner;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -85,5 +90,25 @@ public class Application {
             "liquibase.snapshot", "liquibase.logging", "liquibase.diff",
             "liquibase.structure", "liquibase.structurecompare", "liquibase.lockservice",
             "liquibase.ext", "liquibase.changelog"));
+    }
+
+    @Bean
+    public RestClient restClient() {
+        return new RestClient();
+    }
+
+    @Bean
+    public DateTimeService dateTimeService() {
+        return new DateTimeService();
+    }
+
+    @Bean
+    public TrackerService trackerService() {
+        return new TrackerService();
+    }
+
+    @Bean
+    public CalendarEventFactory calendarEventFactory() {
+        return new CalendarEventFactory();
     }
 }

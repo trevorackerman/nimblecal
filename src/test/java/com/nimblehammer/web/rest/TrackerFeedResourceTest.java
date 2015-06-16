@@ -6,23 +6,24 @@ import com.nimblehammer.repository.TrackerFeedRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,8 +41,11 @@ public class TrackerFeedResourceTest {
     private static final String DEFAULT_PROJECT_ID = "SAMPLE_TEXT";
     private static final String UPDATED_PROJECT_ID = "UPDATED_TEXT";
 
-    @Inject
+    @Mock
     private TrackerFeedRepository trackerFeedRepository;
+
+    @InjectMocks
+    private TrackerFeedResource trackerFeedResource;
 
     private MockMvc restTrackerFeedMockMvc;
 
@@ -50,8 +54,6 @@ public class TrackerFeedResourceTest {
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TrackerFeedResource trackerFeedResource = new TrackerFeedResource();
-        ReflectionTestUtils.setField(trackerFeedResource, "trackerFeedRepository", trackerFeedRepository);
         this.restTrackerFeedMockMvc = MockMvcBuilders.standaloneSetup(trackerFeedResource).build();
     }
 
@@ -171,5 +173,16 @@ public class TrackerFeedResourceTest {
         // Validate the database is empty
         List<TrackerFeed> trackerFeeds = trackerFeedRepository.findAll();
         assertThat(trackerFeeds).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void getTrackerFeedEvents() throws Exception {
+        when(trackerFeedRepository.findOne(1234L)).thenReturn(trackerFeed);
+
+        restTrackerFeedMockMvc.perform(get("/api/trackerFeeds/1234/events")
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().string("[{id: 999,title: 'Repeating Event',start: '2015-06-12 15:56:00',allDay: false}]"));
     }
 }

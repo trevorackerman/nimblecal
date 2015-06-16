@@ -1,10 +1,15 @@
 package com.nimblehammer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.nimblehammer.domain.CalendarEvent;
+import com.nimblehammer.domain.TrackerActivity;
 import com.nimblehammer.domain.TrackerFeed;
+import com.nimblehammer.domain.util.CalendarEventFactory;
 import com.nimblehammer.repository.TrackerFeedRepository;
+import com.nimblehammer.service.TrackerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +19,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +34,12 @@ public class TrackerFeedResource {
 
     @Inject
     private TrackerFeedRepository trackerFeedRepository;
+
+    @Autowired
+    private TrackerService trackerService;
+
+    @Autowired
+    private CalendarEventFactory calendarEventFactory;
 
     /**
      * POST  /trackerFeeds -> Create a new trackerFeed.
@@ -107,5 +119,32 @@ public class TrackerFeedResource {
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete TrackerFeed : {}", id);
         trackerFeedRepository.delete(id);
+    }
+
+    @RequestMapping(value = "/trackerFeeds/{id}/events",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<CalendarEvent>> getEvents(@PathVariable String id, @RequestHeader("X-TrackerToken") String trackerToken) {
+        TrackerFeed trackerFeed = trackerFeedRepository.findOne(new Long(id));
+
+        if (trackerFeed == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<CalendarEvent> calendarEvents = new ArrayList<>();
+
+        List<TrackerActivity> trackerActivities = trackerService.getProjectActivities(id, trackerToken);
+
+        for (TrackerActivity trackerActivity : trackerActivities) {
+            calendarEvents.add(calendarEventFactory.create(trackerActivity));
+        }
+
+
+        // Make some tests. Have the guest login associated with some example project feeds which have some public
+        // tracker projects
+
+
+        return new ResponseEntity<>(calendarEvents, HttpStatus.OK);
     }
 }
