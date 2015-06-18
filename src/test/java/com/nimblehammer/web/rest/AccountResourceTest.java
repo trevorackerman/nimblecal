@@ -193,10 +193,10 @@ public class AccountResourceTest {
     @Transactional
     public void testRegisterInvalidEmail() throws Exception {
         UserDTO u = new UserDTO(
-            "bob",              // login
+            "invalidemailguy",              // login
             "password",         // password
-            "Bob",              // firstName
-            "Green",            // lastName
+            "Invalid",              // firstName
+            "Email",            // lastName
             "invalid",          // e-mail <-- invalid
             "en",               // langKey
             Arrays.asList(AuthoritiesConstants.USER)
@@ -208,7 +208,7 @@ public class AccountResourceTest {
                 .content(TestUtil.convertObjectToJsonBytes(u)))
             .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional<User> user = userRepository.findOneByLogin("invalidemailguy");
         assertThat(user.isPresent()).isFalse();
     }
 

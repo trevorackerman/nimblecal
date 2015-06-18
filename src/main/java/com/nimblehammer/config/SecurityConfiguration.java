@@ -109,6 +109,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers(HttpMethod.GET, "/api/users/anonymousUser").permitAll()
             .antMatchers(HttpMethod.GET, "/api/projectfeeds").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/trackerfeeds/*/events").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)

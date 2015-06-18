@@ -1,22 +1,16 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('MainController', function ($scope,ProjectFeed, Principal, User, localStorageService, uiCalendarConfig) {
+    .controller('MainController', function ($scope, ProjectFeed, TrackerEvents, Principal, User, localStorageService, uiCalendarConfig) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
         var y = date.getFullYear();
 
-        $scope.events = [
-            {title: 'All Day Event',start: new Date(y, m, 1)},
-            {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
-            {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
-            {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
-            {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false}
-        ];
-
         $scope.showExample = false;
+        $scope.events = [[]];
         $scope.eventSources = [ $scope.events ];
+
         $scope.trackerApiToken = "";
 
         $scope.isMain = true;
@@ -25,6 +19,12 @@ angular.module('nimblecalApp')
             ProjectFeed.query(function(result) {
                 $scope.projectFeeds = result;
                 $scope.selectedProjectFeed = $scope.projectFeeds[0];
+
+                TrackerEvents.get({id: $scope.selectedProjectFeed.trackerFeeds[0].id}, function(result) {
+                    for (var i=0; i < result.length; i++) {
+                        $scope.events.push(result[i]);
+                    }
+                });
             });
         };
 
@@ -50,12 +50,6 @@ angular.module('nimblecalApp')
             localStorageService.set('trackerApiToken', newToken);
         };
 
-        $scope.renderCalender = function(calendar) {
-            if(uiCalendarConfig.calendars[calendar]){
-                uiCalendarConfig.calendars[calendar].fullCalendar('render');
-            }
-        };
-
         $scope.toggleExample = function() {
             $scope.showExample = $scope.showExample === false ? true: false;
 
@@ -66,4 +60,8 @@ angular.module('nimblecalApp')
                 $('#exampleToggle').text("Show Example");
             }
         };
+
+        $scope.renderCalendar = function () {
+            uiCalendarConfig.calendars['projectCalendar'].fullCalendar('rerenderEvents');
+        }
     });

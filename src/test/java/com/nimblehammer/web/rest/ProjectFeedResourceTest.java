@@ -122,7 +122,7 @@ public class ProjectFeedResourceTest {
 
         TrackerFeed trackerFeed = new TrackerFeed();
         trackerFeed.setId(1L);
-        trackerFeed.setProjectId("993188");
+        trackerFeed.setProjectId("442903");
 
         List<TrackerFeed> trackerFeeds = new ArrayList<>();
         trackerFeeds.add(trackerFeed);
@@ -141,7 +141,7 @@ public class ProjectFeedResourceTest {
         .andExpect(jsonPath("$.[*].id").value(2345))
         .andExpect(jsonPath("$.[*].title").value(hasItem("blah")))
         .andExpect(jsonPath("$.[*].trackerFeeds[*].id").value(1))
-        .andExpect(jsonPath("$.[*].trackerFeeds[*].projectId").value("993188"));
+        .andExpect(jsonPath("$.[*].trackerFeeds[*].projectId").value("442903"));
     }
 
     @Test

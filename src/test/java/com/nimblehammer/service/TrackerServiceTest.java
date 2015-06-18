@@ -8,8 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.OffsetDateTime;
@@ -57,9 +55,7 @@ public class TrackerServiceTest {
         trackerActivities[0] = trackerActivity0;
         trackerActivities[1] = trackerActivity1;
 
-        ResponseEntity<TrackerActivity[]> responseEntity = new ResponseEntity<>(trackerActivities, HttpStatus.OK);
-
-        when(restClient.get(TrackerService.TRACKER_URL + "/123456", TrackerActivity[].class)).thenReturn(responseEntity);
+        when(restClient.get(TrackerService.TRACKER_URL + "/123456/activity", TrackerActivity[].class)).thenReturn(trackerActivities);
 
         List<TrackerActivity> fetchedProjectActivities = trackerService.getProjectActivities("123456", "f49jaeg4t949t4");
         verify(restClient).setHeader("X-TrackerToken", "f49jaeg4t949t4");
