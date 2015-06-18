@@ -27,29 +27,31 @@ describe('Project Feeds Page', function() {
         element(by.xpath('//a[@ng-click = "logout()"]')).click();
     }
 
-    describe('whether or not a user has project feeds', function() {
-        it('should allow the user to create a project feed', function() {
+    it('should allow the user to create a project feed', function() {
 
-            $('div.row button.btn-primary').click();
-            browser.sleep(1000);
-            element(by.model('projectFeed.title')).sendKeys('My Wonderful Project');
-            element(by.model('trackerFeed.projectId')).sendKeys('993188');
-            browser.sleep(10);
-            element(by.model('githubFeed.repositoryURL')).sendKeys("https://github.com/cloudfoundry/loggregator");
+        $('div.row button.btn-primary').click();
+        browser.sleep(1000);
+        element(by.model('projectFeed.title')).sendKeys('Concord');
+        element(by.model('trackerFeed.projectId')).sendKeys('442903');
+        browser.sleep(10);
+        element(by.model('githubFeed.repositoryURL')).sendKeys("https://github.com/cloudfoundry/loggregator");
 
-            $('form button.btn-primary').click();
-            browser.sleep(250);
+        $('form button.btn-primary').click();
+        browser.sleep(250);
 
-            $$('table tbody tr').count().then(function(currentCount) {
-                expect(currentCount).toEqual(originalProjectCount + 1);
-                var projectRow = $$('table tbody tr').get(originalProjectCount);
+        $$('table tbody tr').count().then(function(currentCount) {
+            expect(currentCount).toEqual(originalProjectCount + 1);
+            var projectRow = $$('table tbody tr').get(originalProjectCount);
 
-                expect(projectRow.$$('td').get(0).getText()).toEqual('My Wonderful Project');
-                expect(projectRow.$$('td').get(1).getText()).toEqual('993188');
-                //expect(projectRow.$$('td').get(2).getText()).toEqual('https://github.com/cloudfoundry/loggregator');
-            });
+            expect(projectRow.$$('td').get(0).getText()).toEqual('Concord');
+            expect(projectRow.$$('td').get(1).getText()).toEqual('442903');
+            //expect(projectRow.$$('td').get(2).getText()).toEqual('https://github.com/cloudfoundry/loggregator');
+        });
 
-        })
+    });
+
+    it('should allow the user to delete a project feed', function() {
+
     });
 });
 

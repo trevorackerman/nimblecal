@@ -15,13 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing TrackerFeed.
@@ -32,7 +30,7 @@ public class TrackerFeedResource {
 
     private final Logger log = LoggerFactory.getLogger(TrackerFeedResource.class);
 
-    @Inject
+    @Autowired
     private TrackerFeedRepository trackerFeedRepository;
 
     @Autowired
@@ -102,11 +100,17 @@ public class TrackerFeedResource {
     @Timed
     public ResponseEntity<TrackerFeed> get(@PathVariable Long id) {
         log.debug("REST request to get TrackerFeed : {}", id);
-        return Optional.ofNullable(trackerFeedRepository.findOne(id))
-            .map(trackerFeed -> new ResponseEntity<>(
-                trackerFeed,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        TrackerFeed trackerFeed = trackerFeedRepository.findOne(id);
+        if (trackerFeed == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (trackerFeed.getProjectFeed() != null) {
+            trackerFeed.getProjectFeed().setTrackerFeeds(null);
+        }
+
+        return new ResponseEntity<>(trackerFeed, HttpStatus.OK);
     }
 
     /**
@@ -125,26 +129,21 @@ public class TrackerFeedResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<CalendarEvent>> getEvents(@PathVariable String id, @RequestHeader("X-TrackerToken") String trackerToken) {
+    public List<CalendarEvent> getEvents(@PathVariable String id, @RequestHeader(value = "X-TrackerToken", required = false) String trackerToken) {
         TrackerFeed trackerFeed = trackerFeedRepository.findOne(new Long(id));
 
         if (trackerFeed == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
 
         List<CalendarEvent> calendarEvents = new ArrayList<>();
 
-        List<TrackerActivity> trackerActivities = trackerService.getProjectActivities(id, trackerToken);
+        List<TrackerActivity> trackerActivities = trackerService.getProjectActivities(trackerFeed.getProjectId(), trackerToken);
 
         for (TrackerActivity trackerActivity : trackerActivities) {
             calendarEvents.add(calendarEventFactory.create(trackerActivity));
         }
 
-
-        // Make some tests. Have the guest login associated with some example project feeds which have some public
-        // tracker projects
-
-
-        return new ResponseEntity<>(calendarEvents, HttpStatus.OK);
+        return calendarEvents;
     }
 }

@@ -81,7 +81,7 @@ describe('ProjectFeeds Controller ', function () {
             .respond(201,{}, {Location: 'api/projectfeeds/1'});
         httpMock.expectGET(/api\/projectfeeds\/1\?cacheBuster=.*/).respond(200, {title: 'something wonderful', id: 1});
         httpMock.expectPOST(/api\/trackerFeeds\?cacheBuster=.*/,
-            {projectId: '993188', id: null, projectFeed: { id: 1, title: 'something wonderful'}}).respond(201, {}, {Location: 'api/trackerfeeds/2'});
+            {projectId: '442903', id: null, projectFeed: { id: 1, title: 'something wonderful'}}).respond(201, {}, {Location: 'api/trackerfeeds/2'});
         httpMock.expectGET(/api\/projectfeeds\?cacheBuster=.*/).respond(200);
 
         $scope.editForm = {};
@@ -92,7 +92,7 @@ describe('ProjectFeeds Controller ', function () {
         spyOn($scope.editForm, '$setUntouched');
 
         $scope.projectFeed = {title: 'something wonderful', id: null};
-        $scope.trackerFeed = {projectId: '993188', id: null, projectFeed: $scope.projectFeed};
+        $scope.trackerFeed = {projectId: '442903', id: null, projectFeed: $scope.projectFeed};
         $scope.save();
 
         httpMock.flush();

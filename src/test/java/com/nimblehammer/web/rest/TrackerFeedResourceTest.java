@@ -1,188 +1,194 @@
 package com.nimblehammer.web.rest;
 
-import com.nimblehammer.Application;
+import com.nimblehammer.domain.ProjectFeed;
+import com.nimblehammer.domain.TrackerActivity;
 import com.nimblehammer.domain.TrackerFeed;
+import com.nimblehammer.domain.TrackerPerformer;
+import com.nimblehammer.domain.util.CalendarEventFactory;
 import com.nimblehammer.repository.TrackerFeedRepository;
+import com.nimblehammer.service.TrackerService;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Test class for the TrackerFeedResource REST controller.
- *
- * @see TrackerFeedResource
- */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest
 public class TrackerFeedResourceTest {
-
-    private static final String DEFAULT_PROJECT_ID = "SAMPLE_TEXT";
-    private static final String UPDATED_PROJECT_ID = "UPDATED_TEXT";
-
     @Mock
     private TrackerFeedRepository trackerFeedRepository;
+
+    @Mock
+    private TrackerService trackerService;
+
+    @Mock
+    private CalendarEventFactory calendarEventFactory;
 
     @InjectMocks
     private TrackerFeedResource trackerFeedResource;
 
-    private MockMvc restTrackerFeedMockMvc;
-
-    private TrackerFeed trackerFeed;
-
-    @PostConstruct
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        this.restTrackerFeedMockMvc = MockMvcBuilders.standaloneSetup(trackerFeedResource).build();
-    }
+    private MockMvc mockMvc;
 
     @Before
-    public void initTest() {
-        trackerFeed = new TrackerFeed();
-        trackerFeed.setProjectId(DEFAULT_PROJECT_ID);
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(trackerFeedResource).build();
     }
 
     @Test
-    @Transactional
     public void createTrackerFeed() throws Exception {
-        int databaseSizeBeforeCreate = trackerFeedRepository.findAll().size();
+        mockMvc.perform(post("/api/trackerFeeds")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content("{\"projectId\":\"123456\"}"))
+            .andExpect(status().isCreated());
 
-        // Create the TrackerFeed
-        restTrackerFeedMockMvc.perform(post("/api/trackerFeeds")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(trackerFeed)))
-                .andExpect(status().isCreated());
-
-        // Validate the TrackerFeed in the database
-        List<TrackerFeed> trackerFeeds = trackerFeedRepository.findAll();
-        assertThat(trackerFeeds).hasSize(databaseSizeBeforeCreate + 1);
-        TrackerFeed testTrackerFeed = trackerFeeds.get(trackerFeeds.size() - 1);
-        assertThat(testTrackerFeed.getProjectId()).isEqualTo(DEFAULT_PROJECT_ID);
+        ArgumentCaptor<TrackerFeed> argument = ArgumentCaptor.forClass(TrackerFeed.class);
+        verify(trackerFeedRepository).save(argument.capture());
+        MatcherAssert.assertThat(argument.getValue().getProjectId(), equalTo("123456"));
     }
 
     @Test
-    @Transactional
     public void checkProjectIdIsRequired() throws Exception {
-        int sizeBefore = trackerFeedRepository.findAll().size();
-        // set the field null
-        trackerFeed.setProjectId(null);
+        mockMvc.perform(post("/api/trackerFeeds")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content("{\"projectId\":null}"))
+            .andExpect(status().isBadRequest());
 
-        // Create the TrackerFeed, which fails.
-        restTrackerFeedMockMvc.perform(post("/api/trackerFeeds")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(trackerFeed)))
-                .andExpect(status().isBadRequest());
-
-        // Validate the database is still empty
-        List<TrackerFeed> trackerFeeds = trackerFeedRepository.findAll();
-        assertThat(trackerFeeds.size()).isEqualTo(sizeBefore);
+        verifyZeroInteractions(trackerFeedRepository);
     }
 
     @Test
-    @Transactional
     public void getAllTrackerFeeds() throws Exception {
-        // Initialize the database
-        trackerFeedRepository.saveAndFlush(trackerFeed);
+        ProjectFeed projectFeed = new ProjectFeed();
+        projectFeed.setId(2L);
+        projectFeed.setTitle("Project Title");
 
-        // Get all the trackerFeeds
-        restTrackerFeedMockMvc.perform(get("/api/trackerFeeds"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(trackerFeed.getId().intValue())))
-                .andExpect(jsonPath("$.[*].projectId").value(hasItem(DEFAULT_PROJECT_ID.toString())));
-    }
+        TrackerFeed trackerFeed = new TrackerFeed();
+        trackerFeed.setId(1L);
+        trackerFeed.setProjectId("987654");
+        trackerFeed.setProjectFeed(projectFeed);
 
-    @Test
-    @Transactional
-    public void getTrackerFeed() throws Exception {
-        // Initialize the database
-        trackerFeedRepository.saveAndFlush(trackerFeed);
+        List<TrackerFeed> allTrackerFeeds = new ArrayList<>();
+        allTrackerFeeds.add(trackerFeed);
 
-        // Get the trackerFeed
-        restTrackerFeedMockMvc.perform(get("/api/trackerFeeds/{id}", trackerFeed.getId()))
+        when(trackerFeedRepository.findAll()).thenReturn(allTrackerFeeds);
+
+        mockMvc.perform(get("/api/trackerFeeds"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(trackerFeed.getId().intValue()))
-            .andExpect(jsonPath("$.projectId").value(DEFAULT_PROJECT_ID.toString()));
+            .andExpect(content().string("[{" +
+                "\"id\":1," +
+                "\"projectId\":\"987654\"," +
+                "\"projectFeed\":{" +
+                "\"id\":2," +
+                "\"title\":\"Project Title\"," +
+                "\"owner\":null," +
+                "\"trackerFeeds\":null" +
+                "}" +
+                "}]"));
     }
 
     @Test
-    @Transactional
+    public void getOneTrackerFeed() throws Exception {
+        ProjectFeed projectFeed = new ProjectFeed();
+        projectFeed.setId(2L);
+        projectFeed.setTitle("Project Title");
+
+        TrackerFeed trackerFeed = new TrackerFeed();
+        trackerFeed.setId(1L);
+        trackerFeed.setProjectId("987654");
+        trackerFeed.setProjectFeed(projectFeed);
+
+        when(trackerFeedRepository.findOne(1L)).thenReturn(trackerFeed);
+
+        mockMvc.perform(get("/api/trackerFeeds/{id}", trackerFeed.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().string("{" +
+                "\"id\":1," +
+                "\"projectId\":\"987654\"," +
+                "\"projectFeed\":{" +
+                "\"id\":2," +
+                "\"title\":\"Project Title\"," +
+                "\"owner\":null," +
+                "\"trackerFeeds\":null" +
+                "}" +
+                "}"));
+    }
+
+    @Test
     public void getNonExistingTrackerFeed() throws Exception {
-        // Get the trackerFeed
-        restTrackerFeedMockMvc.perform(get("/api/trackerFeeds/{id}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
+        when(trackerFeedRepository.findOne(Long.MAX_VALUE)).thenReturn(null);
+        mockMvc.perform(get("/api/trackerFeeds/{id}", Long.MAX_VALUE))
+            .andExpect(status().isNotFound());
     }
 
     @Test
-    @Transactional
     public void updateTrackerFeed() throws Exception {
-        // Initialize the database
-        trackerFeedRepository.saveAndFlush(trackerFeed);
+        mockMvc.perform(put("/api/trackerFeeds")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content("{\"id\":1,\"projectId\":\"654321\"}"))
+            .andExpect(status().isOk());
 
-		int databaseSizeBeforeUpdate = trackerFeedRepository.findAll().size();
-
-        // Update the trackerFeed
-        trackerFeed.setProjectId(UPDATED_PROJECT_ID);
-        restTrackerFeedMockMvc.perform(put("/api/trackerFeeds")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(trackerFeed)))
-                .andExpect(status().isOk());
-
-        // Validate the TrackerFeed in the database
-        List<TrackerFeed> trackerFeeds = trackerFeedRepository.findAll();
-        assertThat(trackerFeeds).hasSize(databaseSizeBeforeUpdate);
-        TrackerFeed testTrackerFeed = trackerFeeds.get(trackerFeeds.size() - 1);
-        assertThat(testTrackerFeed.getProjectId()).isEqualTo(UPDATED_PROJECT_ID);
+        ArgumentCaptor<TrackerFeed> argument = ArgumentCaptor.forClass(TrackerFeed.class);
+        verify(trackerFeedRepository).save(argument.capture());
+        MatcherAssert.assertThat(argument.getValue().getProjectId(), equalTo("654321"));
     }
 
     @Test
-    @Transactional
     public void deleteTrackerFeed() throws Exception {
-        // Initialize the database
-        trackerFeedRepository.saveAndFlush(trackerFeed);
-
-		int databaseSizeBeforeDelete = trackerFeedRepository.findAll().size();
-
-        // Get the trackerFeed
-        restTrackerFeedMockMvc.perform(delete("/api/trackerFeeds/{id}", trackerFeed.getId())
-                .accept(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
-
-        // Validate the database is empty
-        List<TrackerFeed> trackerFeeds = trackerFeedRepository.findAll();
-        assertThat(trackerFeeds).hasSize(databaseSizeBeforeDelete - 1);
+        mockMvc.perform(delete("/api/trackerFeeds/100"))
+            .andExpect(status().isOk());
+        verify(trackerFeedRepository).delete(100L);
     }
 
     @Test
-    @Transactional
     public void getTrackerFeedEvents() throws Exception {
+        TrackerFeed trackerFeed = new TrackerFeed();
+        trackerFeed.setId(1234L);
+        trackerFeed.setProjectId("999");
+
         when(trackerFeedRepository.findOne(1234L)).thenReturn(trackerFeed);
 
-        restTrackerFeedMockMvc.perform(get("/api/trackerFeeds/1234/events")
+        TrackerActivity trackerActivity = new TrackerActivity();
+        trackerActivity.setKind("test kind");
+        trackerActivity.setMessage("test message");
+        trackerActivity.setOccurred_at(Instant.parse("2015-06-12T15:56:15Z"));
+
+        TrackerPerformer trackerPerformer = new TrackerPerformer();
+        trackerPerformer.setInitials("TA");
+
+        trackerActivity.setPerformed_by(trackerPerformer);
+
+        List<TrackerActivity> trackerActivities = new ArrayList<>();
+        trackerActivities.add(trackerActivity);
+
+        when(trackerService.getProjectActivities("999", "2094335")).thenReturn(trackerActivities);
+
+        when(calendarEventFactory.create(trackerActivity)).thenCallRealMethod();
+
+        mockMvc.perform(get("/api/trackerFeeds/1234/events")
+            .header("X-TrackerToken", "2094335")
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
-            .andExpect(content().string("[{id: 999,title: 'Repeating Event',start: '2015-06-12 15:56:00',allDay: false}]"));
+            .andExpect(content().string("[{\"title\":\"TA test kind\"," +
+                "\"start\":\"2015-06-12T15:56:15\"," +
+                "\"end\":\"2015-06-12T17:56:15\"," +
+                "\"allDay\":false" +
+                "}]"));
     }
 }

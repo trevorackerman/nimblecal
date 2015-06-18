@@ -1,10 +1,8 @@
 <div ng-cloak>
-
     <div ng-switch="isAuthenticated()">
 
         <div class="row" ng-switch-when="false">
             <div class="col-log-12">
-                <!--<button id="exampleToggle" ng-click="example=!example;" class="btn btn-primary">Show Example</button>-->
                 <button id="exampleToggle" ng-click="toggleExample();" class="btn btn-primary">Show Example</button>
             </div>
             <div ng-hide="showExample" class="col-lg-12 goat-bg voffset3">
@@ -18,7 +16,7 @@
 
             </div>
 
-            <div ng-show="showExample" class="col-lg-12 voffset3" id="example" ui-calendar ng-model="eventSources" calendar="guestCalendar" class="tab-pane"></div>
+            <div ng-show="showExample" in-view="$inview && renderCalendar()" ui-calendar ng-model="eventSources" calendar="projectCalendar"></div>
 
         </div>
 
@@ -60,7 +58,7 @@
 
                 <div class="row voffset3">
                     <div class="col-lg-12">
-                        <div ui-calendar ng-model="eventSources" calendar="projectFeedCalendar"></div>
+                        <div ui-calendar ng-model="eventSources" calendar="projectCalendar"></div>
                     </div>
                 </div>
             </div>
