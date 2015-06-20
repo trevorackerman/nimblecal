@@ -10,10 +10,10 @@ describe('Home Page', function() {
 
     it('Shows the guest the welcome panel and a sample calendar', function () {
         expect($('div.goat-bg').isDisplayed).toBeTruthy();
-        expect($('#example').isDisplayed()).toBeFalsy();
+        expect($('div.fc').isDisplayed()).toBeFalsy();
         $('#exampleToggle').click();
         expect($('div.goat-bg').isDisplayed()).toBeFalsy();
-        expect($('#example').isDisplayed()).toBeTruthy();
+        expect($('div.fc').isDisplayed()).toBeTruthy();
         expect(element.all(by.css('div.fc-content-skeleton table thead tr td.fc-day-number ')).count()).toBeGreaterThan(27);
     });
 
