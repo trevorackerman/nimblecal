@@ -67,6 +67,9 @@ describe('Main Controller ', function () {
             { title: 'something wonderful', id: 1, trackerFeeds: [ {id : 1, projectId: 23452345} ] }
         ]);
         otherStuff();
+        httpMock.expectGET(/api\/trackerFeeds\/1\/events\?cacheBuster=.*/).respond(200, [
+            { title: 'blah', start: '2015-06-19T15:50:00Z', end: '2015-06-19T17:50:00Z', allDay: false}
+        ]);
 
         $scope.$apply();
         httpMock.flush();
