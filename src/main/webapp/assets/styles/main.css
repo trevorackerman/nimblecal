@@ -149,3 +149,22 @@ ul#strength {
     width:20px;
 }
 /* end Password strength bar style */
+
+div.fc-content span.fc-time {
+    display: none;
+}
+
+.tiny-padding {
+    padding: 5px;
+}
+
+.tiny-padding-left {
+    padding-left: 5px;
+}
+
+.fc-title-highlight {
+    background-color: white;
+    color: #3a87ad;
+    margin: 1px;
+    padding: 1px 3px;
+}

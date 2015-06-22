@@ -7,6 +7,22 @@ angular.module('nimblecalApp')
         var m = date.getMonth();
         var y = date.getFullYear();
 
+        $scope.eventRender = function(event, element) {
+            element.find('div.fc-content').prepend('<span class="badge fc-title-highlight">' + event.avatarAlternate + '</span>');
+            element.popover({
+                title: event.description,
+                content: event.message,
+                container: 'body',
+                html: true
+            });
+        };
+
+        $scope.uiConfig = {
+            calendar:{
+                eventRender: $scope.eventRender
+            }
+        };
+
         $scope.showExample = false;
         $scope.events = [[]];
         $scope.eventSources = [ $scope.events ];
@@ -63,5 +79,5 @@ angular.module('nimblecalApp')
 
         $scope.renderCalendar = function () {
             uiCalendarConfig.calendars['projectCalendar'].fullCalendar('rerenderEvents');
-        }
+        };
     });
