@@ -36,8 +36,7 @@ public class TrackerFeedResource {
     @Autowired
     private TrackerService trackerService;
 
-    @Autowired
-    private CalendarEventFactory calendarEventFactory;
+    private final CalendarEventFactory calendarEventFactory = new CalendarEventFactory();
 
     /**
      * POST  /trackerFeeds -> Create a new trackerFeed.

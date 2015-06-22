@@ -1,10 +1,6 @@
 package com.nimblehammer.web.rest;
 
-import com.nimblehammer.domain.ProjectFeed;
-import com.nimblehammer.domain.TrackerActivity;
-import com.nimblehammer.domain.TrackerFeed;
-import com.nimblehammer.domain.TrackerPerformer;
-import com.nimblehammer.domain.util.CalendarEventFactory;
+import com.nimblehammer.domain.*;
 import com.nimblehammer.repository.TrackerFeedRepository;
 import com.nimblehammer.service.TrackerService;
 import org.hamcrest.MatcherAssert;
@@ -34,9 +30,6 @@ public class TrackerFeedResourceTest {
 
     @Mock
     private TrackerService trackerService;
-
-    @Mock
-    private CalendarEventFactory calendarEventFactory;
 
     @InjectMocks
     private TrackerFeedResource trackerFeedResource;
@@ -158,6 +151,7 @@ public class TrackerFeedResourceTest {
 
     @Test
     public void getTrackerFeedEvents() throws Exception {
+
         TrackerFeed trackerFeed = new TrackerFeed();
         trackerFeed.setId(1234L);
         trackerFeed.setProjectId("999");
@@ -174,21 +168,38 @@ public class TrackerFeedResourceTest {
 
         trackerActivity.setPerformed_by(trackerPerformer);
 
+        TrackerResource trackerResource = new TrackerResource();
+        trackerResource.setUrl("https://www.example.com/123456");
+        trackerResource.setId(123456);
+        trackerResource.setName("Make the feature of a story blah");
+
+        TrackerResource[] trackerResources = new TrackerResource[] { trackerResource };
+
+        trackerActivity.setPrimary_resources(trackerResources);
+
         List<TrackerActivity> trackerActivities = new ArrayList<>();
         trackerActivities.add(trackerActivity);
 
         when(trackerService.getProjectActivities("999", "2094335")).thenReturn(trackerActivities);
 
-        when(calendarEventFactory.create(trackerActivity)).thenCallRealMethod();
-
         mockMvc.perform(get("/api/trackerFeeds/1234/events")
             .header("X-TrackerToken", "2094335")
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
-            .andExpect(content().string("[{\"title\":\"TA test kind\"," +
+            .andExpect(content().string("[{" +
+                "\"title\":\"test kind 123456\"," +
                 "\"start\":\"2015-06-12T15:56:15\"," +
-                "\"end\":\"2015-06-12T17:56:15\"," +
-                "\"allDay\":false" +
-                "}]"));
+                "\"end\":\"2015-06-12T15:56:16\"," +
+                "\"allDay\":false," +
+                "\"message\":\"<p>test message</p>\"," +
+                "\"description\":" +
+                    "\"<div class=\\\"tiny-padding\\\">" +
+                        "<span>2015-06-12T15:56:15Z</span>" +
+                        "<span class=\\\"tiny-padding-left\\\"><a href=\\\"https://www.example.com/123456\\\">123456</a></span>" +
+                    "</div>" +
+                    "<div class=\\\"tiny-padding\\\">Make the feature of a story blah</div>\"," +
+                "\"avatarUrl\":null," +
+                "\"avatarAlternate\":\"TA\"" +
+            "}]"));
     }
 }
