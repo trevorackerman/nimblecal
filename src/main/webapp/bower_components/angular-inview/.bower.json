@@ -22,7 +22,6 @@
     "commit": "82112956c54c2275134a20e381d564bdda1a4492"
   },
   "_source": "git://github.com/thenikso/angular-inview.git",
-  "_target": "~1.5.0",
-  "_originalSource": "angular-inview",
-  "_direct": true
+  "_target": "1.5.0",
+  "_originalSource": "angular-inview"
 }
