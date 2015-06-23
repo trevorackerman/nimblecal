@@ -7,7 +7,7 @@ angular.module('nimblecalApp')
                 parent: 'entity',
                 url: '/trackerFeed',
                 data: {
-                    roles: ['ROLE_USER'],
+                    roles: ['ROLE_ADMIN'],
                     pageTitle: 'nimblecalApp.trackerFeed.home.title'
                 },
                 views: {
@@ -27,7 +27,7 @@ angular.module('nimblecalApp')
                 parent: 'entity',
                 url: '/trackerFeed/:id',
                 data: {
-                    roles: ['ROLE_USER'],
+                    roles: ['ROLE_ADMIN'],
                     pageTitle: 'nimblecalApp.trackerFeed.detail.title'
                 },
                 views: {

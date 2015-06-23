@@ -7,7 +7,7 @@ angular.module('nimblecalApp')
                 parent: 'entity',
                 url: '/jiraFeed',
                 data: {
-                    roles: ['ROLE_USER'],
+                    roles: ['ROLE_ADMIN'],
                     pageTitle: 'nimblecalApp.jiraFeed.home.title'
                 },
                 views: {
