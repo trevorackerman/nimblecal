@@ -50,7 +50,7 @@
                                 {{selectedProjectFeed.title}} <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li ng-repeat="projectFeed in projectFeeds"><a href="#">{{projectFeed.title}}</a></li>
+                                <li ng-repeat="projectFeed in projectFeeds" ng-click="selectProjectFeed(projectFeed)"><a href="#">{{projectFeed.title}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
 
                 <div class="row voffset3">
                     <div class="col-lg-12">
-                        <div ui-calendar ng-model="eventSources" calendar="projectCalendar"></div>
+                        <div in-view="$inview && renderCalendar()" ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="projectCalendar"></div>
                     </div>
                 </div>
             </div>

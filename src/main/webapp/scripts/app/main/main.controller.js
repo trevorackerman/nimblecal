@@ -2,10 +2,6 @@
 
 angular.module('nimblecalApp')
     .controller('MainController', function ($scope, ProjectFeed, TrackerEvents, Principal, User, localStorageService, uiCalendarConfig) {
-        var date = new Date();
-        var d = date.getDate();
-        var m = date.getMonth();
-        var y = date.getFullYear();
 
         $scope.eventRender = function(event, element) {
             element.find('div.fc-content').prepend('<span class="badge fc-title-highlight">' + event.avatarAlternate + '</span>');
@@ -31,18 +27,25 @@ angular.module('nimblecalApp')
 
         $scope.isMain = true;
 
+        $scope.loadProjectFeed = function(projectFeed) {
+            TrackerEvents.get({id: projectFeed.trackerFeeds[0].id}, function(result) {
+                $scope.events.length = 0;
+                for (var i=0; i < result.length; i++) {
+                    $scope.events.push(result[i]);
+                }
+            });
+        };
+
         $scope.loadAll = function() {
             ProjectFeed.query(function(result) {
                 $scope.projectFeeds = result;
                 $scope.selectedProjectFeed = $scope.projectFeeds[0];
 
-                TrackerEvents.get({id: $scope.selectedProjectFeed.trackerFeeds[0].id}, function(result) {
-                    for (var i=0; i < result.length; i++) {
-                        $scope.events.push(result[i]);
-                    }
-                });
+                $scope.loadProjectFeed($scope.selectedProjectFeed);
             });
         };
+
+
 
         Principal.identity().then(function(account) {
             $scope.account = account;
@@ -80,4 +83,9 @@ angular.module('nimblecalApp')
         $scope.renderCalendar = function () {
             uiCalendarConfig.calendars['projectCalendar'].fullCalendar('rerenderEvents');
         };
+
+        $scope.selectProjectFeed = function(projectFeed) {
+            $scope.selectedProjectFeed = projectFeed;
+            $scope.loadProjectFeed($scope.selectedProjectFeed);
+        }
     });
