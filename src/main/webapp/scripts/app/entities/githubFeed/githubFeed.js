@@ -7,7 +7,7 @@ angular.module('nimblecalApp')
                 parent: 'entity',
                 url: '/githubFeed',
                 data: {
-                    roles: ['ROLE_USER'],
+                    roles: ['ROLE_ADMIN'],
                     pageTitle: 'nimblecalApp.githubFeed.home.title'
                 },
                 views: {

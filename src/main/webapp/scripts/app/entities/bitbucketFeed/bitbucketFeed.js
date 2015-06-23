@@ -7,7 +7,7 @@ angular.module('nimblecalApp')
                 parent: 'entity',
                 url: '/bitbucketFeed',
                 data: {
-                    roles: ['ROLE_USER'],
+                    roles: ['ROLE_ADMIN'],
                     pageTitle: 'nimblecalApp.bitbucketFeed.home.title'
                 },
                 views: {
