@@ -17,6 +17,8 @@ public class CalendarEventFactory {
         trackerActivityKindMap.put("comment_update_activity", "commented");
         trackerActivityKindMap.put("story_move_activity", "moved");
         trackerActivityKindMap.put("story_create_activity", "created");
+        trackerActivityKindMap.put("story_delete_activity", "deleted");
+        trackerActivityKindMap.put("label_create_activity", "labeled");
     }
 
     public CalendarEvent create(TrackerActivity trackerActivity) {
