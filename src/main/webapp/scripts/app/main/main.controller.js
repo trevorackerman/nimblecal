@@ -29,19 +29,20 @@ angular.module('nimblecalApp')
 
         $scope.loadProjectFeed = function(projectFeed) {
             TrackerEvents.get({id: projectFeed.trackerFeeds[0].id}, function(result) {
-                $scope.events.length = 0;
-                for (var i=0; i < result.length; i++) {
-                    $scope.events.push(result[i]);
-                }
+                uiCalendarConfig.calendars.projectCalendar.fullCalendar('removeEventSource', $scope.events );
+                $scope.events = result;
+                uiCalendarConfig.calendars.projectCalendar.fullCalendar('addEventSource', $scope.events );
+                uiCalendarConfig.calendars.projectCalendar.fullCalendar('refetchEvents');
             });
         };
 
         $scope.loadAll = function() {
             ProjectFeed.query(function(result) {
                 $scope.projectFeeds = result;
-                $scope.selectedProjectFeed = $scope.projectFeeds[0];
-
-                $scope.loadProjectFeed($scope.selectedProjectFeed);
+                if ($scope.selectedProjectFeed != $scope.projectFeeds[0]) {
+                    $scope.selectedProjectFeed = $scope.projectFeeds[0];
+                    $scope.loadProjectFeed($scope.selectedProjectFeed);
+                }
             });
         };
 
