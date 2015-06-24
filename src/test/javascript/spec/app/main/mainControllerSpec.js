@@ -1,11 +1,22 @@
 'use strict';
 
 describe('Main Controller ', function () {
-    var controller, $scope, principalSpy, deferred, spyPromise, httpMock, editFormSpy;
+    var controller, $scope, principalSpy, deferred, spyPromise, httpMock, editFormSpy, calendarSpy;
 
     beforeEach(module('nimblecalApp'));
 
-    beforeEach(inject(function ($rootScope, $controller, $q, $httpBackend) {
+    beforeEach(inject(function ($rootScope, $controller, $q, $httpBackend, uiCalendarConfig) {
+
+        calendarSpy = {
+            fullCalendar: function(options) {
+                console.log("spy was called");
+            }
+        };
+
+        spyOn(calendarSpy, 'fullCalendar');
+
+        uiCalendarConfig.calendars['projectCalendar'] = calendarSpy;
+
         httpMock = $httpBackend;
         $scope = $rootScope.$new();
         deferred = $q.defer();
@@ -75,5 +86,9 @@ describe('Main Controller ', function () {
         httpMock.flush();
         httpMock.verifyNoOutstandingRequest();
         expect($scope.projectFeeds.length).toBe(1);
+
+        expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('removeEventSource', [[]]);
+        expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('addEventSource', $scope.events);
+        expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('refetchEvents');
     });
 });

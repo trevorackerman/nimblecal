@@ -29,22 +29,21 @@ describe('Project Feeds Page', function() {
 
     it('should allow the user to create a project feed', function() {
 
+        var time = new Date().getTime();
+
         $('div.row button.btn-primary').click();
         browser.sleep(1000);
-        element(by.model('projectFeed.title')).sendKeys('Concord');
-        element(by.model('trackerFeed.projectId')).sendKeys('442903');
+        element(by.model('projectFeed.title')).sendKeys('Concord-' + time);
+        element(by.model('trackerFeed.projectId')).sendKeys('442903-' + time);
         browser.sleep(10);
-        element(by.model('githubFeed.repositoryURL')).sendKeys("https://github.com/cloudfoundry/loggregator");
+        element(by.model('githubFeed.repositoryURL')).sendKeys("https://example.com/githubrepo");
 
         $('form button.btn-primary').click();
         browser.sleep(250);
 
         $$('table tbody tr').count().then(function(currentCount) {
             expect(currentCount).toEqual(originalProjectCount + 1);
-            var projectRow = $$('table tbody tr').get(originalProjectCount);
-
-            expect(projectRow.$$('td').get(0).getText()).toEqual('Concord');
-            expect(projectRow.$$('td').get(1).getText()).toEqual('442903');
+            expect($$('table tbody tr').getText()).toContain("Concord-" + time + "\n442903-" + time);
             //expect(projectRow.$$('td').get(2).getText()).toEqual('https://github.com/cloudfoundry/loggregator');
         });
 
