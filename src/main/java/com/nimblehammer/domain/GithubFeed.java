@@ -24,6 +24,14 @@ public class GithubFeed implements Serializable {
     @Column(name = "repository_url", nullable = false)
     private String repositoryURL;
 
+    @NotNull
+    @Column(name = "repository_name", nullable = false)
+    private String repositoryName;
+
+    @NotNull
+    @Column(name = "repository_owner", nullable = false)
+    private String repositoryOwner;
+
     @ManyToOne
     private ProjectFeed projectFeed;
 
@@ -41,6 +49,22 @@ public class GithubFeed implements Serializable {
 
     public void setRepositoryURL(String repositoryURL) {
         this.repositoryURL = repositoryURL;
+    }
+
+    public String getRepositoryName() {
+        return repositoryName;
+    }
+
+    public void setRepositoryName(String repositoryName) {
+        this.repositoryName = repositoryName;
+    }
+
+    public String getRepositoryOwner() {
+        return repositoryOwner;
+    }
+
+    public void setRepositoryOwner(String repositoryOwner) {
+        this.repositoryOwner = repositoryOwner;
     }
 
     public ProjectFeed getProjectFeed() {
@@ -75,8 +99,11 @@ public class GithubFeed implements Serializable {
     @Override
     public String toString() {
         return "GithubFeed{" +
-                "id=" + id +
-                ", repositoryURL='" + repositoryURL + "'" +
-                '}';
+            "id=" + id +
+            ", repositoryURL='" + repositoryURL + '\'' +
+            ", repositoryName='" + repositoryName + '\'' +
+            ", repositoryOwner='" + repositoryOwner + '\'' +
+            ", projectFeed=" + projectFeed +
+            '}';
     }
 }

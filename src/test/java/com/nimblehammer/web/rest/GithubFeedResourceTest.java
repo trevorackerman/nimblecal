@@ -1,177 +1,161 @@
 package com.nimblehammer.web.rest;
 
-import com.nimblehammer.Application;
 import com.nimblehammer.domain.GithubFeed;
 import com.nimblehammer.repository.GithubFeedRepository;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Test class for the GithubFeedResource REST controller.
- *
- * @see GithubFeedResource
- */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest
 public class GithubFeedResourceTest {
 
-    private static final String DEFAULT_REPOSITORY_URL = "SAMPLE_TEXT";
     private static final String UPDATED_REPOSITORY_URL = "UPDATED_TEXT";
 
-    @Inject
+    @Mock
     private GithubFeedRepository githubFeedRepository;
 
     private MockMvc restGithubFeedMockMvc;
 
-    private GithubFeed githubFeed;
+    @InjectMocks
+    private GithubFeedResource githubFeedResource;
 
-    @PostConstruct
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        GithubFeedResource githubFeedResource = new GithubFeedResource();
-        ReflectionTestUtils.setField(githubFeedResource, "githubFeedRepository", githubFeedRepository);
-        this.restGithubFeedMockMvc = MockMvcBuilders.standaloneSetup(githubFeedResource).build();
-    }
+    private GithubFeed existingGithubFeed;
+
+    private List<GithubFeed> githubFeeds = new ArrayList<>();
 
     @Before
-    public void initTest() {
-        githubFeed = new GithubFeed();
-        githubFeed.setRepositoryURL(DEFAULT_REPOSITORY_URL);
+    public void before() {
+        initMocks(this);
+        this.restGithubFeedMockMvc = MockMvcBuilders.standaloneSetup(githubFeedResource).build();
+
+        existingGithubFeed = new GithubFeed();
+        existingGithubFeed.setRepositoryURL("https://www.example.com/johnwayne/projectx");
+        existingGithubFeed.setRepositoryName("projectx");
+        existingGithubFeed.setRepositoryOwner("johnwayne");
+        existingGithubFeed.setId(100L);
+
+        githubFeeds.add(existingGithubFeed);
+
+        when(githubFeedRepository.findOne(100L)).thenReturn(existingGithubFeed);
+        when(githubFeedRepository.findAll()).thenReturn(githubFeeds);
     }
 
     @Test
-    @Transactional
     public void createGithubFeed() throws Exception {
-        int databaseSizeBeforeCreate = githubFeedRepository.findAll().size();
+        GithubFeed githubFeed = new GithubFeed();
+        githubFeed.setRepositoryName("javaproject");
+        githubFeed.setRepositoryOwner("duke");
+        githubFeed.setRepositoryURL("https://example.com/duke/javaproject");
 
-        // Create the GithubFeed
         restGithubFeedMockMvc.perform(post("/api/githubFeeds")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
                 .andExpect(status().isCreated());
 
-        // Validate the GithubFeed in the database
-        List<GithubFeed> githubFeeds = githubFeedRepository.findAll();
-        assertThat(githubFeeds).hasSize(databaseSizeBeforeCreate + 1);
-        GithubFeed testGithubFeed = githubFeeds.get(githubFeeds.size() - 1);
-        assertThat(testGithubFeed.getRepositoryURL()).isEqualTo(DEFAULT_REPOSITORY_URL);
+        verify(githubFeedRepository).save(githubFeed);
     }
 
     @Test
-    @Transactional
     public void checkRepositoryURLIsRequired() throws Exception {
-        // Validate the database is empty
-        assertThat(githubFeedRepository.findAll()).hasSize(0);
-        // set the field null
+        GithubFeed githubFeed = new GithubFeed();
+        githubFeed.setRepositoryName("javaproject");
+        githubFeed.setRepositoryOwner("duke");
         githubFeed.setRepositoryURL(null);
 
-        // Create the GithubFeed, which fails.
         restGithubFeedMockMvc.perform(post("/api/githubFeeds")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
                 .andExpect(status().isBadRequest());
 
-        // Validate the database is still empty
-        List<GithubFeed> githubFeeds = githubFeedRepository.findAll();
-        assertThat(githubFeeds).hasSize(0);
+        verifyZeroInteractions(githubFeedRepository);
     }
 
     @Test
-    @Transactional
-    public void getAllGithubFeeds() throws Exception {
-        // Initialize the database
-        githubFeedRepository.saveAndFlush(githubFeed);
+    public void checkRepositoryNameIsRequired() throws Exception {
+        GithubFeed githubFeed = new GithubFeed();
+        githubFeed.setRepositoryName(null);
+        githubFeed.setRepositoryOwner("duke");
+        githubFeed.setRepositoryURL("https://example.com/duke/javaproject");
 
-        // Get all the githubFeeds
+        restGithubFeedMockMvc.perform(post("/api/githubFeeds")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
+            .andExpect(status().isBadRequest());
+
+        verifyZeroInteractions(githubFeedRepository);
+    }
+
+    @Test
+    public void checkRepositoryOwnerIsRequired() throws Exception {
+        GithubFeed githubFeed = new GithubFeed();
+        githubFeed.setRepositoryName("javaproject");
+        githubFeed.setRepositoryOwner(null);
+        githubFeed.setRepositoryURL("https://example.com/duke/javaproject");
+
+        restGithubFeedMockMvc.perform(post("/api/githubFeeds")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
+                .andExpect(status().isBadRequest());
+
+        verifyZeroInteractions(githubFeedRepository);
+    }
+
+    @Test
+    public void getAllGithubFeeds() throws Exception {
         restGithubFeedMockMvc.perform(get("/api/githubFeeds"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(githubFeed.getId().intValue())))
-                .andExpect(jsonPath("$.[*].repositoryURL").value(hasItem(DEFAULT_REPOSITORY_URL.toString())));
+                .andExpect(jsonPath("$.[*].id").value(hasItem(existingGithubFeed.getId().intValue())))
+                .andExpect(jsonPath("$.[*].repositoryURL").value(hasItem("https://www.example.com/johnwayne/projectx")));
+        verify(githubFeedRepository).findAll();
     }
 
     @Test
-    @Transactional
     public void getGithubFeed() throws Exception {
-        // Initialize the database
-        githubFeedRepository.saveAndFlush(githubFeed);
-
-        // Get the githubFeed
-        restGithubFeedMockMvc.perform(get("/api/githubFeeds/{id}", githubFeed.getId()))
+        restGithubFeedMockMvc.perform(get("/api/githubFeeds/{id}", existingGithubFeed.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(githubFeed.getId().intValue()))
-            .andExpect(jsonPath("$.repositoryURL").value(DEFAULT_REPOSITORY_URL.toString()));
+            .andExpect(jsonPath("$.id").value(existingGithubFeed.getId().intValue()))
+            .andExpect(jsonPath("$.repositoryURL").value("https://www.example.com/johnwayne/projectx"));
+
+        verify(githubFeedRepository).findOne(existingGithubFeed.getId());
     }
 
     @Test
-    @Transactional
     public void getNonExistingGithubFeed() throws Exception {
-        // Get the githubFeed
         restGithubFeedMockMvc.perform(get("/api/githubFeeds/{id}", Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
+        verify(githubFeedRepository).findOne(Long.MAX_VALUE);
     }
 
     @Test
-    @Transactional
     public void updateGithubFeed() throws Exception {
-        // Initialize the database
-        githubFeedRepository.saveAndFlush(githubFeed);
+        existingGithubFeed.setRepositoryURL(UPDATED_REPOSITORY_URL);
 
-		int databaseSizeBeforeUpdate = githubFeedRepository.findAll().size();
-
-        // Update the githubFeed
-        githubFeed.setRepositoryURL(UPDATED_REPOSITORY_URL);
         restGithubFeedMockMvc.perform(put("/api/githubFeeds")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
+                .content(TestUtil.convertObjectToJsonBytes(existingGithubFeed)))
                 .andExpect(status().isOk());
-
-        // Validate the GithubFeed in the database
-        List<GithubFeed> githubFeeds = githubFeedRepository.findAll();
-        assertThat(githubFeeds).hasSize(databaseSizeBeforeUpdate);
-        GithubFeed testGithubFeed = githubFeeds.get(githubFeeds.size() - 1);
-        assertThat(testGithubFeed.getRepositoryURL()).isEqualTo(UPDATED_REPOSITORY_URL);
+        verify(githubFeedRepository).save(existingGithubFeed);
     }
 
     @Test
-    @Transactional
     public void deleteGithubFeed() throws Exception {
-        // Initialize the database
-        githubFeedRepository.saveAndFlush(githubFeed);
-
-		int databaseSizeBeforeDelete = githubFeedRepository.findAll().size();
-
-        // Get the githubFeed
-        restGithubFeedMockMvc.perform(delete("/api/githubFeeds/{id}", githubFeed.getId())
+        restGithubFeedMockMvc.perform(delete("/api/githubFeeds/{id}", existingGithubFeed.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
-
-        // Validate the database is empty
-        List<GithubFeed> githubFeeds = githubFeedRepository.findAll();
-        assertThat(githubFeeds).hasSize(databaseSizeBeforeDelete - 1);
+        verify(githubFeedRepository).delete(existingGithubFeed.getId());
     }
 }

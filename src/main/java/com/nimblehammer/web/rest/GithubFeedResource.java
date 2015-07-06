@@ -5,12 +5,12 @@ import com.nimblehammer.domain.GithubFeed;
 import com.nimblehammer.repository.GithubFeedRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,7 +26,7 @@ public class GithubFeedResource {
 
     private final Logger log = LoggerFactory.getLogger(GithubFeedResource.class);
 
-    @Inject
+    @Autowired
     private GithubFeedRepository githubFeedRepository;
 
     /**

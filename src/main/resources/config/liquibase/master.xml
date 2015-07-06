@@ -15,5 +15,7 @@
     <include file="classpath:config/liquibase/changelog/20150606172300_rename_user_to_owner.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150610194400_load_test_data.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150616113200_load_guest_data.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20150706121200_add_github_columns.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20150706121900_load_guest_github_data.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
