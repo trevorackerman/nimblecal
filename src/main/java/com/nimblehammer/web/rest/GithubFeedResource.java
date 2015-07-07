@@ -1,8 +1,12 @@
 package com.nimblehammer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.nimblehammer.domain.CalendarEvent;
 import com.nimblehammer.domain.GithubFeed;
+import com.nimblehammer.domain.github.GitHubEvent;
+import com.nimblehammer.domain.util.CalendarEventFactory;
 import com.nimblehammer.repository.GithubFeedRepository;
+import com.nimblehammer.service.GitHubService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +30,11 @@ import java.util.Optional;
 public class GithubFeedResource {
 
     private final Logger log = LoggerFactory.getLogger(GithubFeedResource.class);
+
+    @Autowired
+    private GitHubService gitHubService;
+
+    private CalendarEventFactory calendarEventFactory = new CalendarEventFactory();
 
     @Autowired
     private GithubFeedRepository githubFeedRepository;
@@ -99,5 +109,28 @@ public class GithubFeedResource {
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete GithubFeed : {}", id);
         githubFeedRepository.delete(id);
+    }
+
+    @RequestMapping(value = "/githubFeeds/{id}/events",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<CalendarEvent> getEvents(@PathVariable String id) {
+
+        GithubFeed githubFeed = githubFeedRepository.findOne(new Long(id));
+
+        if (githubFeed == null) {
+            return null;
+        }
+
+        List<CalendarEvent> calendarEvents = new ArrayList<>();
+
+        List<GitHubEvent> events = gitHubService.getRepositoryEvents(githubFeed.getRepositoryOwner(), githubFeed.getRepositoryName());
+
+        for (GitHubEvent event : events) {
+            calendarEvents.addAll(calendarEventFactory.create(event));
+        }
+
+        return calendarEvents;
     }
 }

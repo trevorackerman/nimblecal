@@ -3,10 +3,14 @@ package com.nimblehammer.domain.util;
 import com.nimblehammer.domain.CalendarEvent;
 import com.nimblehammer.domain.TrackerActivity;
 import com.nimblehammer.domain.TrackerResource;
+import com.nimblehammer.domain.github.GitHubCommit;
+import com.nimblehammer.domain.github.GitHubEvent;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CalendarEventFactory {
@@ -49,6 +53,30 @@ public class CalendarEventFactory {
             .description(description)
             .message(message)
             .avatarAlternate(trackerActivity.getPerformed_by().getInitials())
+            .build();
+    }
+
+    public List<CalendarEvent> create(GitHubEvent gitHubEvent) {
+        List<CalendarEvent> calendarEvents = new ArrayList<>();
+
+        if ("PushEvent".equals(gitHubEvent.getType())) {
+            for (GitHubCommit commit : gitHubEvent.getPayload().getCommits()) {
+                final CalendarEvent calendarEvent = create(gitHubEvent, commit);
+                calendarEvents.add(calendarEvent);
+            }
+        }
+
+        return calendarEvents;
+    }
+
+    public CalendarEvent create(GitHubEvent event, GitHubCommit commit) {
+        return new CalendarEvent.Builder()
+            .start(LocalDateTime.ofInstant(event.getCreated_at(), ZoneOffset.UTC))
+            .title(commit.getAuthor().getName() + " committed " + commit.getSha())
+            .message(commit.getMessage())
+            .description(commit.getMessage())
+            .avatarUrl(event.getActor().getAvatar_url())
+            .avatarAlternate(event.getActor().getLogin())
             .build();
     }
 }
