@@ -5,6 +5,7 @@ import com.nimblehammer.client.RestClient;
 import com.nimblehammer.config.Constants;
 import com.nimblehammer.domain.util.CalendarEventFactory;
 import com.nimblehammer.service.DateTimeService;
+import com.nimblehammer.service.GitHubService;
 import com.nimblehammer.service.TrackerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,5 +111,10 @@ public class Application {
     @Bean
     public CalendarEventFactory calendarEventFactory() {
         return new CalendarEventFactory();
+    }
+
+    @Bean
+    public GitHubService gitHubService() {
+        return new GitHubService();
     }
 }
