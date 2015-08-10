@@ -3,6 +3,8 @@ var fs = require('fs');
 
 describe('Project Feeds Page', function() {
     var originalProjectCount = 0;
+    var time = new Date().getTime();
+
     beforeEach(function() {
         browser.driver.manage().window().setSize(1600, 1200);
         browser.driver.manage().window().maximize();
@@ -28,9 +30,6 @@ describe('Project Feeds Page', function() {
     }
 
     it('should allow the user to create a project feed', function() {
-
-        var time = new Date().getTime();
-
         $('div.row button.btn-primary').click();
         browser.sleep(1000);
         element(by.model('projectFeed.title')).sendKeys('Concord-' + time);
@@ -43,14 +42,48 @@ describe('Project Feeds Page', function() {
 
         $$('table tbody tr').count().then(function(currentCount) {
             expect(currentCount).toEqual(originalProjectCount + 1);
-            expect($$('table tbody tr').getText()).toContain("Concord-" + time + "\n442903-" + time);
+            expect($$('table tbody tr').getText()).toContain("Concord-" + time + "\n442903-" + time +"\nDelete");
             //expect(projectRow.$$('td').get(2).getText()).toEqual('https://github.com/cloudfoundry/loggregator');
         });
 
     });
 
-    it('should allow the user to delete a project feed', function() {
+    it('should allow the user to cancel deleting a project feed', function() {
+        element.all(by.repeater('projectFeed in projectFeeds')).then(function(projectFeeds) {
+            var count = projectFeeds.length;
 
+            expect(projectFeeds[0].$('td button.btn-danger').getText()).toEqual('Delete');
+
+            projectFeeds[0].element(by.css('button.btn-danger')).click().then(function () {
+                browser.sleep(200);
+
+                $('#deleteProjectFeedsModal button.btn-default').click().then(function () {
+                    browser.sleep(200);
+                    expect(element(by.id('deleteProjectFeedsModal')).isDisplayed()).toBeFalsy();
+                    element.all(by.repeater('projectFeed in projectFeeds')).then(function (projectFeeds) {
+                        expect(projectFeeds.length).toBe(count);
+                    });
+                });
+            });
+        });
+    });
+
+    it('should allow the user to delete a project feed', function() {
+        element.all(by.repeater('projectFeed in projectFeeds')).then(function(projectFeeds) {
+            var count = projectFeeds.length;
+
+            projectFeeds[0].element(by.css('button.btn-danger')).click().then(function () {
+                browser.sleep(200);
+
+                $('#deleteProjectFeedsModal button.btn-danger').click().then(function () {
+                    browser.sleep(200);
+                    expect(element(by.id('deleteProjectFeedsModal')).isDisplayed()).toBeFalsy();
+                    element.all(by.repeater('projectFeed in projectFeeds')).then(function (projectFeeds) {
+                        expect(projectFeeds.length).toBe(count - 1);
+                    });
+                });
+            });
+        });
     });
 });
 

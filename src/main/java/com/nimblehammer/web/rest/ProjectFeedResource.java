@@ -112,6 +112,12 @@ public class ProjectFeedResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        for (TrackerFeed trackerFeed : projectFeed.getTrackerFeeds()) {
+            if (trackerFeed.getProjectFeed() != null) {
+                trackerFeed.getProjectFeed().setTrackerFeeds(null);
+            }
+        }
+
         return new ResponseEntity<>(projectFeed, HttpStatus.OK);
     }
 

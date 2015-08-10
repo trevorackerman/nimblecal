@@ -60,4 +60,20 @@ angular.module('nimblecalApp')
                     });
             }
         };
+
+        $scope.delete = function (id) {
+            ProjectFeed.get({id: id}, function(result) {
+                $scope.projectFeed = result;
+                $('#deleteProjectFeedsModal').modal('show');
+            });
+        };
+
+        $scope.confirmDelete = function (id) {
+            ProjectFeed.delete({id: id},
+                function () {
+                    $scope.loadAll();
+                    $('#deleteProjectFeedsModal').modal('hide');
+                    $scope.clear();
+                });
+        };
 });

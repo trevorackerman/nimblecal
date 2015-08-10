@@ -4,10 +4,11 @@
             "home": {
                 "title": "Project Feeds",
                 "createLabel": "Create a new Project Feed",
-                "createOrEditLabel": "Create or edit a Project Feed"
+                "createOrEditLabel": "Create or edit a Project Feed",
+                "deleteLabel": "Delete"
             },
             "delete": {
-                "question": "Are you sure you want to delete Project Feed {{ id }}?"
+                "question": "Are you sure you want to delete Project Feed '{{ title }}'?"
             },
             "detail": {
                 "title": "Project Feeds"
