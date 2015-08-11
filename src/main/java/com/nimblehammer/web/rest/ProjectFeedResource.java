@@ -1,6 +1,7 @@
 package com.nimblehammer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.nimblehammer.domain.GitHubFeed;
 import com.nimblehammer.domain.ProjectFeed;
 import com.nimblehammer.domain.TrackerFeed;
 import com.nimblehammer.repository.ProjectFeedRepository;
@@ -90,6 +91,11 @@ public class ProjectFeedResource {
             List<TrackerFeed> trackerFeeds = projectFeed.getTrackerFeeds();
             for (TrackerFeed trackerFeed : trackerFeeds) {
                 trackerFeed.setProjectFeed(null);
+            }
+
+            List<GitHubFeed> gitHubFeeds = projectFeed.getGitHubFeeds();
+            for (GitHubFeed gitHubFeed : gitHubFeeds) {
+                gitHubFeed.setProjectFeed(null);
             }
         }
 

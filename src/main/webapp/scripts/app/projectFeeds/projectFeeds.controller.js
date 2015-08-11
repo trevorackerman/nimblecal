@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('ProjectFeedsController', function ($scope, $http, ProjectFeed, TrackerFeed, Principal, User) {
+    .controller('ProjectFeedsController', function ($scope, $http, ProjectFeed, TrackerFeed, GitHubFeed, Principal, User) {
         $scope.projectFeeds = [];
 
         Principal.identity().then(function (account) {
@@ -14,6 +14,7 @@ angular.module('nimblecalApp')
         $scope.clear = function () {
             $scope.projectFeed = {title: null, id: null};
             $scope.trackerFeed = {projectId: null, id: null, projectFeed: $scope.projectFeed};
+            $scope.gitHubFeed = {id: null, repositoryURL: null, repositoryOwner: null, repositoryName: null, projectFeed: $scope.projectFeed};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
         };
@@ -53,7 +54,13 @@ angular.module('nimblecalApp')
                             function (newProjectFeed) {
                                 $scope.projectFeed = newProjectFeed;
                                 $scope.trackerFeed.projectFeed = $scope.projectFeed;
+                                $scope.gitHubFeed.projectFeed = $scope.projectFeed;
                                 TrackerFeed.save($scope.trackerFeed, function() {
+                                    $scope.refresh();
+                                });
+                                $scope.gitHubFeed.repositoryURL = "https://github.com/" + $scope.gitHubFeed.repositoryOwner +
+                                    "/" + $scope.gitHubFeed.repositoryName;
+                                GitHubFeed.save($scope.gitHubFeed, function() {
                                     $scope.refresh();
                                 });
                             });

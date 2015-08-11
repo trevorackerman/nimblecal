@@ -34,7 +34,7 @@ public class GitHubFeedResourceTest {
     private GitHubFeedRepository gitHubFeedRepository;
 
     @Mock
-    private GitHubService githubService;
+    private GitHubService gitHubService;
 
     @Mock
     private CalendarEventFactory calendarEventFactory;
@@ -140,8 +140,13 @@ public class GitHubFeedResourceTest {
         restGithubFeedMockMvc.perform(get("/api/gitHubFeeds/{id}", existingGitHubFeed.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(existingGitHubFeed.getId().intValue()))
-            .andExpect(jsonPath("$.repositoryURL").value("https://www.example.com/johnwayne/projectx"));
+            .andExpect(content().string("{" +
+                    "\"id\":100," +
+                    "\"repositoryURL\":\"https://www.example.com/johnwayne/projectx\"," +
+                    "\"repositoryName\":\"projectx\"," +
+                    "\"repositoryOwner\":\"johnwayne\"," +
+                    "\"projectFeed\":null" +
+                "}"));
 
         verify(gitHubFeedRepository).findOne(existingGitHubFeed.getId());
     }
@@ -208,7 +213,7 @@ public class GitHubFeedResourceTest {
         gitHubEvent1.setPayload(gitHubPayload);
 
         List<GitHubEvent> gitHubEvents = Arrays.asList(gitHubEvent1);
-        when(githubService.getRepositoryEvents("johnwayne", "projectx")).thenReturn(gitHubEvents);
+        when(gitHubService.getRepositoryEvents("johnwayne", "projectx")).thenReturn(gitHubEvents);
         when(calendarEventFactory.create(gitHubEvent1)).thenCallRealMethod();
         when(calendarEventFactory.create(gitHubEvent1, gitHubCommit1)).thenCallRealMethod();
 
@@ -223,7 +228,7 @@ public class GitHubFeedResourceTest {
             .andExpect(jsonPath("$.[*].start").value("2015-07-06T12:00:00"));
 
         verify(gitHubFeedRepository).findOne(100L);
-        verify(githubService).getRepositoryEvents("johnwayne", "projectx");
+        verify(gitHubService).getRepositoryEvents("johnwayne", "projectx");
         verify(calendarEventFactory).create(gitHubEvent1);
         verify(calendarEventFactory).create(gitHubEvent1, gitHubCommit1);
     }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A GithubFeed.
+ * A GitHubFeed.
  */
 @Entity
 @Table(name = "GITHUBFEED")
@@ -98,7 +98,7 @@ public class GitHubFeed implements Serializable {
 
     @Override
     public String toString() {
-        return "GithubFeed{" +
+        return "GitHubFeed{" +
             "id=" + id +
             ", repositoryURL='" + repositoryURL + '\'' +
             ", repositoryName='" + repositoryName + '\'' +

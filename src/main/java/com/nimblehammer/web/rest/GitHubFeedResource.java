@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * REST controller for managing GithubFeed.
+ * REST controller for managing GitHubFeed.
  */
 @RestController
 @RequestMapping("/api")
@@ -47,7 +47,7 @@ public class GitHubFeedResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> create(@Valid @RequestBody GitHubFeed gitHubFeed) throws URISyntaxException {
-        log.debug("REST request to save GithubFeed : {}", gitHubFeed);
+        log.debug("REST request to save GitHubFeed : {}", gitHubFeed);
         if (gitHubFeed.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new gitHubFeed cannot already have an ID").build();
         }
@@ -63,7 +63,7 @@ public class GitHubFeedResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> update(@Valid @RequestBody GitHubFeed gitHubFeed) throws URISyntaxException {
-        log.debug("REST request to update GithubFeed : {}", gitHubFeed);
+        log.debug("REST request to update GitHubFeed : {}", gitHubFeed);
         if (gitHubFeed.getId() == null) {
             return create(gitHubFeed);
         }
@@ -79,7 +79,7 @@ public class GitHubFeedResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<GitHubFeed> getAll() {
-        log.debug("REST request to get all GithubFeeds");
+        log.debug("REST request to get all GitHubFeeds");
         return gitHubFeedRepository.findAll();
     }
 
@@ -91,7 +91,7 @@ public class GitHubFeedResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<GitHubFeed> get(@PathVariable Long id) {
-        log.debug("REST request to get GithubFeed : {}", id);
+        log.debug("REST request to get GitHubFeed : {}", id);
         return Optional.ofNullable(gitHubFeedRepository.findOne(id))
             .map(gitHubFeed -> new ResponseEntity<>(
                 gitHubFeed,
@@ -107,7 +107,7 @@ public class GitHubFeedResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public void delete(@PathVariable Long id) {
-        log.debug("REST request to delete GithubFeed : {}", id);
+        log.debug("REST request to delete GitHubFeed : {}", id);
         gitHubFeedRepository.delete(id);
     }
 

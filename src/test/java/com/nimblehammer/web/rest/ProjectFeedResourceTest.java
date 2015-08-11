@@ -1,9 +1,7 @@
 package com.nimblehammer.web.rest;
 
 import com.nimblehammer.Application;
-import com.nimblehammer.domain.ProjectFeed;
-import com.nimblehammer.domain.TrackerFeed;
-import com.nimblehammer.domain.User;
+import com.nimblehammer.domain.*;
 import com.nimblehammer.repository.ProjectFeedRepository;
 import com.nimblehammer.repository.TrackerFeedRepository;
 import com.nimblehammer.service.ProjectFeedService;
@@ -129,6 +127,17 @@ public class ProjectFeedResourceTest {
 
         projectFeed.setTrackerFeeds(trackerFeeds);
 
+        GitHubFeed githubFeed = new GitHubFeed();
+        githubFeed.setId(314L);
+        githubFeed.setRepositoryName("truegrit");
+        githubFeed.setRepositoryOwner("johnwayne");
+        githubFeed.setRepositoryURL("https://example.com/johnwayne/truegrit");
+
+        List<GitHubFeed> githubFeeds = new ArrayList<>();
+        githubFeeds.add(githubFeed);
+
+        projectFeed.setGitHubFeeds(githubFeeds);
+
         List<ProjectFeed> projectFeeds = new ArrayList<>();
         projectFeeds.add(projectFeed);
 
@@ -141,7 +150,11 @@ public class ProjectFeedResourceTest {
         .andExpect(jsonPath("$.[*].id").value(2345))
         .andExpect(jsonPath("$.[*].title").value(hasItem("blah")))
         .andExpect(jsonPath("$.[*].trackerFeeds[*].id").value(1))
-        .andExpect(jsonPath("$.[*].trackerFeeds[*].projectId").value("442903"));
+        .andExpect(jsonPath("$.[*].trackerFeeds[*].projectId").value("442903"))
+        .andExpect(jsonPath("$.[*].gitHubFeeds[*].id").value(314))
+        .andExpect(jsonPath("$.[*].gitHubFeeds[*].repositoryName").value("truegrit"))
+        .andExpect(jsonPath("$.[*].gitHubFeeds[*].repositoryOwner").value("johnwayne"))
+        .andExpect(jsonPath("$.[*].gitHubFeeds[*].repositoryURL").value("https://example.com/johnwayne/truegrit"));
     }
 
     @Test

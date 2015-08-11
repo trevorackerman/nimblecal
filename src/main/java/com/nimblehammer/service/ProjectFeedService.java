@@ -2,6 +2,7 @@ package com.nimblehammer.service;
 
 import com.nimblehammer.domain.ProjectFeed;
 import com.nimblehammer.domain.TrackerFeed;
+import com.nimblehammer.repository.GitHubFeedRepository;
 import com.nimblehammer.repository.ProjectFeedRepository;
 import com.nimblehammer.repository.TrackerFeedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ProjectFeedService {
 
     @Autowired
     private TrackerFeedRepository trackerFeedRepository;
+
+    @Autowired
+    private GitHubFeedRepository gitHubFeedRepository;
 
     public ProjectFeed save(ProjectFeed projectFeed) {
         if (projectFeed.getOwner() == null) {
@@ -85,6 +89,7 @@ public class ProjectFeedService {
 
         for (ProjectFeed projectFeed : projectFeeds) {
             projectFeed.setTrackerFeeds(trackerFeedRepository.findByProjectFeed(projectFeed));
+            projectFeed.setGitHubFeeds(gitHubFeedRepository.findByProjectFeed(projectFeed));
         }
 
         return projectFeeds;

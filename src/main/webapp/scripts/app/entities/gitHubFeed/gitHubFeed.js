@@ -13,7 +13,7 @@ angular.module('nimblecalApp')
                 views: {
                     'content@': {
                         templateUrl: 'scripts/app/entities/gitHubFeed/gitHubFeeds.html',
-                        controller: 'GithubFeedController'
+                        controller: 'GitHubFeedController'
                     }
                 },
                 resolve: {
@@ -33,7 +33,7 @@ angular.module('nimblecalApp')
                 views: {
                     'content@': {
                         templateUrl: 'scripts/app/entities/gitHubFeed/gitHubFeed-detail.html',
-                        controller: 'GithubFeedDetailController'
+                        controller: 'GitHubFeedDetailController'
                     }
                 },
                 resolve: {

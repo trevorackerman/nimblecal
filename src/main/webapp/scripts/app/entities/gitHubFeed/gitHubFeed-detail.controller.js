@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('GithubFeedDetailController', function ($scope, $stateParams, GithubFeed) {
+    .controller('GitHubFeedDetailController', function ($scope, $stateParams, GitHubFeed) {
         $scope.gitHubFeed = {};
         $scope.load = function (id) {
-            GithubFeed.get({id: id}, function(result) {
+            GitHubFeed.get({id: id}, function(result) {
               $scope.gitHubFeed = result;
             });
         };

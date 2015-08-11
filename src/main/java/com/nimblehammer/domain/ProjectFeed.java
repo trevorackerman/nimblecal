@@ -31,6 +31,9 @@ public class ProjectFeed implements Serializable {
     @OneToMany(mappedBy = "projectFeed", cascade = CascadeType.ALL)
     private List<TrackerFeed> trackerFeeds = new ArrayList<>();
 
+    @OneToMany(mappedBy = "projectFeed", cascade = CascadeType.ALL)
+    private List<GitHubFeed> gitHubFeeds;
+
     public Long getId() {
         return id;
     }
@@ -61,6 +64,15 @@ public class ProjectFeed implements Serializable {
 
     public void setTrackerFeeds(List<TrackerFeed> trackerFeeds) {
         this.trackerFeeds = trackerFeeds;
+    }
+
+
+    public void setGitHubFeeds(List<GitHubFeed> gitHubFeeds) {
+        this.gitHubFeeds = gitHubFeeds;
+    }
+
+    public List<GitHubFeed> getGitHubFeeds() {
+        return gitHubFeeds;
     }
 
     @Override

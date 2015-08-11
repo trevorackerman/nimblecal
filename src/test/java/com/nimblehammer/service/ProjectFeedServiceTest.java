@@ -1,8 +1,7 @@
 package com.nimblehammer.service;
 
-import com.nimblehammer.domain.ProjectFeed;
-import com.nimblehammer.domain.TrackerFeed;
-import com.nimblehammer.domain.User;
+import com.nimblehammer.domain.*;
+import com.nimblehammer.repository.GitHubFeedRepository;
 import com.nimblehammer.repository.ProjectFeedRepository;
 import com.nimblehammer.repository.TrackerFeedRepository;
 import org.junit.Before;
@@ -26,6 +25,9 @@ public class ProjectFeedServiceTest {
 
     @Mock
     private TrackerFeedRepository trackerFeedRepository;
+
+    @Mock
+    private GitHubFeedRepository gitHubFeedRepository;
 
     @InjectMocks
     private ProjectFeedService projectFeedService;
@@ -236,16 +238,33 @@ public class ProjectFeedServiceTest {
         List<TrackerFeed> trackerFeeds2 = new ArrayList<>();
         trackerFeeds2.add(trackerFeed2);
 
+        GitHubFeed githubFeed = new GitHubFeed();
+        githubFeed.setId(314L);
+        githubFeed.setRepositoryOwner("jackiechan");
+        githubFeed.setRepositoryName("drunkenmaster");
+        githubFeed.setRepositoryURL("https://example.com/jackiechan/drunkenmaster");
+
+        List<GitHubFeed> githubFeeds = new ArrayList<>();
+        githubFeeds.add(githubFeed);
 
         when(trackerFeedRepository.findByProjectFeed(projectFeed1)).thenReturn(trackerFeeds1);
         when(trackerFeedRepository.findByProjectFeed(projectFeed2)).thenReturn(trackerFeeds2);
+        when(gitHubFeedRepository.findByProjectFeed(projectFeed1)).thenReturn(githubFeeds);
+
         when(projectFeedRepository.findAllForCurrentUser()).thenReturn(projectFeeds);
 
         List<ProjectFeed> fetchedProjectFeeds = projectFeedService.getAllForCurrentUser();
 
         assertThat(fetchedProjectFeeds, containsInAnyOrder(projectFeed1, projectFeed2));
 
-        assertThat(fetchedProjectFeeds.get(0).getId(), equalTo(fetchedProjectFeeds.get(0).getTrackerFeeds().get(0).getId()));
-        assertThat(fetchedProjectFeeds.get(1).getId(), equalTo(fetchedProjectFeeds.get(1).getTrackerFeeds().get(0).getId()));
+        ProjectFeed fetched1 = fetchedProjectFeeds.get(0);
+        ProjectFeed fetched2 = fetchedProjectFeeds.get(1);
+        assertThat(fetched1.getId(), equalTo(fetched1.getTrackerFeeds().get(0).getId()));
+        assertThat(fetched2.getId(), equalTo(fetched2.getTrackerFeeds().get(0).getId()));
+
+        assertThat(fetched1.getGitHubFeeds().get(0).getId(), equalTo(314L));
+        assertThat(fetched1.getGitHubFeeds().get(0).getRepositoryOwner(), equalTo("jackiechan"));
+        assertThat(fetched1.getGitHubFeeds().get(0).getRepositoryName(), equalTo("drunkenmaster"));
+        assertThat(fetched1.getGitHubFeeds().get(0).getRepositoryURL(), equalTo("https://example.com/jackiechan/drunkenmaster"));
     }
 }

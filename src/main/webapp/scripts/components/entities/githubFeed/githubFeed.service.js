@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .factory('GithubFeed', function ($resource) {
+    .factory('GitHubFeed', function ($resource) {
         return $resource('api/gitHubFeeds/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {

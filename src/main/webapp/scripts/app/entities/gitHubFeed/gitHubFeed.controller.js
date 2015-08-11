@@ -1,31 +1,31 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('GithubFeedController', function ($scope, GithubFeed, ProjectFeed) {
+    .controller('GitHubFeedController', function ($scope, GitHubFeed, ProjectFeed) {
         $scope.gitHubFeeds = [];
         $scope.projectFeeds = ProjectFeed.query();
         $scope.loadAll = function() {
-            GithubFeed.query(function(result) {
+            GitHubFeed.query(function(result) {
                $scope.gitHubFeeds = result;
             });
         };
         $scope.loadAll();
 
         $scope.showUpdate = function (id) {
-            GithubFeed.get({id: id}, function(result) {
+            GitHubFeed.get({id: id}, function(result) {
                 $scope.gitHubFeed = result;
-                $('#saveGithubFeedModal').modal('show');
+                $('#saveGitHubFeedModal').modal('show');
             });
         };
 
         $scope.save = function () {
             if ($scope.gitHubFeed.id != null) {
-                GithubFeed.update($scope.gitHubFeed,
+                GitHubFeed.update($scope.gitHubFeed,
                     function () {
                         $scope.refresh();
                     });
             } else {
-                GithubFeed.save($scope.gitHubFeed,
+                GitHubFeed.save($scope.gitHubFeed,
                     function () {
                         $scope.refresh();
                     });
@@ -33,24 +33,24 @@ angular.module('nimblecalApp')
         };
 
         $scope.delete = function (id) {
-            GithubFeed.get({id: id}, function(result) {
+            GitHubFeed.get({id: id}, function(result) {
                 $scope.gitHubFeed = result;
-                $('#deleteGithubFeedConfirmation').modal('show');
+                $('#deleteGitHubFeedConfirmation').modal('show');
             });
         };
 
         $scope.confirmDelete = function (id) {
-            GithubFeed.delete({id: id},
+            GitHubFeed.delete({id: id},
                 function () {
                     $scope.loadAll();
-                    $('#deleteGithubFeedConfirmation').modal('hide');
+                    $('#deleteGitHubFeedConfirmation').modal('hide');
                     $scope.clear();
                 });
         };
 
         $scope.refresh = function () {
             $scope.loadAll();
-            $('#saveGithubFeedModal').modal('hide');
+            $('#saveGitHubFeedModal').modal('hide');
             $scope.clear();
         };
 

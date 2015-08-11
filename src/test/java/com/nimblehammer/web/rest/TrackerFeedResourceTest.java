@@ -90,7 +90,8 @@ public class TrackerFeedResourceTest {
                 "\"id\":2," +
                 "\"title\":\"Project Title\"," +
                 "\"owner\":null," +
-                "\"trackerFeeds\":null" +
+                "\"trackerFeeds\":null," +
+                "\"gitHubFeeds\":null" +
                 "}" +
                 "}]"));
     }
@@ -118,7 +119,8 @@ public class TrackerFeedResourceTest {
                 "\"id\":2," +
                 "\"title\":\"Project Title\"," +
                 "\"owner\":null," +
-                "\"trackerFeeds\":null" +
+                "\"trackerFeeds\":null," +
+                "\"gitHubFeeds\":null" +
                 "}" +
                 "}"));
     }

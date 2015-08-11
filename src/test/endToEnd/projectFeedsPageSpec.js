@@ -35,15 +35,15 @@ describe('Project Feeds Page', function() {
         element(by.model('projectFeed.title')).sendKeys('Concord-' + time);
         element(by.model('trackerFeed.projectId')).sendKeys('442903-' + time);
         browser.sleep(10);
-        element(by.model('gitHubFeed.repositoryURL')).sendKeys("https://example.com/githubrepo");
+        element(by.model('gitHubFeed.repositoryOwner')).sendKeys("theduke");
+        element(by.model('gitHubFeed.repositoryName')).sendKeys("truegrit");
 
         $('form button.btn-primary').click();
         browser.sleep(250);
 
         $$('table tbody tr').count().then(function(currentCount) {
             expect(currentCount).toEqual(originalProjectCount + 1);
-            expect($$('table tbody tr').getText()).toContain("Concord-" + time + "\n442903-" + time +"\nDelete");
-            //expect(projectRow.$$('td').get(2).getText()).toEqual('https://github.com/cloudfoundry/loggregator');
+            expect($$('table tbody tr').getText()).toContain("Concord-" + time + "\n442903-" + time +"\nhttps://github.com/theduke/truegrit\nDelete");
         });
 
     });
