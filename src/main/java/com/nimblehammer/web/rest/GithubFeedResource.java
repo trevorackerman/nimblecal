@@ -2,10 +2,10 @@ package com.nimblehammer.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.nimblehammer.domain.CalendarEvent;
-import com.nimblehammer.domain.GithubFeed;
-import com.nimblehammer.domain.github.GitHubEvent;
+import com.nimblehammer.domain.GitHubFeed;
+import com.nimblehammer.domain.gitHub.GitHubEvent;
 import com.nimblehammer.domain.util.CalendarEventFactory;
-import com.nimblehammer.repository.GithubFeedRepository;
+import com.nimblehammer.repository.GitHubFeedRepository;
 import com.nimblehammer.service.GitHubService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +27,9 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-public class GithubFeedResource {
+public class GitHubFeedResource {
 
-    private final Logger log = LoggerFactory.getLogger(GithubFeedResource.class);
+    private final Logger log = LoggerFactory.getLogger(GitHubFeedResource.class);
 
     @Autowired
     private GitHubService gitHubService;
@@ -37,95 +37,95 @@ public class GithubFeedResource {
     private CalendarEventFactory calendarEventFactory = new CalendarEventFactory();
 
     @Autowired
-    private GithubFeedRepository githubFeedRepository;
+    private GitHubFeedRepository gitHubFeedRepository;
 
     /**
-     * POST  /githubFeeds -> Create a new githubFeed.
+     * POST  /gitHubFeeds -> Create a new gitHubFeed.
      */
-    @RequestMapping(value = "/githubFeeds",
+    @RequestMapping(value = "/gitHubFeeds",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> create(@Valid @RequestBody GithubFeed githubFeed) throws URISyntaxException {
-        log.debug("REST request to save GithubFeed : {}", githubFeed);
-        if (githubFeed.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new githubFeed cannot already have an ID").build();
+    public ResponseEntity<Void> create(@Valid @RequestBody GitHubFeed gitHubFeed) throws URISyntaxException {
+        log.debug("REST request to save GithubFeed : {}", gitHubFeed);
+        if (gitHubFeed.getId() != null) {
+            return ResponseEntity.badRequest().header("Failure", "A new gitHubFeed cannot already have an ID").build();
         }
-        githubFeedRepository.save(githubFeed);
-        return ResponseEntity.created(new URI("/api/githubFeeds/" + githubFeed.getId())).build();
+        gitHubFeedRepository.save(gitHubFeed);
+        return ResponseEntity.created(new URI("/api/gitHubFeeds/" + gitHubFeed.getId())).build();
     }
 
     /**
-     * PUT  /githubFeeds -> Updates an existing githubFeed.
+     * PUT  /gitHubFeeds -> Updates an existing gitHubFeed.
      */
-    @RequestMapping(value = "/githubFeeds",
+    @RequestMapping(value = "/gitHubFeeds",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> update(@Valid @RequestBody GithubFeed githubFeed) throws URISyntaxException {
-        log.debug("REST request to update GithubFeed : {}", githubFeed);
-        if (githubFeed.getId() == null) {
-            return create(githubFeed);
+    public ResponseEntity<Void> update(@Valid @RequestBody GitHubFeed gitHubFeed) throws URISyntaxException {
+        log.debug("REST request to update GithubFeed : {}", gitHubFeed);
+        if (gitHubFeed.getId() == null) {
+            return create(gitHubFeed);
         }
-        githubFeedRepository.save(githubFeed);
+        gitHubFeedRepository.save(gitHubFeed);
         return ResponseEntity.ok().build();
     }
 
     /**
-     * GET  /githubFeeds -> get all the githubFeeds.
+     * GET  /gitHubFeeds -> get all the gitHubFeeds.
      */
-    @RequestMapping(value = "/githubFeeds",
+    @RequestMapping(value = "/gitHubFeeds",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GithubFeed> getAll() {
+    public List<GitHubFeed> getAll() {
         log.debug("REST request to get all GithubFeeds");
-        return githubFeedRepository.findAll();
+        return gitHubFeedRepository.findAll();
     }
 
     /**
-     * GET  /githubFeeds/:id -> get the "id" githubFeed.
+     * GET  /gitHubFeeds/:id -> get the "id" gitHubFeed.
      */
-    @RequestMapping(value = "/githubFeeds/{id}",
+    @RequestMapping(value = "/gitHubFeeds/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<GithubFeed> get(@PathVariable Long id) {
+    public ResponseEntity<GitHubFeed> get(@PathVariable Long id) {
         log.debug("REST request to get GithubFeed : {}", id);
-        return Optional.ofNullable(githubFeedRepository.findOne(id))
-            .map(githubFeed -> new ResponseEntity<>(
-                githubFeed,
+        return Optional.ofNullable(gitHubFeedRepository.findOne(id))
+            .map(gitHubFeed -> new ResponseEntity<>(
+                gitHubFeed,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
-     * DELETE  /githubFeeds/:id -> delete the "id" githubFeed.
+     * DELETE  /gitHubFeeds/:id -> delete the "id" gitHubFeed.
      */
-    @RequestMapping(value = "/githubFeeds/{id}",
+    @RequestMapping(value = "/gitHubFeeds/{id}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete GithubFeed : {}", id);
-        githubFeedRepository.delete(id);
+        gitHubFeedRepository.delete(id);
     }
 
-    @RequestMapping(value = "/githubFeeds/{id}/events",
+    @RequestMapping(value = "/gitHubFeeds/{id}/events",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public List<CalendarEvent> getEvents(@PathVariable String id) {
 
-        GithubFeed githubFeed = githubFeedRepository.findOne(new Long(id));
+        GitHubFeed gitHubFeed = gitHubFeedRepository.findOne(new Long(id));
 
-        if (githubFeed == null) {
+        if (gitHubFeed == null) {
             return null;
         }
 
         List<CalendarEvent> calendarEvents = new ArrayList<>();
 
-        List<GitHubEvent> events = gitHubService.getRepositoryEvents(githubFeed.getRepositoryOwner(), githubFeed.getRepositoryName());
+        List<GitHubEvent> events = gitHubService.getRepositoryEvents(gitHubFeed.getRepositoryOwner(), gitHubFeed.getRepositoryName());
 
         for (GitHubEvent event : events) {
             calendarEvents.addAll(calendarEventFactory.create(event));

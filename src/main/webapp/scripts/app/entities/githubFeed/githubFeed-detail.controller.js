@@ -2,10 +2,10 @@
 
 angular.module('nimblecalApp')
     .controller('GithubFeedDetailController', function ($scope, $stateParams, GithubFeed) {
-        $scope.githubFeed = {};
+        $scope.gitHubFeed = {};
         $scope.load = function (id) {
             GithubFeed.get({id: id}, function(result) {
-              $scope.githubFeed = result;
+              $scope.gitHubFeed = result;
             });
         };
         $scope.load($stateParams.id);

@@ -3,42 +3,42 @@
 angular.module('nimblecalApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('githubFeed', {
+            .state('gitHubFeed', {
                 parent: 'entity',
-                url: '/githubFeed',
+                url: '/gitHubFeed',
                 data: {
                     roles: ['ROLE_ADMIN'],
-                    pageTitle: 'nimblecalApp.githubFeed.home.title'
+                    pageTitle: 'nimblecalApp.gitHubFeed.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/githubFeed/githubFeeds.html',
+                        templateUrl: 'scripts/app/entities/gitHubFeed/gitHubFeeds.html',
                         controller: 'GithubFeedController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('githubFeed');
+                        $translatePartialLoader.addPart('gitHubFeed');
                         return $translate.refresh();
                     }]
                 }
             })
-            .state('githubFeedDetail', {
+            .state('gitHubFeedDetail', {
                 parent: 'entity',
-                url: '/githubFeed/:id',
+                url: '/gitHubFeed/:id',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'nimblecalApp.githubFeed.detail.title'
+                    pageTitle: 'nimblecalApp.gitHubFeed.detail.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/githubFeed/githubFeed-detail.html',
+                        templateUrl: 'scripts/app/entities/gitHubFeed/gitHubFeed-detail.html',
                         controller: 'GithubFeedDetailController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('githubFeed');
+                        $translatePartialLoader.addPart('gitHubFeed');
                         return $translate.refresh();
                     }]
                 }

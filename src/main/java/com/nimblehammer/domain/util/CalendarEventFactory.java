@@ -3,8 +3,8 @@ package com.nimblehammer.domain.util;
 import com.nimblehammer.domain.CalendarEvent;
 import com.nimblehammer.domain.TrackerActivity;
 import com.nimblehammer.domain.TrackerResource;
-import com.nimblehammer.domain.github.GitHubCommit;
-import com.nimblehammer.domain.github.GitHubEvent;
+import com.nimblehammer.domain.gitHub.GitHubCommit;
+import com.nimblehammer.domain.gitHub.GitHubEvent;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

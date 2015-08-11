@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "GITHUBFEED")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class GithubFeed implements Serializable {
+public class GitHubFeed implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -84,9 +84,9 @@ public class GithubFeed implements Serializable {
             return false;
         }
 
-        GithubFeed githubFeed = (GithubFeed) o;
+        GitHubFeed gitHubFeed = (GitHubFeed) o;
 
-        if ( ! Objects.equals(id, githubFeed.id)) return false;
+        if ( ! Objects.equals(id, gitHubFeed.id)) return false;
 
         return true;
     }

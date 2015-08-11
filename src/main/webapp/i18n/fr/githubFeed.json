@@ -1,6 +1,6 @@
 {
     "nimblecalApp": {
-        "githubFeed" : {
+        "gitHubFeed": {
             "home": {
                 "title": "GithubFeeds",
                 "createLabel": "Créer un nouveau GithubFeed",

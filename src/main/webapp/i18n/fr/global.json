@@ -7,7 +7,7 @@
             "entities": {
                 "main": "Entités",
                 "bitbucketFeed": "BitbucketFeed",
-                "githubFeed": "GithubFeed",
+                "gitHubFeed": "GithubFeed",
                 "jiraFeed": "JiraFeed",
                 "trackerFeed": "TrackerFeed",
                 "projectFeed": "Project Feed",

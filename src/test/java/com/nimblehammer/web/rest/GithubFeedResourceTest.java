@@ -1,9 +1,9 @@
 package com.nimblehammer.web.rest;
 
-import com.nimblehammer.domain.GithubFeed;
-import com.nimblehammer.domain.github.*;
+import com.nimblehammer.domain.GitHubFeed;
+import com.nimblehammer.domain.gitHub.*;
 import com.nimblehammer.domain.util.CalendarEventFactory;
-import com.nimblehammer.repository.GithubFeedRepository;
+import com.nimblehammer.repository.GitHubFeedRepository;
 import com.nimblehammer.service.GitHubService;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,12 +26,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class GithubFeedResourceTest {
+public class GitHubFeedResourceTest {
 
     private static final String UPDATED_REPOSITORY_URL = "UPDATED_TEXT";
 
     @Mock
-    private GithubFeedRepository githubFeedRepository;
+    private GitHubFeedRepository gitHubFeedRepository;
 
     @Mock
     private GitHubService githubService;
@@ -42,134 +42,134 @@ public class GithubFeedResourceTest {
     private MockMvc restGithubFeedMockMvc;
 
     @InjectMocks
-    private GithubFeedResource githubFeedResource;
+    private GitHubFeedResource gitHubFeedResource;
 
-    private GithubFeed existingGithubFeed;
+    private GitHubFeed existingGitHubFeed;
 
-    private List<GithubFeed> githubFeeds = new ArrayList<>();
+    private List<GitHubFeed> gitHubFeeds = new ArrayList<>();
 
     @Before
     public void before() {
         initMocks(this);
-        this.restGithubFeedMockMvc = MockMvcBuilders.standaloneSetup(githubFeedResource).build();
+        this.restGithubFeedMockMvc = MockMvcBuilders.standaloneSetup(gitHubFeedResource).build();
 
-        existingGithubFeed = new GithubFeed();
-        existingGithubFeed.setRepositoryURL("https://www.example.com/johnwayne/projectx");
-        existingGithubFeed.setRepositoryName("projectx");
-        existingGithubFeed.setRepositoryOwner("johnwayne");
-        existingGithubFeed.setId(100L);
+        existingGitHubFeed = new GitHubFeed();
+        existingGitHubFeed.setRepositoryURL("https://www.example.com/johnwayne/projectx");
+        existingGitHubFeed.setRepositoryName("projectx");
+        existingGitHubFeed.setRepositoryOwner("johnwayne");
+        existingGitHubFeed.setId(100L);
 
-        githubFeeds.add(existingGithubFeed);
+        gitHubFeeds.add(existingGitHubFeed);
 
-        when(githubFeedRepository.findOne(100L)).thenReturn(existingGithubFeed);
-        when(githubFeedRepository.findAll()).thenReturn(githubFeeds);
+        when(gitHubFeedRepository.findOne(100L)).thenReturn(existingGitHubFeed);
+        when(gitHubFeedRepository.findAll()).thenReturn(gitHubFeeds);
     }
 
     @Test
     public void createGithubFeed() throws Exception {
-        GithubFeed githubFeed = new GithubFeed();
-        githubFeed.setRepositoryName("javaproject");
-        githubFeed.setRepositoryOwner("duke");
-        githubFeed.setRepositoryURL("https://example.com/duke/javaproject");
+        GitHubFeed gitHubFeed = new GitHubFeed();
+        gitHubFeed.setRepositoryName("javaproject");
+        gitHubFeed.setRepositoryOwner("duke");
+        gitHubFeed.setRepositoryURL("https://example.com/duke/javaproject");
 
-        restGithubFeedMockMvc.perform(post("/api/githubFeeds")
+        restGithubFeedMockMvc.perform(post("/api/gitHubFeeds")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
+            .content(TestUtil.convertObjectToJsonBytes(gitHubFeed)))
                 .andExpect(status().isCreated());
 
-        verify(githubFeedRepository).save(githubFeed);
+        verify(gitHubFeedRepository).save(gitHubFeed);
     }
 
     @Test
     public void checkRepositoryURLIsRequired() throws Exception {
-        GithubFeed githubFeed = new GithubFeed();
-        githubFeed.setRepositoryName("javaproject");
-        githubFeed.setRepositoryOwner("duke");
-        githubFeed.setRepositoryURL(null);
+        GitHubFeed gitHubFeed = new GitHubFeed();
+        gitHubFeed.setRepositoryName("javaproject");
+        gitHubFeed.setRepositoryOwner("duke");
+        gitHubFeed.setRepositoryURL(null);
 
-        restGithubFeedMockMvc.perform(post("/api/githubFeeds")
+        restGithubFeedMockMvc.perform(post("/api/gitHubFeeds")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
+                .content(TestUtil.convertObjectToJsonBytes(gitHubFeed)))
                 .andExpect(status().isBadRequest());
 
-        verifyZeroInteractions(githubFeedRepository);
+        verifyZeroInteractions(gitHubFeedRepository);
     }
 
     @Test
     public void checkRepositoryNameIsRequired() throws Exception {
-        GithubFeed githubFeed = new GithubFeed();
-        githubFeed.setRepositoryName(null);
-        githubFeed.setRepositoryOwner("duke");
-        githubFeed.setRepositoryURL("https://example.com/duke/javaproject");
+        GitHubFeed gitHubFeed = new GitHubFeed();
+        gitHubFeed.setRepositoryName(null);
+        gitHubFeed.setRepositoryOwner("duke");
+        gitHubFeed.setRepositoryURL("https://example.com/duke/javaproject");
 
-        restGithubFeedMockMvc.perform(post("/api/githubFeeds")
+        restGithubFeedMockMvc.perform(post("/api/gitHubFeeds")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
+                .content(TestUtil.convertObjectToJsonBytes(gitHubFeed)))
             .andExpect(status().isBadRequest());
 
-        verifyZeroInteractions(githubFeedRepository);
+        verifyZeroInteractions(gitHubFeedRepository);
     }
 
     @Test
     public void checkRepositoryOwnerIsRequired() throws Exception {
-        GithubFeed githubFeed = new GithubFeed();
-        githubFeed.setRepositoryName("javaproject");
-        githubFeed.setRepositoryOwner(null);
-        githubFeed.setRepositoryURL("https://example.com/duke/javaproject");
+        GitHubFeed gitHubFeed = new GitHubFeed();
+        gitHubFeed.setRepositoryName("javaproject");
+        gitHubFeed.setRepositoryOwner(null);
+        gitHubFeed.setRepositoryURL("https://example.com/duke/javaproject");
 
-        restGithubFeedMockMvc.perform(post("/api/githubFeeds")
+        restGithubFeedMockMvc.perform(post("/api/gitHubFeeds")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(githubFeed)))
+                .content(TestUtil.convertObjectToJsonBytes(gitHubFeed)))
                 .andExpect(status().isBadRequest());
 
-        verifyZeroInteractions(githubFeedRepository);
+        verifyZeroInteractions(gitHubFeedRepository);
     }
 
     @Test
     public void getAllGithubFeeds() throws Exception {
-        restGithubFeedMockMvc.perform(get("/api/githubFeeds"))
+        restGithubFeedMockMvc.perform(get("/api/gitHubFeeds"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(existingGithubFeed.getId().intValue())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(existingGitHubFeed.getId().intValue())))
                 .andExpect(jsonPath("$.[*].repositoryURL").value(hasItem("https://www.example.com/johnwayne/projectx")));
-        verify(githubFeedRepository).findAll();
+        verify(gitHubFeedRepository).findAll();
     }
 
     @Test
     public void getGithubFeed() throws Exception {
-        restGithubFeedMockMvc.perform(get("/api/githubFeeds/{id}", existingGithubFeed.getId()))
+        restGithubFeedMockMvc.perform(get("/api/gitHubFeeds/{id}", existingGitHubFeed.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(existingGithubFeed.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(existingGitHubFeed.getId().intValue()))
             .andExpect(jsonPath("$.repositoryURL").value("https://www.example.com/johnwayne/projectx"));
 
-        verify(githubFeedRepository).findOne(existingGithubFeed.getId());
+        verify(gitHubFeedRepository).findOne(existingGitHubFeed.getId());
     }
 
     @Test
     public void getNonExistingGithubFeed() throws Exception {
-        restGithubFeedMockMvc.perform(get("/api/githubFeeds/{id}", Long.MAX_VALUE))
+        restGithubFeedMockMvc.perform(get("/api/gitHubFeeds/{id}", Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
-        verify(githubFeedRepository).findOne(Long.MAX_VALUE);
+        verify(gitHubFeedRepository).findOne(Long.MAX_VALUE);
     }
 
     @Test
     public void updateGithubFeed() throws Exception {
-        existingGithubFeed.setRepositoryURL(UPDATED_REPOSITORY_URL);
+        existingGitHubFeed.setRepositoryURL(UPDATED_REPOSITORY_URL);
 
-        restGithubFeedMockMvc.perform(put("/api/githubFeeds")
+        restGithubFeedMockMvc.perform(put("/api/gitHubFeeds")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(existingGithubFeed)))
+                .content(TestUtil.convertObjectToJsonBytes(existingGitHubFeed)))
                 .andExpect(status().isOk());
-        verify(githubFeedRepository).save(existingGithubFeed);
+        verify(gitHubFeedRepository).save(existingGitHubFeed);
     }
 
     @Test
     public void deleteGithubFeed() throws Exception {
-        restGithubFeedMockMvc.perform(delete("/api/githubFeeds/{id}", existingGithubFeed.getId())
+        restGithubFeedMockMvc.perform(delete("/api/gitHubFeeds/{id}", existingGitHubFeed.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
-        verify(githubFeedRepository).delete(existingGithubFeed.getId());
+        verify(gitHubFeedRepository).delete(existingGitHubFeed.getId());
     }
 
     @Test
@@ -212,7 +212,7 @@ public class GithubFeedResourceTest {
         when(calendarEventFactory.create(gitHubEvent1)).thenCallRealMethod();
         when(calendarEventFactory.create(gitHubEvent1, gitHubCommit1)).thenCallRealMethod();
 
-        restGithubFeedMockMvc.perform(get("/api/githubFeeds/{id}/events", existingGithubFeed.getId())
+        restGithubFeedMockMvc.perform(get("/api/gitHubFeeds/{id}/events", existingGitHubFeed.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
@@ -222,7 +222,7 @@ public class GithubFeedResourceTest {
             .andExpect(jsonPath("$.[*].avatarUrl").value("https://avatars.githubusercontent.com/u/100"))
             .andExpect(jsonPath("$.[*].start").value("2015-07-06T12:00:00"));
 
-        verify(githubFeedRepository).findOne(100L);
+        verify(gitHubFeedRepository).findOne(100L);
         verify(githubService).getRepositoryEvents("johnwayne", "projectx");
         verify(calendarEventFactory).create(gitHubEvent1);
         verify(calendarEventFactory).create(gitHubEvent1, gitHubCommit1);

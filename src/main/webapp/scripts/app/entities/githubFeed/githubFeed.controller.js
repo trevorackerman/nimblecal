@@ -2,30 +2,30 @@
 
 angular.module('nimblecalApp')
     .controller('GithubFeedController', function ($scope, GithubFeed, ProjectFeed) {
-        $scope.githubFeeds = [];
+        $scope.gitHubFeeds = [];
         $scope.projectFeeds = ProjectFeed.query();
         $scope.loadAll = function() {
             GithubFeed.query(function(result) {
-               $scope.githubFeeds = result;
+               $scope.gitHubFeeds = result;
             });
         };
         $scope.loadAll();
 
         $scope.showUpdate = function (id) {
             GithubFeed.get({id: id}, function(result) {
-                $scope.githubFeed = result;
+                $scope.gitHubFeed = result;
                 $('#saveGithubFeedModal').modal('show');
             });
         };
 
         $scope.save = function () {
-            if ($scope.githubFeed.id != null) {
-                GithubFeed.update($scope.githubFeed,
+            if ($scope.gitHubFeed.id != null) {
+                GithubFeed.update($scope.gitHubFeed,
                     function () {
                         $scope.refresh();
                     });
             } else {
-                GithubFeed.save($scope.githubFeed,
+                GithubFeed.save($scope.gitHubFeed,
                     function () {
                         $scope.refresh();
                     });
@@ -34,7 +34,7 @@ angular.module('nimblecalApp')
 
         $scope.delete = function (id) {
             GithubFeed.get({id: id}, function(result) {
-                $scope.githubFeed = result;
+                $scope.gitHubFeed = result;
                 $('#deleteGithubFeedConfirmation').modal('show');
             });
         };
@@ -55,7 +55,7 @@ angular.module('nimblecalApp')
         };
 
         $scope.clear = function () {
-            $scope.githubFeed = {repositoryURL: null, id: null};
+            $scope.gitHubFeed = {repositoryURL: null, id: null};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
         };

@@ -1,4 +1,4 @@
-package com.nimblehammer.domain.github;
+package com.nimblehammer.domain.gitHub;
 
 public class GitHubActor {
     int id;

@@ -2,7 +2,7 @@
 
 angular.module('nimblecalApp')
     .factory('GithubFeed', function ($resource) {
-        return $resource('api/githubFeeds/:id', {}, {
+        return $resource('api/gitHubFeeds/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',

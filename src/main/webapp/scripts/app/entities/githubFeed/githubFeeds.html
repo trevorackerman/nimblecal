@@ -1,12 +1,12 @@
 <div>
 
-    <h2 translate="nimblecalApp.githubFeed.home.title">GithubFeed</h2>
+    <h2 translate="nimblecalApp.gitHubFeed.home.title">GithubFeed</h2>
 
     <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#saveGithubFeedModal" ng-click="clear()">
-                    <span class="glyphicon glyphicon-flash"></span> <span translate="nimblecalApp.githubFeed.home.createLabel">Create a new GithubFeed</span>
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="nimblecalApp.gitHubFeed.home.createLabel">Create a new GithubFeed</span>
                 </button>
             </div>
         </div>
@@ -21,19 +21,19 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myGithubFeedLabel" translate="nimblecalApp.githubFeed.home.createOrEditLabel">Create or edit a GithubFeed</h4>
+                        <h4 class="modal-title" id="myGithubFeedLabel" translate="nimblecalApp.gitHubFeed.home.createOrEditLabel">Create or edit a GithubFeed</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>ID</label>
                             <input type="text" class="form-control" name="id"
-                                   ng-model="githubFeed.id" readonly>
+                                   ng-model="gitHubFeed.id" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.githubFeed.repositoryURL">RepositoryURL</label>
+                            <label translate="nimblecalApp.gitHubFeed.repositoryURL">RepositoryURL</label>
                             <input type="text" class="form-control" name="repositoryURL"
-                                   ng-model="githubFeed.repositoryURL" required>
+                                   ng-model="gitHubFeed.repositoryURL" required>
 
                             <div ng-show="editForm.repositoryURL.$invalid">
                                 <p class="help-block"
@@ -44,8 +44,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label translate="nimblecalApp.githubFeed.projectFeed">projectFeed</label>
-                            <select class="form-control" name="projectFeed" ng-model="githubFeed.projectFeed.id" ng-options="projectFeed.id as projectFeed.repositoryURL for projectFeed in projectFeeds">
+                            <label translate="nimblecalApp.gitHubFeed.projectFeed">projectFeed</label>
+                            <select class="form-control" name="projectFeed" ng-model="gitHubFeed.projectFeed.id" ng-options="projectFeed.id as projectFeed.repositoryURL for projectFeed in projectFeeds">
                             </select>
                         </div>
                     </div>
@@ -65,14 +65,14 @@
     <div class="modal fade" id="deleteGithubFeedConfirmation">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form name="deleteForm" ng-submit="confirmDelete(githubFeed.id)">
+                <form name="deleteForm" ng-submit="confirmDelete(gitHubFeed.id)">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
                         <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
                     </div>
                     <div class="modal-body">
-                        <p translate="nimblecalApp.githubFeed.delete.question" translate-values="{id: '{{githubFeed.id}}'}">Are you sure you want to delete this GithubFeed?</p>
+                        <p translate="nimblecalApp.gitHubFeed.delete.question" translate-values="{id: '{{gitHubFeed.id}}'}">Are you sure you want to delete this GithubFeed?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
@@ -92,29 +92,29 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th translate="nimblecalApp.githubFeed.repositoryURL">RepositoryURL</th>
-                    <th translate="nimblecalApp.githubFeed.projectFeed">projectFeed</th>
+                    <th translate="nimblecalApp.gitHubFeed.repositoryURL">RepositoryURL</th>
+                    <th translate="nimblecalApp.gitHubFeed.projectFeed">projectFeed</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="githubFeed in githubFeeds">
-                    <td><a ui-sref="githubFeedDetail({id:githubFeed.id})">{{githubFeed.id}}</a></td>
-                    <td>{{githubFeed.repositoryURL}}</td>
-                    <td>{{githubFeed.projectFeed.repositoryURL}}</td>
+                <tr ng-repeat="gitHubFeed in gitHubFeeds">
+                    <td><a ui-sref="gitHubFeedDetail({id:gitHubFeed.id})">{{gitHubFeed.id}}</a></td>
+                    <td>{{gitHubFeed.repositoryURL}}</td>
+                    <td>{{gitHubFeed.projectFeed.repositoryURL}}</td>
                     <td>
                         <button type="submit"
-                                ui-sref="githubFeedDetail({id:githubFeed.id})"
+                                ui-sref="gitHubFeedDetail({id:gitHubFeed.id})"
                                 class="btn btn-info btn-sm">
                             <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
                         </button>
                         <button type="submit"
-                                ng-click="showUpdate(githubFeed.id)"
+                                ng-click="showUpdate(gitHubFeed.id)"
                                 class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
                         </button>
                         <button type="submit"
-                                ng-click="delete(githubFeed.id)"
+                                ng-click="delete(gitHubFeed.id)"
                                 class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
                         </button>

@@ -1,6 +1,6 @@
 package com.nimblehammer.service;
 
-import com.nimblehammer.domain.github.GitHubEvent;
+import com.nimblehammer.domain.gitHub.GitHubEvent;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;

@@ -1,6 +1,6 @@
 package com.nimblehammer.service;
 
-import com.nimblehammer.domain.github.GitHubEvent;
+import com.nimblehammer.domain.gitHub.GitHubEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

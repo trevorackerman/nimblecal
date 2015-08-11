@@ -35,7 +35,7 @@ describe('Project Feeds Page', function() {
         element(by.model('projectFeed.title')).sendKeys('Concord-' + time);
         element(by.model('trackerFeed.projectId')).sendKeys('442903-' + time);
         browser.sleep(10);
-        element(by.model('githubFeed.repositoryURL')).sendKeys("https://example.com/githubrepo");
+        element(by.model('gitHubFeed.repositoryURL')).sendKeys("https://example.com/githubrepo");
 
         $('form button.btn-primary').click();
         browser.sleep(250);

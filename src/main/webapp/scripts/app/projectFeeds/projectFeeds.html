@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-group">
                             <label translate="nimblecalApp.projectFeeds.gitHubRepositoryURL">GitHub Repository URL</label>
-                            <input type="text" class="form-control" name="repositoryURL" ng-model="githubFeed.repositoryURL" required>
+                            <input type="text" class="form-control" name="repositoryURL" ng-model="gitHubFeed.repositoryURL" required>
 
                             <div ng-show="editForm.repositoryURL.$invalid">
                                 <p class="help-block"
@@ -111,7 +111,7 @@
                 </td>
                 <td>
                     <ul>
-                        <li ng-repeat="githubFeed in projectFeed.githubFeeds">{{githubFeed.repositoryURL}}</li>
+                        <li ng-repeat="gitHubFeed in projectFeed.gitHubFeeds">{{gitHubFeed.repositoryURL}}</li>
                     </ul>
                 </td>
                 <td>

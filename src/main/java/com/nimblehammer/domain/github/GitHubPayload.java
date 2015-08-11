@@ -1,4 +1,4 @@
-package com.nimblehammer.domain.github;
+package com.nimblehammer.domain.gitHub;
 
 import java.util.List;
 
