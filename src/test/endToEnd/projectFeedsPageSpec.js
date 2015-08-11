@@ -38,14 +38,14 @@ describe('Project Feeds Page', function() {
         element(by.model('gitHubFeed.repositoryOwner')).sendKeys("theduke");
         element(by.model('gitHubFeed.repositoryName')).sendKeys("truegrit");
 
-        $('form button.btn-primary').click();
-        browser.sleep(250);
+        $('form button.btn-primary').click().then(function() {
+            browser.sleep(1000);
 
-        $$('table tbody tr').count().then(function(currentCount) {
-            expect(currentCount).toEqual(originalProjectCount + 1);
-            expect($$('table tbody tr').getText()).toContain("Concord-" + time + "\n442903-" + time +"\nhttps://github.com/theduke/truegrit\nDelete");
+            $$('table tbody tr').count().then(function(currentCount) {
+                expect(currentCount).toEqual(originalProjectCount + 1);
+                expect($$('table tbody tr').getText()).toContain("Concord-" + time + "\n442903-" + time +"\nhttps://github.com/theduke/truegrit\nDelete");
+            });
         });
-
     });
 
     it('should allow the user to cancel deleting a project feed', function() {
