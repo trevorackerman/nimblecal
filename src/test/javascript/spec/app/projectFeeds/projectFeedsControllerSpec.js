@@ -79,9 +79,22 @@ describe('ProjectFeeds Controller ', function () {
                 }
             })
             .respond(201,{}, {Location: 'api/projectfeeds/1'});
+
         httpMock.expectGET(/api\/projectfeeds\/1\?cacheBuster=.*/).respond(200, {title: 'something wonderful', id: 1});
+
         httpMock.expectPOST(/api\/trackerFeeds\?cacheBuster=.*/,
             {projectId: '442903', id: null, projectFeed: { id: 1, title: 'something wonderful'}}).respond(201, {}, {Location: 'api/trackerfeeds/2'});
+
+        httpMock.expectPOST(/api\/gitHubFeeds\?cacheBuster=.*/, {
+                id: null,
+                repositoryURL: 'https://github.com/johnlithgow/harryandthehendersons',
+                repositoryOwner: 'johnlithgow',
+                repositoryName: 'harryandthehendersons',
+                projectFeed: { id: 1, title: 'something wonderful'}
+            }
+        ).respond(201, {}, {Location: 'api/gitHubFeeds/2'});
+
+        httpMock.expectGET(/api\/projectfeeds\?cacheBuster=.*/).respond(200);
         httpMock.expectGET(/api\/projectfeeds\?cacheBuster=.*/).respond(200);
 
         $scope.editForm = {};
@@ -93,6 +106,7 @@ describe('ProjectFeeds Controller ', function () {
 
         $scope.projectFeed = {title: 'something wonderful', id: null};
         $scope.trackerFeed = {projectId: '442903', id: null, projectFeed: $scope.projectFeed};
+        $scope.gitHubFeed = {id: null, repositoryURL: null, repositoryOwner: 'johnlithgow', repositoryName: 'harryandthehendersons', projectFeed: $scope.projectFeed};
         $scope.save();
 
         httpMock.flush();
