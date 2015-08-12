@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('nimblecalApp')
-    .controller('MainController', function ($scope, ProjectFeed, TrackerEvents, Principal, User, localStorageService, uiCalendarConfig) {
+    .controller('MainController', function ($scope, ProjectFeed, TrackerEvents, GitHubEvents, Principal, User, localStorageService, uiCalendarConfig) {
 
         $scope.eventRender = function(event, element) {
-            element.find('div.fc-content').prepend('<span class="badge fc-title-highlight">' + event.avatarAlternate + '</span>');
+            if (event.avatarUrl != null) {
+                element.find('div.fc-content').prepend('<img class="tiny-avatar" src="' + event.avatarUrl + '">');
+            }
+            else {
+                element.find('div.fc-content').prepend('<span class="badge fc-title-highlight">' + event.avatarAlternate + '</span>');
+            }
             element.popover({
                 title: event.description,
                 content: event.message,
@@ -21,7 +26,8 @@ angular.module('nimblecalApp')
 
         $scope.showExample = false;
         $scope.events = [[]];
-        $scope.eventSources = [ $scope.events ];
+        $scope.gitHubEvents = [[]];
+        $scope.eventSources = [ $scope.events, $scope.gitHubEvents ];
 
         $scope.trackerApiToken = "";
 
@@ -32,6 +38,13 @@ angular.module('nimblecalApp')
                 uiCalendarConfig.calendars.projectCalendar.fullCalendar('removeEventSource', $scope.events );
                 $scope.events = result;
                 uiCalendarConfig.calendars.projectCalendar.fullCalendar('addEventSource', $scope.events );
+                uiCalendarConfig.calendars.projectCalendar.fullCalendar('refetchEvents');
+            });
+
+            GitHubEvents.get({id: projectFeed.gitHubFeeds[0].id}, function(result) {
+                uiCalendarConfig.calendars.projectCalendar.fullCalendar('removeEventSource', $scope.gitHubEvents );
+                $scope.gitHubEvents = result;
+                uiCalendarConfig.calendars.projectCalendar.fullCalendar('addEventSource', $scope.gitHubEvents );
                 uiCalendarConfig.calendars.projectCalendar.fullCalendar('refetchEvents');
             });
         };

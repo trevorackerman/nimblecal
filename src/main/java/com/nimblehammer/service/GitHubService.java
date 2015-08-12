@@ -13,6 +13,10 @@ public class GitHubService {
     public List<GitHubEvent> getRepositoryEvents(String owner, String repository) {
         URI uri = URI.create("https://api.github.com/repos/" + owner + "/" + repository + "/events");
         GitHubEvent[] gitHubEvents = restTemplate.getForObject(uri, GitHubEvent[].class);
+        for (GitHubEvent gitHubEvent : gitHubEvents) {
+            gitHubEvent.setRepositoryName(repository);
+            gitHubEvent.setRepositoryOwner(owner);
+        }
         return Arrays.asList(gitHubEvents);
     }
 }

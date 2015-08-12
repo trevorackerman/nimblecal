@@ -70,11 +70,24 @@ public class CalendarEventFactory {
     }
 
     public CalendarEvent create(GitHubEvent event, GitHubCommit commit) {
+
+        String shortSha = commit.getSha().substring(0, 10);
+        String gitHubCommitURL = "https://www.github.com/" + event.getRepositoryOwner() + "/" +
+            event.getRepositoryName() + "/commit/" + commit.getSha();
+        String description = "<div class=\"tiny-padding\">" +
+            "<span>" + LocalDateTime.ofInstant(event.getCreated_at(), ZoneOffset.UTC) + "</span>" +
+            "</div>" +
+            "<div class=\"tiny-padding\">" +
+                event.getActor().getLogin() +
+                "<span class=\"tiny-padding-left\"><a href=\"" + gitHubCommitURL  + "\">" + shortSha + "</a></span>" +
+            "</div>";
+
+
         return new CalendarEvent.Builder()
             .start(LocalDateTime.ofInstant(event.getCreated_at(), ZoneOffset.UTC))
-            .title(commit.getAuthor().getName() + " committed " + commit.getSha())
+            .title("committed " + shortSha)
             .message(commit.getMessage())
-            .description(commit.getMessage())
+            .description(description)
             .avatarUrl(event.getActor().getAvatar_url())
             .avatarAlternate(event.getActor().getLogin())
             .build();

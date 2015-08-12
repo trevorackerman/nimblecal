@@ -17,6 +17,13 @@ describe('Home Page', function() {
         expect(element.all(by.css('div.fc-content-skeleton table thead tr td.fc-day-number ')).count()).toBeGreaterThan(27);
     });
 
+    it('Shows real activities in the sample calendar with popups', function() {
+        $('#exampleToggle').click();
+        expect($$('td.fc-event-container').count()).toBeGreaterThan(0);
+        $$('td.fc-event-container').get(0).click().then(function () {
+            expect($('div.popover').isDisplayed()).toBeTruthy();
+        });
+    });
 
     it('Shows an authenticated user a calendar', function() {
         browser.get('#/login');

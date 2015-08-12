@@ -10,6 +10,8 @@ public class GitHubEvent {
     private GitHubActor actor;
     private GitHubPayload payload;
     private GitHubActor org;
+    private String repositoryOwner;
+    private String repositoryName;
 
     public String getId() {
         return id;
@@ -67,6 +69,22 @@ public class GitHubEvent {
         this.org = org;
     }
 
+    public String getRepositoryName() {
+        return repositoryName;
+    }
+
+    public void setRepositoryName(String repositoryName) {
+        this.repositoryName = repositoryName;
+    }
+
+    public String getRepositoryOwner() {
+        return repositoryOwner;
+    }
+
+    public void setRepositoryOwner(String repositoryOwner) {
+        this.repositoryOwner = repositoryOwner;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,14 +93,16 @@ public class GitHubEvent {
         GitHubEvent that = (GitHubEvent) o;
 
         if (isPublic != that.isPublic) return false;
-        if (actor != null ? !actor.equals(that.actor) : that.actor != null) return false;
-        if (created_at != null ? !created_at.equals(that.created_at) : that.created_at != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (org != null ? !org.equals(that.org) : that.org != null) return false;
-        if (payload != null ? !payload.equals(that.payload) : that.payload != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (created_at != null ? !created_at.equals(that.created_at) : that.created_at != null) return false;
+        if (actor != null ? !actor.equals(that.actor) : that.actor != null) return false;
+        if (payload != null ? !payload.equals(that.payload) : that.payload != null) return false;
+        if (org != null ? !org.equals(that.org) : that.org != null) return false;
+        if (repositoryOwner != null ? !repositoryOwner.equals(that.repositoryOwner) : that.repositoryOwner != null)
+            return false;
+        return !(repositoryName != null ? !repositoryName.equals(that.repositoryName) : that.repositoryName != null);
 
-        return true;
     }
 
     @Override
@@ -94,6 +114,8 @@ public class GitHubEvent {
         result = 31 * result + (actor != null ? actor.hashCode() : 0);
         result = 31 * result + (payload != null ? payload.hashCode() : 0);
         result = 31 * result + (org != null ? org.hashCode() : 0);
+        result = 31 * result + (repositoryOwner != null ? repositoryOwner.hashCode() : 0);
+        result = 31 * result + (repositoryName != null ? repositoryName.hashCode() : 0);
         return result;
     }
 
@@ -103,10 +125,12 @@ public class GitHubEvent {
             "id='" + id + '\'' +
             ", type='" + type + '\'' +
             ", isPublic=" + isPublic +
-            ", created_at='" + created_at + '\'' +
+            ", created_at=" + created_at +
             ", actor=" + actor +
             ", payload=" + payload +
             ", org=" + org +
+            ", repositoryOwner='" + repositoryOwner + '\'' +
+            ", repositoryName='" + repositoryName + '\'' +
             '}';
     }
 }

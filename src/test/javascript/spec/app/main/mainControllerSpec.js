@@ -75,11 +75,18 @@ describe('Main Controller ', function () {
 
     it('fetches project feeds for the current user', function() {
         httpMock.expectGET(/api\/projectfeeds\?cacheBuster=.*/).respond(200, [
-            { title: 'something wonderful', id: 1, trackerFeeds: [ {id : 1, projectId: 23452345} ] }
+            { title: 'something wonderful', id: 1,
+                trackerFeeds: [ {id : 1, projectId: 23452345} ],
+                gitHubFeeds: [ {id: 1, repositoryOwner: "johnwayne", repsitoryName: "rioLobo", repositoryURL: "https://www.example.com/johnwayne/riolobo"}]
+            }
         ]);
         otherStuff();
         httpMock.expectGET(/api\/trackerFeeds\/1\/events\?cacheBuster=.*/).respond(200, [
             { title: 'blah', start: '2015-06-19T15:50:00Z', end: '2015-06-19T17:50:00Z', allDay: false}
+        ]);
+
+        httpMock.expectGET(/api\/gitHubFeeds\/1\/events\?cacheBuster=.*/).respond(200, [
+            { title: 'something', description: 'a funny thing happened...', start: '2015-08-11T21:50:00Z', end: '2015-08-11T21:50:00Z', allDay: false}
         ]);
 
         $scope.$apply();
@@ -89,6 +96,10 @@ describe('Main Controller ', function () {
 
         expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('removeEventSource', [[]]);
         expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('addEventSource', $scope.events);
+        expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('refetchEvents');
+
+        expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('removeEventSource', [[]]);
+        expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('addEventSource', $scope.gitHubEvents);
         expect(calendarSpy.fullCalendar).toHaveBeenCalledWith('refetchEvents');
     });
 });
