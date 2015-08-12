@@ -211,6 +211,8 @@ public class GitHubFeedResourceTest {
         gitHubEvent1.setPublic(true);
         gitHubEvent1.setType("PushEvent");
         gitHubEvent1.setPayload(gitHubPayload);
+        gitHubEvent1.setRepositoryName("truegrit");
+        gitHubEvent1.setRepositoryOwner("johnwayne");
 
         List<GitHubEvent> gitHubEvents = Arrays.asList(gitHubEvent1);
         when(gitHubService.getRepositoryEvents("johnwayne", "projectx")).thenReturn(gitHubEvents);
@@ -221,9 +223,14 @@ public class GitHubFeedResourceTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.[*].title").value("John Wayne committed 056f1f86e513c13feb6a2c31f8a4c91d4c856018"))
+            .andExpect(jsonPath("$.[*].title").value("committed 056f1f86e5"))
             .andExpect(jsonPath("$.[*].message").value("Reformat this code pilgrim!"))
-            .andExpect(jsonPath("$.[*].description").value("Reformat this code pilgrim!"))
+            .andExpect(jsonPath("$.[*].description").value("<div class=\"tiny-padding\"><span>2015-07-06T12:00</span></div>" +
+                "<div class=\"tiny-padding\">johnwayne" +
+                    "<span class=\"tiny-padding-left\">" +
+                        "<a href=\"https://www.github.com/johnwayne/truegrit/commit/056f1f86e513c13feb6a2c31f8a4c91d4c856018\">056f1f86e5</a>" +
+                    "</span>" +
+                "</div>"))
             .andExpect(jsonPath("$.[*].avatarUrl").value("https://avatars.githubusercontent.com/u/100"))
             .andExpect(jsonPath("$.[*].start").value("2015-07-06T12:00:00"));
 

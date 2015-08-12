@@ -20,7 +20,7 @@ describe('Home Page', function() {
     it('Shows real activities in the sample calendar with popups', function() {
         $('#exampleToggle').click();
         expect($$('td.fc-event-container').count()).toBeGreaterThan(0);
-        $$('td.fc-event-container').get(0).click().then(function () {
+        $$('td.fc-event-container a').get(0).click().then(function () {
             expect($('div.popover').isDisplayed()).toBeTruthy();
         });
     });
